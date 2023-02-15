@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Standings(
+    val stage: String,
     val type: String,
+    val group: String?,
     val table: List<TeamPosition>
 )

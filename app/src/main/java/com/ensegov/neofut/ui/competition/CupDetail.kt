@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,13 +19,13 @@ import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LeagueDetail(competition: Competition) {
+fun CupDetail(competition: Competition) {
 
     val viewModel: CompetitionViewModel = koinViewModel()
 
-    val standingsList: List<Standings> by viewModel.standings.collectAsState()
-
     viewModel.getStandings(competition.code)
+
+    val standings: List<Standings> by viewModel.standings.collectAsState()
 
     Column(
         modifier = Modifier
@@ -37,13 +38,6 @@ fun LeagueDetail(competition: Competition) {
             color = Color.Blue,
             fontSize = 30.sp
         )
-        LazyColumn(
-            modifier = Modifier
-                .padding(20.dp)
-        ) {
-            items(standingsList.getOrNull(0)?.table?.size ?: 0) { i ->
-                TeamRow(standingsList[0].table[i])
-            }
-        }
+        GroupTable(standings)
     }
 }

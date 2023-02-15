@@ -17,7 +17,7 @@ fun CompetitionScreen(competition: Competition) {
     ) {
         when(competition.type) {
             "LEAGUE" -> LeagueDetail(competition)
-            else -> Text(text = competition.name)
+            "CUP" -> CupDetail(competition)
         }
     }
 }
