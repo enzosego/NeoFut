@@ -13,15 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ensegov.neofut.data.remote.competition.dto.Competition
 import com.ensegov.neofut.data.remote.competition.dto.standings.TeamPosition
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun League(viewModel: CompetitionViewModel = koinViewModel()) {
+fun LeagueDetail(
+    competition: Competition,
+) {
 
-    val leagueName: String by viewModel.competitionName.collectAsState()
+    val viewModel: CompetitionViewModel = koinViewModel()
 
     val teamList: List<TeamPosition> by viewModel.standings.collectAsState()
+
+    viewModel.getStandings(competition.code)
 
     Column(
         modifier = Modifier
@@ -30,7 +35,7 @@ fun League(viewModel: CompetitionViewModel = koinViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = leagueName,
+            text = competition.name,
             color = Color.Blue,
             fontSize = 30.sp
         )

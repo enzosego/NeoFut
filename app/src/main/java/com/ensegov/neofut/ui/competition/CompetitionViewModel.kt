@@ -12,23 +12,12 @@ class CompetitionViewModel(
     private val competitionsRepository: CompetitionsRepository
 ) : ViewModel() {
 
-    private val _competitionName = MutableStateFlow("Premier League")
-    val competitionName: StateFlow<String> get() = _competitionName
-
     private val _standings = MutableStateFlow<List<TeamPosition>>(emptyList())
     val standings: StateFlow<List<TeamPosition>> get() = _standings
 
-    init {
-        getStandings()
-    }
-
-    private fun getCompetitionName() = viewModelScope.launch {
-        val competition = competitionsRepository.getCompetition()
-        _competitionName.emit(competition.name)
-    }
-
-    private fun getStandings() = viewModelScope.launch {
-        val newStandings = competitionsRepository.getStandings().standingsList[0].table
+    fun getStandings(competitionId: String) = viewModelScope.launch {
+        val newStandings =
+            competitionsRepository.getStandings(competitionId).standingsList[0].table
         _standings.emit(newStandings)
     }
 }

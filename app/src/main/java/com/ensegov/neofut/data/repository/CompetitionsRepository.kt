@@ -9,12 +9,12 @@ class CompetitionsRepository(
     private val competitionDataSource: CompetitionApi
 ) {
 
-    suspend fun getCompetition(): Competition =
-        competitionDataSource.getCompetition("PL")
-
-    suspend fun getStandings(): StandingsDto =
-        competitionDataSource.getStandings("PL")
-
     suspend fun getAllCompetitions(): List<Competition> =
         competitionDataSource.getAllCompetitions()
+
+    suspend fun getCompetition(competitionId: String): Competition =
+        competitionDataSource.getCompetition(competitionId)
+
+    suspend fun getStandings(competitionId: String): StandingsDto =
+        competitionDataSource.getStandings(competitionId)
 }
