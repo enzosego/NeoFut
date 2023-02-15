@@ -3,6 +3,7 @@ package com.ensegov.neofut.data.remote.team
 import com.ensegov.neofut.data.remote.team.dto.Team
 import com.ensegov.neofut.data.remote.utils.HttpRoutes
 import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
+import com.ensegov.neofut.data.remote.utils.getWithToken
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -12,9 +13,8 @@ class TeamsApiImplementation(
 ) : TeamsApi {
 
     override suspend fun getTeam(teamId: String): Team =
-        client.get("${HttpRoutes.TEAM_REQUEST}$teamId") {
-            header("X-Auth-Token", HttpRoutes.API_TOKEN)
-        }.body()
+        client.getWithToken("${HttpRoutes.TEAM_REQUEST}$teamId")
+            .body()
 
     companion object {
         fun create(): TeamsApi =

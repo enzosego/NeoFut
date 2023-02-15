@@ -1,15 +1,14 @@
-package com.ensegov.neofut.ui
+package com.ensegov.neofut.ui.competition
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.data.remote.competition.dto.standings.TeamPosition
-import com.ensegov.neofut.data.remote.team.dto.Team
 import com.ensegov.neofut.data.repository.CompetitionsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class CompetitionViewModel(
     private val competitionsRepository: CompetitionsRepository
 ) : ViewModel() {
 
