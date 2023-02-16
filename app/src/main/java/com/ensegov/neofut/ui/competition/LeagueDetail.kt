@@ -22,7 +22,7 @@ fun LeagueDetail(competition: Competition) {
 
     val viewModel: CompetitionViewModel = koinViewModel()
 
-    val standingsList: List<Standings> by viewModel.standings.collectAsState()
+    val standings: List<Standings> by viewModel.standings.collectAsState()
 
     viewModel.getStandings(competition.code)
 
@@ -41,8 +41,8 @@ fun LeagueDetail(competition: Competition) {
             modifier = Modifier
                 .padding(20.dp)
         ) {
-            items(standingsList.getOrNull(0)?.table?.size ?: 0) { i ->
-                TeamRow(standingsList[0].table[i])
+            items(standings.getOrNull(0)?.table?.size ?: 0) { i ->
+                TeamRow(standings[0].table[i])
             }
         }
     }

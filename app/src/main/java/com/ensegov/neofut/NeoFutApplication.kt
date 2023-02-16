@@ -13,7 +13,7 @@ class NeoFutApplication : Application() {
 
         startKoin {
             androidContext(this@NeoFutApplication)
-            modules(uiModule ,dataModule)
+            modules(dataModule, uiModule)
         }
     }
 }
