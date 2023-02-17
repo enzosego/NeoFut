@@ -3,7 +3,7 @@ package com.ensegov.neofut.di
 import android.content.Context
 import androidx.room.Room
 import com.ensegov.neofut.data.local.NeoFutDatabase
-import com.ensegov.neofut.data.remote.competition.CompetitionApiImpl
+import com.ensegov.neofut.data.remote.competition.CompetitionsApiImpl
 import com.ensegov.neofut.data.repository.CompetitionsRepository
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +14,7 @@ val dataModule = module {
 
     // DataSources
     single { createDatabase(androidContext()) }
-    single { CompetitionApiImpl.create() }
+    single { CompetitionsApiImpl.create() }
 
     // Repository
     factory { Dispatchers.IO }

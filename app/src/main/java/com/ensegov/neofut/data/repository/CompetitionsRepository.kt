@@ -1,10 +1,11 @@
 package com.ensegov.neofut.data.repository
 
-import android.util.Log
 import com.ensegov.neofut.data.local.NeoFutDatabase
+import com.ensegov.neofut.data.local.model.competition.info.asDomainModel
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
-import com.ensegov.neofut.data.remote.competition.CompetitionApi
+import com.ensegov.neofut.data.remote.competition.CompetitionsApi
 import com.ensegov.neofut.data.remote.competition.dto.Competition
+import com.ensegov.neofut.data.remote.competition.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
 import com.ensegov.neofut.data.remote.competition.dto.standings.asDatabaseModel
 import kotlinx.coroutines.*
@@ -13,9 +14,14 @@ import kotlinx.coroutines.flow.*
 
 class CompetitionsRepository(
     private val database: NeoFutDatabase,
-    private val competitionDataSource: CompetitionApi,
+    private val competitionDataSource: CompetitionsApi,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+
+    val allCompetitions: Flow<List<Competition>> = database.competitionInfoDao.getAll()
+        .map { list ->
+            list.map { it.asDomainModel() }
+        }
 
     private val competitionId = MutableStateFlow("")
 
@@ -47,8 +53,14 @@ class CompetitionsRepository(
         allStandingsFlow.collectValue(ioDispatcher) { allStandings = it }
     }
 
-    suspend fun getAllCompetitions(): List<Competition> =
-        competitionDataSource.getAllCompetitions()
+    suspend fun getAllCompetitions() = withContext(ioDispatcher) {
+        if (allCompetitions.first().isNotEmpty())
+            return@withContext
+
+        val newList = competitionDataSource.getAllCompetitions()
+            .map { it.asDatabaseModel() }
+        database.competitionInfoDao.insertOrUpdateAll(*newList.toTypedArray())
+    }
 
     suspend fun setStandings(newId: String) = withContext(ioDispatcher) {
         competitionId.emit(newId)

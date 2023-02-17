@@ -24,7 +24,7 @@ fun TeamRow(team: TeamPosition) {
                 .width(30.dp),
         )
         Text(
-            text = team.team.shortName,
+            text = team.team.shortName ?: "",
             fontSize = 23.sp,
             modifier = Modifier
                 .width(200.dp)

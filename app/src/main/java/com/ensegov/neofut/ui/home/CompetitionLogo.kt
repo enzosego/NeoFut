@@ -1,7 +1,6 @@
 package com.ensegov.neofut.ui.home
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -28,10 +27,6 @@ internal fun CompetitionLogo(competition: Competition, navigator: DestinationsNa
                 navigator.navigate(CompetitionScreenDestination(competition))
             }
     )
-}
-
-private fun showMessage(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 private fun getImageModel(url: String, context: Context): Any =

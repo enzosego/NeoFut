@@ -6,8 +6,9 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-object StandingsConverters {
+object RoomConverters {
 
+    // Competition Standings
     @TypeConverter
     fun toStandingsJson(standings: List<Standings>): String =
         Json.encodeToString(standings)

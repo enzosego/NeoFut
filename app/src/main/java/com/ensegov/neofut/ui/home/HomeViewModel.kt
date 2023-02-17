@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.data.remote.competition.dto.Competition
 import com.ensegov.neofut.data.repository.CompetitionsRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -16,11 +17,10 @@ class HomeViewModel(
         getAllCompetitions()
     }
 
-    private val _competitionList = MutableStateFlow<List<Competition>>(listOf())
-    val competitionList: StateFlow<List<Competition>> get() = _competitionList
+    val competitionList: StateFlow<List<Competition>> = competitionsRepository.allCompetitions
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private fun getAllCompetitions() = viewModelScope.launch {
-        val newList = competitionsRepository.getAllCompetitions()
-        _competitionList.emit(newList)
+        competitionsRepository.getAllCompetitions()
     }
 }

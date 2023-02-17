@@ -8,20 +8,18 @@ import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
 import com.ensegov.neofut.data.remote.utils.getWithToken
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
 
-class CompetitionApiImpl(
+class CompetitionsApiImpl(
     private val client: HttpClient
-) : CompetitionApi {
-
-    override suspend fun getAllCompetitions(): List<Competition> =
-        client.getWithToken(HttpRoutes.COMPETITION_REQUEST)
-            .body<AllCompetitions>().list
+) : CompetitionsApi {
 
     override suspend fun getCompetition(competitionId: String): Competition =
         client.getWithToken("${HttpRoutes.COMPETITION_REQUEST}$competitionId")
             .body()
+
+    override suspend fun getAllCompetitions(): List<Competition> =
+        client.getWithToken(HttpRoutes.COMPETITION_REQUEST)
+            .body<AllCompetitions>().list
 
     override suspend fun getStandings(competitionId: String): StandingsDto =
         client.getWithToken("${HttpRoutes.COMPETITION_REQUEST}$competitionId/standings")
@@ -29,8 +27,8 @@ class CompetitionApiImpl(
 
 
     companion object {
-        fun create(): CompetitionApi =
-            CompetitionApiImpl(
+        fun create(): CompetitionsApi =
+            CompetitionsApiImpl(
                 KtorClientBuilder(
                     isLoggingEnabled = true,
                     tag = "competition_api_call"

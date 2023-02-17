@@ -3,7 +3,7 @@ package com.ensegov.neofut.data.remote.competition
 import com.ensegov.neofut.data.remote.competition.dto.Competition
 import com.ensegov.neofut.data.remote.competition.dto.standings.StandingsDto
 
-interface CompetitionApi {
+interface CompetitionsApi {
 
     suspend fun getAllCompetitions(): List<Competition>
 
