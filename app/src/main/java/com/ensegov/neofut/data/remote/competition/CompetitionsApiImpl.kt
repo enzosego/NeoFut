@@ -1,8 +1,8 @@
 package com.ensegov.neofut.data.remote.competition
 
 import com.ensegov.neofut.data.remote.competition.dto.AllCompetitions
-import com.ensegov.neofut.data.remote.competition.dto.Competition
-import com.ensegov.neofut.data.remote.competition.dto.standings.StandingsDto
+import com.ensegov.neofut.data.remote.competition.dto.CompetitionDto
+import com.ensegov.neofut.data.remote.standings.dto.StandingsDto
 import com.ensegov.neofut.data.remote.utils.HttpRoutes
 import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
 import com.ensegov.neofut.data.remote.utils.getWithToken
@@ -13,17 +13,15 @@ class CompetitionsApiImpl(
     private val client: HttpClient
 ) : CompetitionsApi {
 
-    override suspend fun getCompetition(competitionId: String): Competition =
-        client.getWithToken("${HttpRoutes.COMPETITION_REQUEST}$competitionId")
-            .body()
+    override suspend fun getCountryCompetitions(countryName: String): List<CompetitionDto> =
+        client.getWithToken(
+            "${HttpRoutes.COMPETITION_REQUEST}?country=$countryName&current=true"
+        ).body<AllCompetitions>().list
 
-    override suspend fun getAllCompetitions(): List<Competition> =
-        client.getWithToken(HttpRoutes.COMPETITION_REQUEST)
-            .body<AllCompetitions>().list
-
-    override suspend fun getStandings(competitionId: String): StandingsDto =
-        client.getWithToken("${HttpRoutes.COMPETITION_REQUEST}$competitionId/standings")
-            .body()
+    override suspend fun getStandings(leagueId: Int, season: Int): StandingsDto =
+        client.getWithToken(
+            "${HttpRoutes.STANDINGS_REQUEST}?league=$leagueId&season=$season"
+        ).body()
 
 
     companion object {

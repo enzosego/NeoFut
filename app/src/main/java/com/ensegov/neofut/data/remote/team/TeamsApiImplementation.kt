@@ -13,7 +13,7 @@ class TeamsApiImplementation(
 ) : TeamsApi {
 
     override suspend fun getTeam(teamId: String): Team =
-        client.getWithToken("${HttpRoutes.TEAM_REQUEST}$teamId")
+        client.getWithToken(teamId)
             .body()
 
     companion object {

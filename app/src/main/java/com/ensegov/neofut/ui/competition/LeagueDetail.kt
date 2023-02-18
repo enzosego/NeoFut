@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,18 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.data.remote.competition.dto.Competition
-import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
+import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
+import com.ensegov.neofut.ui.competition.model.Competition
+import com.ensegov.neofut.ui.competition.model.getLatestSeason
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LeagueDetail(competition: Competition) {
 
-    val viewModel: CompetitionViewModel = koinViewModel()
+    val viewModel: CompetitionDetailViewModel = koinViewModel()
 
-    val standings: List<Standings> by viewModel.standings.collectAsState()
+    val standings: List<List<TeamPosition>> by viewModel.standings.collectAsState()
 
-    viewModel.getStandings(competition.code)
+    viewModel.getStandings(competition.id, competition.getLatestSeason())
 
     Column(
         modifier = Modifier
@@ -41,8 +43,8 @@ fun LeagueDetail(competition: Competition) {
             modifier = Modifier
                 .padding(20.dp)
         ) {
-            items(standings.getOrNull(0)?.table?.size ?: 0) { i ->
-                TeamRow(standings[0].table[i])
+            items(standings.lastOrNull() ?: emptyList()) { team ->
+                TeamRow(team)
             }
         }
     }

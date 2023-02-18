@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
+import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 
 @Composable
-fun GroupTable(standings: List<Standings>) {
+fun GroupTable(standings: List<List<TeamPosition>>) {
 
     LazyColumn(
         modifier = Modifier
@@ -21,13 +21,13 @@ fun GroupTable(standings: List<Standings>) {
         standings.forEach {
             item {
                 Text(
-                    text = it.group?.replace("_", " ") ?: "",
+                    text = it[0].group,
                     color = Color.Blue,
                     fontSize = 30.sp
                 )
             }
 
-            items(it.table) { table ->
+            items(it) { table ->
                 TeamRow(table)
             }
         }

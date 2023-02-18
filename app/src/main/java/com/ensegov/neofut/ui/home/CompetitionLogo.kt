@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.ensegov.neofut.data.remote.competition.dto.Competition
+import com.ensegov.neofut.ui.competition.model.Competition
 import com.ensegov.neofut.ui.destinations.CompetitionScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -19,7 +19,7 @@ internal fun CompetitionLogo(competition: Competition, navigator: DestinationsNa
     val context = LocalContext.current
 
     AsyncImage(
-        model = getImageModel(competition.emblem, context),
+        model = getImageModel(competition.logoUrl ?: "", context),
         contentDescription = null,
         modifier = Modifier
             .fillMaxSize()

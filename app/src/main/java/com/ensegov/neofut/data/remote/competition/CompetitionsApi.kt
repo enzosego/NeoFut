@@ -1,13 +1,11 @@
 package com.ensegov.neofut.data.remote.competition
 
-import com.ensegov.neofut.data.remote.competition.dto.Competition
-import com.ensegov.neofut.data.remote.competition.dto.standings.StandingsDto
+import com.ensegov.neofut.data.remote.competition.dto.CompetitionDto
+import com.ensegov.neofut.data.remote.standings.dto.StandingsDto
 
 interface CompetitionsApi {
 
-    suspend fun getAllCompetitions(): List<Competition>
+    suspend fun getCountryCompetitions(countryName: String): List<CompetitionDto>
 
-    suspend fun getCompetition(competitionId: String): Competition
-
-    suspend fun getStandings(competitionId: String): StandingsDto
+    suspend fun getStandings(leagueId: Int, season: Int): StandingsDto
 }

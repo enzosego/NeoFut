@@ -9,29 +9,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.data.remote.competition.dto.standings.TeamPosition
+import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 
 @Composable
-fun TeamRow(team: TeamPosition) {
+fun TeamRow(position: TeamPosition) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 12.dp)
     ) {
         Text(
-            text = "${team.position}",
+            text = "${position.position}",
             fontSize = 23.sp,
             modifier = Modifier
                 .width(30.dp),
         )
         Text(
-            text = team.team.shortName ?: "",
+            text = position.team.name,
             fontSize = 23.sp,
             modifier = Modifier
                 .width(200.dp)
                 .padding(start = 8.dp)
         )
         Text(
-            text = "${team.points}",
+            text = "${position.points}",
             fontSize = 23.sp,
             modifier = Modifier
                 .padding(start = 8.dp)

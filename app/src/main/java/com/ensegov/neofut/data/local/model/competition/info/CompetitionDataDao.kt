@@ -6,11 +6,11 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CompetitionInfoDao {
+interface CompetitionDataDao {
 
-    @Query("SELECT * FROM competition_info")
-    fun getAll(): Flow<List<CompetitionInfo>>
+    @Query("SELECT * FROM competition_data")
+    fun getAll(): Flow<List<CompetitionData>>
 
     @Upsert
-    fun insertOrUpdateAll(vararg competitionInfo: CompetitionInfo)
+    fun upsertAll(vararg competitionData: CompetitionData)
 }

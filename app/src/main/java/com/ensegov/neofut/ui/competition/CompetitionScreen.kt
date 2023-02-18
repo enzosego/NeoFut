@@ -4,8 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.ensegov.neofut.data.local.model.competition.info.CompetitionInfo
-import com.ensegov.neofut.data.remote.competition.dto.Competition
+import com.ensegov.neofut.ui.competition.model.Competition
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
@@ -16,8 +15,8 @@ fun CompetitionScreen(competition: Competition) {
         modifier = Modifier.fillMaxSize()
     ) {
         when(competition.type) {
-            "LEAGUE" -> LeagueDetail(competition)
-            "CUP" -> CupDetail(competition)
+            "League" -> LeagueDetail(competition)
+            "Cup" -> CupDetail(competition)
         }
     }
 }

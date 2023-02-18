@@ -12,18 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.data.remote.competition.dto.Competition
-import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
+import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
+import com.ensegov.neofut.ui.competition.model.Competition
+import com.ensegov.neofut.ui.competition.model.getLatestSeason
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CupDetail(competition: Competition) {
 
-    val viewModel: CompetitionViewModel = koinViewModel()
+    val viewModel: CompetitionDetailViewModel = koinViewModel()
 
-    viewModel.getStandings(competition.code)
+    val standings: List<List<TeamPosition>> by viewModel.standings.collectAsState()
 
-    val standings: List<Standings> by viewModel.standings.collectAsState()
+    viewModel.getStandings(competition.id, competition.getLatestSeason())
 
     Column(
         modifier = Modifier

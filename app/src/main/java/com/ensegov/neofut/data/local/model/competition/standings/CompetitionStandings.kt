@@ -3,12 +3,12 @@ package com.ensegov.neofut.data.local.model.competition.standings
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ensegov.neofut.data.remote.competition.dto.standings.Standings
+import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 
-@Entity(tableName = "competition_detail")
+@Entity(tableName = "competition_standings")
 data class CompetitionStandings(
     @PrimaryKey
-    val id: String,
-    @ColumnInfo(name = "standings_list")
-    val standingsList: List<Standings>
+    val id: Int,
+    @ColumnInfo(name = "group_list")
+    val groupList: List<List<TeamPosition>>
 )

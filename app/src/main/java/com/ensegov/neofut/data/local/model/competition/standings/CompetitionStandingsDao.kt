@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CompetitionStandingsDao {
 
-    @Query("SELECT * FROM competition_detail " +
+    @Query("SELECT * FROM competition_standings " +
             "WHERE :id = id")
     fun getStandings(id: String): Flow<CompetitionStandings?>
 
-    @Query("SELECT * FROM competition_detail")
+    @Query("SELECT * FROM competition_standings")
     fun getAll(): Flow<List<CompetitionStandings>>
 
     @Upsert
-    fun insertOrUpdate(competitionStandings: CompetitionStandings)
+    fun upsert(competitionStandings: CompetitionStandings)
 }
