@@ -9,15 +9,14 @@ import kotlinx.coroutines.flow.*
 
 class CompetitionsRepository(
     private val database: NeoFutDatabase,
-    private val competitionsDataSource: CompetitionsApi,
-    private val ioDispatcher: CoroutineDispatcher
+    private val competitionsDataSource: CompetitionsApi
 ) {
 
     val allCompetitions: Flow<List<CompetitionData>> = database.competitionDataDao.getAll()
 
-    suspend fun getAllCompetitions() = withContext(ioDispatcher) {
+    suspend fun getAllCompetitions() {
         if (allCompetitions.first().isNotEmpty())
-            return@withContext
+            return
 
         val newList = competitionsDataSource.getCountryCompetitions("argentina")
             .map { it.asDatabaseModel() }
