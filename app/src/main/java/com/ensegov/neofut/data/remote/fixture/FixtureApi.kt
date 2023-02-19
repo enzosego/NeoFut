@@ -1,5 +1,7 @@
 package com.ensegov.neofut.data.remote.fixture
 
+import com.ensegov.neofut.data.remote.fixture.dto.FixtureResponse
+import com.ensegov.neofut.data.remote.fixture.dto.MatchDto
 import com.ensegov.neofut.data.remote.fixture.dto.Rounds
 import com.ensegov.neofut.data.remote.utils.HttpRoutes
 import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
@@ -16,4 +18,9 @@ class FixtureApi(engine: HttpClientEngine = Android.create()) {
         client.getWithToken(
             "${HttpRoutes.FIXTURE_REQUEST}/rounds?league=$leagueId&season=$season"
         ).body()
+
+    suspend fun getFixture(leagueId: Int, season: Int, round: String): List<MatchDto> =
+        client.getWithToken(
+            "${HttpRoutes.FIXTURE_REQUEST}?league=$leagueId&season=$season&round=$round"
+        ).body<FixtureResponse>().fixture
 }
