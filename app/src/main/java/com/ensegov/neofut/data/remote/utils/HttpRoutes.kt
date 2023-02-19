@@ -10,5 +10,7 @@ object HttpRoutes {
 
     const val COMPETITION_REQUEST = "$BASE_URL/leagues"
 
+    const val FIXTURE_REQUEST = "$BASE_URL/fixtures"
+
     const val STANDINGS_REQUEST = "$BASE_URL/standings"
 }
