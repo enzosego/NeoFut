@@ -22,9 +22,9 @@ fun CupDetail(competition: Competition) {
 
     val viewModel: CompetitionDetailViewModel = koinViewModel()
 
-    val standings: List<List<TeamPosition>> by viewModel.standings.collectAsState()
-
     viewModel.getStandings(competition.id, competition.getLatestSeason())
+
+    val standings: List<List<TeamPosition>> by viewModel.standings.collectAsState()
 
     Column(
         modifier = Modifier
