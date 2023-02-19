@@ -31,7 +31,7 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
                 val c = char.toString()
                 subList.add(
                     TeamPosition(
-                        i, Team(i, c, c),
+                        i, Team(i, c, c, null),
                         i, i, c, c, c, c,
                         createFormStats(i),
                         createFormStats(i),
