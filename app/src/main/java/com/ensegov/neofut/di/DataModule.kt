@@ -5,13 +5,11 @@ import androidx.room.Room
 import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.remote.competition.CompetitionsApiImpl
 import com.ensegov.neofut.data.remote.standings.StandingsApiImpl
-import com.ensegov.neofut.data.repository.CompetitionDetailRepository
-import com.ensegov.neofut.data.repository.CompetitionsRepository
+import com.ensegov.neofut.data.repository.CompetitionDetailRepositoryImpl
 import com.ensegov.neofut.data.repository.CompetitionsRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -25,7 +23,7 @@ val dataModule = module {
     factory { Dispatchers.IO }
 
     factoryOf(::CompetitionsRepositoryImpl)
-    factoryOf(::CompetitionDetailRepository)
+    factoryOf(::CompetitionDetailRepositoryImpl)
 }
 
 private fun createDatabase(context: Context): NeoFutDatabase =
