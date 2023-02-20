@@ -17,7 +17,7 @@ class RoundsRequestTest : StringSpec ({
                 headers = headersOf(HttpHeaders.ContentType, "application/json")
             )
         }
-        val fixtureApi = FixtureApi(mockEngine)
+        val fixtureApi = FixtureApi(mockEngine, false)
         val roundList = fixtureApi.getRounds(0, 0).roundList
 
         roundList.size shouldBe 38

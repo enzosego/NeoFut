@@ -2,10 +2,7 @@ package com.ensegov.neofut.data.remote.fixture
 
 import com.ensegov.neofut.data.remote.fixture.dto.MatchDto
 import com.ensegov.neofut.data.remote.json.fixtureResponseJson
-import com.ensegov.neofut.data.remote.json.roundsResponseJson
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.core.test.NestedTest
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
@@ -23,7 +20,7 @@ class FixtureRequestTest : StringSpec({
                 headers = headersOf(HttpHeaders.ContentType, "application/json")
             )
         }
-        val fixtureApi = FixtureApi(mockEngine)
+        val fixtureApi = FixtureApi(mockEngine, logging = false)
         result = fixtureApi.getFixture(0, 0, "")
     }
 
