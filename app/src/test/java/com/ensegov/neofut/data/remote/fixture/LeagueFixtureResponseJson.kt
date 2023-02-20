@@ -1,6 +1,6 @@
-package com.ensegov.neofut.data.remote.json
+package com.ensegov.neofut.data.remote.fixture
 
-const val fixtureResponseJson = """
+internal const val leagueFixtureResponseJson = """
 {
   "get": "fixtures",
   "parameters": {

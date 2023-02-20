@@ -1,7 +1,6 @@
 package com.ensegov.neofut.data.remote.fixture
 
 import com.ensegov.neofut.data.remote.fixture.dto.MatchDto
-import com.ensegov.neofut.data.remote.json.fixtureResponseJson
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*
@@ -15,7 +14,7 @@ class FixtureRequestTest : StringSpec({
     beforeEach {
         val mockEngine = MockEngine {
             respond(
-                content = ByteReadChannel(fixtureResponseJson),
+                content = ByteReadChannel(leagueFixtureResponseJson),
                 status = HttpStatusCode.OK,
                 headers = headersOf(HttpHeaders.ContentType, "application/json")
             )
