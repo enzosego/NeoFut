@@ -1,14 +1,11 @@
 package com.ensegov.neofut.data.remote.standings
 
-import com.ensegov.neofut.data.remote.json.cupStandingsResponseJson
-import com.ensegov.neofut.data.remote.json.leagueStandingsResponseJson
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
-import kotlinx.serialization.json.JsonNull.content
 
 class StandingsApiTest : StringSpec({
 
