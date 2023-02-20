@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MatchInfo(
-    val referee: String,
+    val referee: String?,
     val timezone: String,
     val date: String,
     val venue: Venue,

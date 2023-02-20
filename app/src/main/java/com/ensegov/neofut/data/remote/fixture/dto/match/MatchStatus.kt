@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class MatchStatus(
     val long: String,
     val short: String,
-    val elapsed: Int
+    val elapsed: Int?
 )
