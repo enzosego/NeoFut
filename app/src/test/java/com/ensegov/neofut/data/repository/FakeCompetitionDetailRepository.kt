@@ -1,5 +1,6 @@
 package com.ensegov.neofut.data.repository
 
+import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
 import com.ensegov.neofut.data.remote.standings.dto.FormStats
 import com.ensegov.neofut.data.remote.standings.dto.GoalStats
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
@@ -7,22 +8,38 @@ import com.ensegov.neofut.data.remote.team.dto.Team
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.*
 
 class FakeCompetitionDetailRepository : CompetitionDetailRepository {
 
-    private val fakeList = MutableStateFlow(emptyList<List<TeamPosition>>())
+    private val fakeDatabase = MutableStateFlow(
+        listOf(
+            CompetitionStandings(2, 2022, createFakeList()),
+            CompetitionStandings(39, 2021, createFakeList())
+        )
+    )
 
-    override val currentStandings: Flow<List<List<TeamPosition>>> = callbackFlow {
-        fakeList.collectValue(Dispatchers.Main) { list ->
-            send(list)
-        }
-        awaitClose()
+    override suspend fun updateStandings(id: Int, season: Int) {
+        val newStandings = CompetitionStandings(id, season, createFakeList())
+        val newData = fakeDatabase.first().toMutableList() + newStandings
+
+        delay(1000L)
+        newData.forEach { println("Id: ${it.id} - Season: ${it.seasonNum}") }
+
+        fakeDatabase.emit(newData)
     }
 
-    override suspend fun getStandings(id: Int, season: Int) {
+    override fun getStandings(id: Int, season: Int): Flow<CompetitionStandings?> =
+        callbackFlow {
+            fakeDatabase.collectValue(Dispatchers.Main) { newData ->
+                val newValue = newData.find { it.id == id && it.seasonNum == season }
+                send(newValue)
+            }
+            awaitClose()
+        }
+
+
+    private fun createFakeList(): List<List<TeamPosition>> {
         val newList = mutableListOf<List<TeamPosition>>()
         repeat(3) {
             val subList = mutableListOf<TeamPosition>()
@@ -31,7 +48,7 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
                 val c = char.toString()
                 subList.add(
                     TeamPosition(
-                        i, Team(i, c, c, null),
+                        i, Team(i, c, c),
                         i, i, c, c, c, c,
                         createFormStats(i),
                         createFormStats(i),
@@ -41,9 +58,7 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
             }
             newList.add(subList)
         }
-        delay(1000L)
-
-        fakeList.emit(newList)
+        return newList
     }
 
     private fun createFormStats(i: Int) =

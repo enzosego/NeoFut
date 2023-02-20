@@ -20,24 +20,33 @@ class GetStandingsUseCaseTest : StringSpec({
         getStandings = GetStandingsUseCase(fakeRepository, Dispatchers.Main)
     }
 
-    "flow's initial value is empty" {
+    "Non existing id - should return empty list" {
         coroutineScope {
-            val flow = getStandings(0, 0)
+            val flow = getStandings(0, 2022)
 
-            val allStandings = flow.first()
+            val standings = flow.first()
 
-            allStandings.size shouldBe 0
+            standings.size shouldBe 0
         }
     }
 
-    "flow emission fill list".config(blockingTest = true) {
-        val flow = getStandings(0, 0)
+    "Existing id and non existing season - should return empty list" {
+        coroutineScope {
+            val flow = getStandings(2, 2021)
 
-        delay(1500L)
+            val standings = flow.first()
 
-        val allStandings = flow.first()
+            standings.size shouldBe 0
+        }
+    }
 
-        allStandings.isEmpty() shouldBe false
-        allStandings.size shouldBe 3
+    "Existing id and season - list size should be 3" {
+        coroutineScope {
+            val flow = getStandings(39, 2021)
+
+            val standings = flow.first()
+
+            standings.size shouldBe 3
+        }
     }
 })
