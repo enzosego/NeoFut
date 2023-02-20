@@ -1,6 +1,6 @@
-package com.ensegov.neofut.data.remote.json
+package com.ensegov.neofut.data.remote.standings
 
-const val leagueStandingsResponseJson = """
+internal const val leagueStandingsResponseJson = """
 {
   "get": "standings",
   "parameters": {

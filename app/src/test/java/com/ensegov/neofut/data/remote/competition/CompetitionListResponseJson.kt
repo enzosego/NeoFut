@@ -1,6 +1,6 @@
-package com.ensegov.neofut.data.remote.json
+package com.ensegov.neofut.data.remote.competition
 
-const val competitionListResponseJson = """
+internal const val competitionListResponseJson = """
 {
   "get": "leagues",
   "parameters": {

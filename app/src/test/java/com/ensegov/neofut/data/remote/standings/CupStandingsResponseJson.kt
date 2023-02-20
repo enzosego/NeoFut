@@ -1,6 +1,6 @@
-package com.ensegov.neofut.data.remote.json
+package com.ensegov.neofut.data.remote.standings
 
-const val cupStandingsResponseJson = """
+internal const val cupStandingsResponseJson = """
 {
   "get": "standings",
   "parameters": {
