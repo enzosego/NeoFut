@@ -8,11 +8,17 @@ import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
 import com.ensegov.neofut.data.remote.utils.getWithToken
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
-import io.ktor.client.engine.android.*
 
-class FixtureApi(engine: HttpClientEngine = Android.create()) {
+class FixtureApi(
+    engine: HttpClientEngine,
+    logging: Boolean = true
+) {
 
-    private val client = KtorClientBuilder(engine).client
+    private val client = KtorClientBuilder(
+        engine,
+        logging,
+        tag = "api_call_fixture"
+    ).client
 
     suspend fun getRounds(leagueId: Int, season: Int): Rounds =
         client.getWithToken(

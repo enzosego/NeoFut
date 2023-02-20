@@ -8,5 +8,5 @@ data class FormStats(
     val win: Int,
     val draw: Int,
     val lose: Int,
-    val goals: GoalStats
+    val goals: GoalStats? = null
 )

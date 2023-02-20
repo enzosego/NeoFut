@@ -10,15 +10,15 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 class KtorClientBuilder(
-    engine: HttpClientEngine = Android.create(),
-    isLoggingEnabled: Boolean = false,
+    engine: HttpClientEngine,
+    logging: Boolean = false,
     tag: String = "api_call"
 ) {
     val client = HttpClient(engine) {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
-        if (isLoggingEnabled)
+        if (logging)
             install(Logging) {
                 level = LogLevel.ALL
                 logger = object : Logger {

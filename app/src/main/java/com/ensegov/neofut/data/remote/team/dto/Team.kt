@@ -9,5 +9,5 @@ data class Team(
     val name: String,
     @SerialName(value = "logo")
     val logoUrl: String?,
-    val winner: Boolean?
+    val winner: Boolean? = null
 )
