@@ -17,6 +17,7 @@ fun StandingsDto.asDatabaseModel(): CompetitionStandings? =
         with(responseItem[0].competitionStandingsDto) {
             CompetitionStandings(
                 id,
+                season,
                 groupList
             )
         }

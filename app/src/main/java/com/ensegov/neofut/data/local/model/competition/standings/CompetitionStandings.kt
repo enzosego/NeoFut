@@ -9,6 +9,8 @@ import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 data class CompetitionStandings(
     @PrimaryKey
     val id: Int,
+    @ColumnInfo(name = "season_num")
+    val seasonNum: Int,
     @ColumnInfo(name = "group_list")
     val groupList: List<List<TeamPosition>>
 )

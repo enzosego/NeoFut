@@ -19,37 +19,12 @@ class CompetitionDetailRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : CompetitionDetailRepository {
 
-    private val competitionId = MutableStateFlow(-1)
-
-    private val allStandings: Flow<List<CompetitionStandings>> =
-        database.competitionStandingsDao.getAll()
-
-    override val currentStandings: Flow<List<List<TeamPosition>>> = callbackFlow {
-        allStandings.collectValue(ioDispatcher) { list ->
-            val newStandings = list.find { it.id == competitionId.value }
-                ?.groupList ?: emptyList()
-
-            send(newStandings)
-        }
-        competitionId.collectValue(ioDispatcher) { newId ->
-            if (newId < 0)
-                return@collectValue
-
-            val newStandings = allStandings.first().find { it.id == newId }
-                ?.groupList ?: emptyList()
-
-            send(newStandings)
-        }
-        awaitClose()
-    }
-
-    override suspend fun getStandings(id: Int, season: Int) = withContext(ioDispatcher) {
-        competitionId.emit(id)
-        if (allStandings.first().any { it.id == id })
-            return@withContext
-
+    override suspend fun updateStandings(id: Int, season: Int) = withContext(ioDispatcher) {
         val newValue = standingsDataSource.getCurrentStandings(id, season).asDatabaseModel()
             ?: return@withContext
         database.competitionStandingsDao.upsert(newValue)
     }
+
+    override fun getStandings(id: Int, season: Int): Flow<CompetitionStandings?> =
+        database.competitionStandingsDao.getStandings(id, season)
 }

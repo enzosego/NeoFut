@@ -5,6 +5,7 @@ import com.ensegov.neofut.data.repository.CompetitionDetailRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class GetStandingsUseCase(
@@ -12,10 +13,13 @@ class GetStandingsUseCase(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    operator fun invoke(id: Int, season: Int): Flow<List<List<TeamPosition>>> {
-        CoroutineScope(ioDispatcher).launch {
-            competitionDetailRepository.getStandings(id, season)
-        }
-        return competitionDetailRepository.currentStandings
-    }
+    operator fun invoke(id: Int, season: Int): Flow<List<List<TeamPosition>>> =
+        competitionDetailRepository.getStandings(id, season)
+            .map {
+                if (it == null)
+                    CoroutineScope(ioDispatcher).launch {
+                        competitionDetailRepository.updateStandings(id, season)
+                    }
+                it?.groupList ?: emptyList()
+            }
 }
