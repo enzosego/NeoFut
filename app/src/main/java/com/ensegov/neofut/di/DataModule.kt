@@ -9,7 +9,6 @@ import com.ensegov.neofut.data.repository.CompetitionDetailRepository
 import com.ensegov.neofut.data.repository.CompetitionDetailRepositoryImpl
 import com.ensegov.neofut.data.repository.CompetitionsRepository
 import com.ensegov.neofut.data.repository.CompetitionsRepositoryImpl
-import io.ktor.client.engine.*
 import io.ktor.client.engine.android.*
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -24,8 +23,8 @@ val dataModule = module {
     single { createDatabase(androidContext()) }
 
     factory { Android.create() }
-    singleOf(::CompetitionsApi)
-    singleOf(::StandingsApi)
+    single { CompetitionsApi(get(), logging = true) }
+    single { StandingsApi(get(), logging = true) }
 
     // Repository
     factory { Dispatchers.IO }
