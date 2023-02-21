@@ -8,7 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MatchDto(
+data class MatchFixture(
     @SerialName(value = "fixture")
     val info: MatchInfo,
     val teams: MatchTeams,

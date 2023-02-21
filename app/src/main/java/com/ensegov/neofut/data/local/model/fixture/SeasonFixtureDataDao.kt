@@ -9,10 +9,9 @@ import kotlinx.coroutines.flow.Flow
 interface FixtureDataDao {
 
     @Query("SELECT * FROM fixture_data " +
-            "WHERE :id = id " +
-            "AND :season = season")
-    fun get(id: Int, season: Int): Flow<FixtureData>
+            "WHERE :id = id AND :season = season")
+    fun getMatch(id: Int, season: Int): Flow<SeasonFixtureData>
 
     @Upsert
-    fun upsert(fixtureData: FixtureData)
+    fun upsert(seasonFixtureData: SeasonFixtureData)
 }

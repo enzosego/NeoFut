@@ -30,7 +30,7 @@ class GetStandingsUseCaseTest : StringSpec({
         }
     }
 
-    "Existing id and non existing season - should return empty list" {
+    "Non existing season - should return empty list" {
         coroutineScope {
             val flow = getStandings(2, 2021)
 
@@ -40,7 +40,7 @@ class GetStandingsUseCaseTest : StringSpec({
         }
     }
 
-    "Existing id and season - list size should be 3" {
+    "Existing id and season - list should not be empty" {
         coroutineScope {
             val flow = getStandings(39, 2021)
 
@@ -48,5 +48,25 @@ class GetStandingsUseCaseTest : StringSpec({
 
             standings.size shouldBe 3
         }
+    }
+
+    "Non existing id - should create standings".config(blockingTest = true) {
+        val flow = getStandings(128, 2019)
+
+        delay(500L)
+
+        val standings = flow.first()
+
+        standings.size shouldBe 3
+    }
+
+    "Non existing season - should create standings".config(blockingTest = true) {
+        val flow = getStandings(39, 2022)
+
+        delay(500L)
+
+        val standings = flow.first()
+
+        standings.size shouldBe 3
     }
 })
