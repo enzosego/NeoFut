@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FixtureResponse(
     @SerialName(value = "response")
-    val fixture: List<MatchDto>
+    val fixture: List<MatchFixture>
 )
