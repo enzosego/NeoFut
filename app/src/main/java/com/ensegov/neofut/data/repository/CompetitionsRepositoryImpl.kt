@@ -12,7 +12,7 @@ class CompetitionsRepositoryImpl(
 ) : CompetitionsRepository {
 
     override val allCompetitions: Flow<List<CompetitionData>> =
-        database.competitionDataDao.getAll()
+        database.competitionDao.getAll()
 
     override suspend fun getAllCompetitions() {
         if (allCompetitions.first().isNotEmpty())
@@ -20,6 +20,6 @@ class CompetitionsRepositoryImpl(
 
         val newList = competitionsDataSource.getCountryCompetitions("argentina")
             .map { it.asDatabaseModel() }
-        database.competitionDataDao.upsertAll(*newList.toTypedArray())
+        database.competitionDao.upsertAll(*newList.toTypedArray())
     }
 }

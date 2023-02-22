@@ -6,7 +6,7 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FixtureDataDao {
+interface SeasonFixtureDataDao {
 
     @Query("SELECT * FROM fixture_data " +
             "WHERE :id = id AND :season = season")

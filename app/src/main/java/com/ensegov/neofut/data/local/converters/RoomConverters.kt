@@ -12,8 +12,8 @@ object RoomConverters {
 
     // CompetitionDto Standings
     @TypeConverter
-    fun toGroupListJson(groupList: List<List<TeamPosition>>): String =
-        Json.encodeToString(groupList)
+    fun toGroupListJson(list: List<List<TeamPosition>>): String =
+        Json.encodeToString(list)
 
     @TypeConverter
     fun fromGroupListJson(json: String): List<List<TeamPosition>> =
@@ -21,8 +21,8 @@ object RoomConverters {
 
     // Season list
     @TypeConverter
-    fun toSeasonListJson(seasonList: List<Season>): String =
-        Json.encodeToString(seasonList)
+    fun toSeasonListJson(list: List<Season>): String =
+        Json.encodeToString(list)
 
     @TypeConverter
     fun fromSeasonListJson(json: String): List<Season> =
@@ -35,5 +35,14 @@ object RoomConverters {
 
     @TypeConverter
     fun fromCountryJson(json: String): Country =
+        Json.decodeFromString(json)
+
+    // String list
+    @TypeConverter
+    fun toStringListJson(list: List<String>): String =
+        Json.encodeToString(list)
+
+    @TypeConverter
+    fun fromStringListJson(json: String): List<String> =
         Json.decodeFromString(json)
 }
