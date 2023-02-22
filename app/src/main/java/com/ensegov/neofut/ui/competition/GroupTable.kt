@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 
 @Composable
-fun GroupTable(standings: List<List<TeamPosition>>) {
+fun GroupTable(standings: () -> List<List<TeamPosition>>) {
 
     LazyColumn(
         modifier = Modifier
             .padding(20.dp)
     ) {
-        standings.forEach {
+        standings().forEach {
             item {
                 Text(
                     text = it[0].group,

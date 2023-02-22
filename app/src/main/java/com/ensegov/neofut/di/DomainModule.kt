@@ -1,6 +1,7 @@
 package com.ensegov.neofut.di
 
 import com.ensegov.neofut.domain.use_case.competition_detail.CompetitionDetailUseCases
+import com.ensegov.neofut.domain.use_case.competition_detail.GetSeasonFixtureUseCase
 import com.ensegov.neofut.domain.use_case.competition_detail.GetStandingsUseCase
 import com.ensegov.neofut.domain.use_case.home.GetCountryCompetitionsUseCase
 import com.ensegov.neofut.domain.use_case.home.HomeUseCases
@@ -15,4 +16,5 @@ val domainModule = module {
 
     factoryOf(::CompetitionDetailUseCases)
     factoryOf(::GetStandingsUseCase)
+    factoryOf(::GetSeasonFixtureUseCase)
 }

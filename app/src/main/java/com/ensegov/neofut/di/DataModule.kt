@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.remote.competition.CompetitionsApi
+import com.ensegov.neofut.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.data.remote.standings.StandingsApi
 import com.ensegov.neofut.data.repository.CompetitionDetailRepository
 import com.ensegov.neofut.data.repository.CompetitionDetailRepositoryImpl
@@ -14,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -25,6 +25,7 @@ val dataModule = module {
     factory { Android.create() }
     single { CompetitionsApi(get(), logging = true) }
     single { StandingsApi(get(), logging = true) }
+    single { FixtureApi(get(), logging = true) }
 
     // Repository
     factory { Dispatchers.IO }
