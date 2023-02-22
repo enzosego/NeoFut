@@ -1,6 +1,6 @@
 package com.ensegov.neofut.data.remote.fixture
 
-import com.ensegov.neofut.data.remote.fixture.dto.MatchDto
+import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*
@@ -9,7 +9,7 @@ import io.ktor.utils.io.*
 
 class FixtureRequestTest : StringSpec({
 
-    lateinit var result: List<MatchDto>
+    lateinit var result: List<MatchFixture>
 
     val getResult: suspend (json: String) -> Unit =  { json ->
         val mockEngine = MockEngine {
