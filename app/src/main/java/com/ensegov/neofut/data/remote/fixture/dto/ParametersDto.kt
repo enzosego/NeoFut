@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 class ParametersDto(
     val league: Int,
-    val season: Int
+    val season: Int,
+    val round: String? = null
 )

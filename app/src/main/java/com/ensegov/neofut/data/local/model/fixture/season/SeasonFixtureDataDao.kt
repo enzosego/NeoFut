@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.local.model.fixture
+package com.ensegov.neofut.data.local.model.fixture.season
 
 import androidx.room.Dao
 import androidx.room.Query

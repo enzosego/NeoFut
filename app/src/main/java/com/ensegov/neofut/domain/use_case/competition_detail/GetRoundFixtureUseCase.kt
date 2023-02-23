@@ -1,6 +1,6 @@
 package com.ensegov.neofut.domain.use_case.competition_detail
 
-import com.ensegov.neofut.data.local.model.fixture.season.asUiModel
+import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.repository.CompetitionDetailRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -9,18 +9,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class GetSeasonFixtureUseCase(
+class GetRoundFixtureUseCase(
     private val competitionDetailRepository: CompetitionDetailRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    operator fun invoke(id: Int, season: Int): Flow<List<String>> {
-        val fixture = competitionDetailRepository.getSeasonFixture(id, season)
-            .map { it?.asUiModel() ?: emptyList() }
+    operator fun invoke(id: Int, season: Int, round: String): Flow<List<MatchFixture>> {
+        val roundFixture = competitionDetailRepository.getRoundFixture(id, season, round)
+            .map { it?.matchList ?: emptyList() }
         CoroutineScope(ioDispatcher).launch {
-            if (fixture.first().isEmpty())
-                competitionDetailRepository.updateSeasonFixture(id, season)
+            if (roundFixture.first().isEmpty())
+                competitionDetailRepository.updateRoundFixture(id, season, round)
         }
-        return fixture
+        return roundFixture
     }
 }

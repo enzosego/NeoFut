@@ -2,7 +2,8 @@ package com.ensegov.neofut.data.repository
 
 import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
-import com.ensegov.neofut.data.local.model.fixture.SeasonFixtureData
+import com.ensegov.neofut.data.local.model.fixture.round.RoundFixtureData
+import com.ensegov.neofut.data.local.model.fixture.season.SeasonFixtureData
 import com.ensegov.neofut.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.standings.StandingsApi
@@ -34,4 +35,12 @@ class CompetitionDetailRepositoryImpl(
 
     override fun getSeasonFixture(id: Int, season: Int): Flow<SeasonFixtureData> =
         database.seasonFixtureDao.getMatch(id, season)
+
+    override suspend fun updateRoundFixture(id: Int, season: Int, round: String) {
+        val newValue = fixtureDataSource.getFixture(id, season, round).asDatabaseModel()
+        database.roundFixtureDao.upsert(newValue)
+    }
+
+    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixtureData?> =
+        database.roundFixtureDao.getMatches(id, season, round)
 }

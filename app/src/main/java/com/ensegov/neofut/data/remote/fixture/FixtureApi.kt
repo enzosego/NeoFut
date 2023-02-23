@@ -1,7 +1,6 @@
 package com.ensegov.neofut.data.remote.fixture
 
 import com.ensegov.neofut.data.remote.fixture.dto.FixtureResponse
-import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.remote.fixture.dto.SeasonRounds
 import com.ensegov.neofut.data.remote.utils.HttpRoutes
 import com.ensegov.neofut.data.remote.utils.KtorClientBuilder
@@ -25,8 +24,8 @@ class FixtureApi(
             "${HttpRoutes.FIXTURE_REQUEST}/rounds?league=$leagueId&season=$season"
         ).body()
 
-    suspend fun getFixture(leagueId: Int, season: Int, round: String): List<MatchFixture> =
+    suspend fun getFixture(leagueId: Int, season: Int, round: String): FixtureResponse =
         client.getWithToken(
             "${HttpRoutes.FIXTURE_REQUEST}?league=$leagueId&season=$season&round=$round"
-        ).body<FixtureResponse>().fixture
+        ).body()
 }
