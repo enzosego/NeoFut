@@ -1,5 +1,6 @@
 package com.ensegov.neofut.ui.competition
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ fun GroupTable(standings: () -> List<List<TeamPosition>>) {
 
     LazyColumn(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(20.dp)
     ) {
         standings().forEach {

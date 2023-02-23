@@ -1,5 +1,6 @@
 package com.ensegov.neofut.ui.competition.fixture
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -10,7 +11,7 @@ import com.ensegov.neofut.ui.competition.CompetitionDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun Fixture(
+fun RoundFixture(
     modifier: Modifier,
     round: String,
 ) {
@@ -20,6 +21,8 @@ fun Fixture(
     viewModel.getRoundFixture(round)
 
     val fixture by viewModel.currentFixture.collectAsStateWithLifecycle()
+
+    Log.d("RoundFixture", "Rendering: $round")
 
     LazyColumn(modifier) {
         items(fixture) { match ->

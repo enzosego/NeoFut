@@ -29,7 +29,7 @@ internal fun CompetitionLogo(competition: Competition, navigator: DestinationsNa
     )
 }
 
-private fun getImageModel(url: String, context: Context): Any =
+fun getImageModel(url: String, context: Context): Any =
     if (url.takeLast(3) == "svg")
         ImageRequest.Builder(context)
             .data(url)
