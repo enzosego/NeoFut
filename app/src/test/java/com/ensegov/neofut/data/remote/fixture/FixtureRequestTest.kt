@@ -1,6 +1,6 @@
 package com.ensegov.neofut.data.remote.fixture
 
-import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.data.remote.fixture.dto.FixtureResponse
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*
@@ -9,7 +9,7 @@ import io.ktor.utils.io.*
 
 class FixtureRequestTest : StringSpec({
 
-    lateinit var result: List<MatchFixture>
+    lateinit var result: FixtureResponse
 
     val getResult: suspend (json: String) -> Unit =  { json ->
         val mockEngine = MockEngine {
@@ -27,13 +27,13 @@ class FixtureRequestTest : StringSpec({
     "League - should contain ten matches".config(blockingTest = true) {
         getResult(leagueFixtureResponseJson)
 
-        result.size shouldBe 10
+        result.fixture.size shouldBe 10
     }
 
     "League - away team won by two".config(blockingTest = true) {
         getResult(leagueFixtureResponseJson)
 
-        with(result[0]) {
+        with(result.fixture[0]) {
             teams.home.winner shouldBe false
             teams.away.winner shouldBe true
             currentScore.home shouldBe 0
@@ -44,13 +44,13 @@ class FixtureRequestTest : StringSpec({
     "Cup round of 16 - should contain 16 matches".config(blockingTest = true) {
         getResult(cupFixtureResponseJson)
 
-        result.size shouldBe 16
+        result.fixture.size shouldBe 16
     }
 
     "Cup round of 16 - to be played - should not have a winner".config(blockingTest = true) {
         getResult(cupFixtureResponseJson)
 
-        with(result[8]) {
+        with(result.fixture[8]) {
             info.status.long shouldBe "Not Started"
             teams.home.winner shouldBe null
             teams.away.winner shouldBe null
@@ -62,7 +62,7 @@ class FixtureRequestTest : StringSpec({
     "Cup round of 16 - past result - should have a winner".config(blockingTest = true) {
         getResult(cupFixtureResponseJson)
 
-        with(result[0]) {
+        with(result.fixture[0]) {
             info.status.long shouldBe "Match Finished"
             teams.home.winner shouldBe true
             teams.away.winner shouldBe false

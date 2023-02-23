@@ -1,17 +1,28 @@
 package com.ensegov.neofut.data.repository
 
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
-import com.ensegov.neofut.data.local.model.fixture.SeasonFixtureData
+import com.ensegov.neofut.data.local.model.fixture.round.RoundFixtureData
+import com.ensegov.neofut.data.local.model.fixture.season.SeasonFixtureData
+import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.data.remote.fixture.dto.match.AllMatchScores
+import com.ensegov.neofut.data.remote.fixture.dto.match.MatchInfo
+import com.ensegov.neofut.data.remote.fixture.dto.match.MatchScore
+import com.ensegov.neofut.data.remote.fixture.dto.match.MatchStatus
+import com.ensegov.neofut.data.remote.fixture.dto.match.MatchTeams
 import com.ensegov.neofut.data.remote.standings.dto.FormStats
 import com.ensegov.neofut.data.remote.standings.dto.GoalStats
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.data.remote.team.dto.Team
+import com.ensegov.neofut.data.remote.team.dto.Venue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 
 class FakeCompetitionDetailRepository : CompetitionDetailRepository {
 
+    /**
+     * Standings
+     */
     private val fakeStandingsDatabase = MutableStateFlow(
         listOf(
             CompetitionStandings(2, 2022, createFakeList()),
@@ -22,8 +33,6 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
     override suspend fun updateStandings(id: Int, season: Int) {
         val newStandings = CompetitionStandings(id, season, createFakeList())
         val newData = fakeStandingsDatabase.first().toMutableList() + newStandings
-
-        newData.forEach { println("Id: ${it.id} - Season: ${it.seasonNum}") }
 
         fakeStandingsDatabase.emit(newData)
     }
@@ -62,7 +71,10 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
     private fun createFormStats(i: Int) =
         FormStats(i, i, i, i, GoalStats(i, i))
 
-    private val fakeFixtureDatabase = MutableStateFlow(
+    /**
+     * Season RoundFixture
+     */
+    private val fakeRoundsDatabase = MutableStateFlow(
         listOf(
             SeasonFixtureData(2, 2022, createRoundList(48)),
             SeasonFixtureData(128, 2022, createRoundList(28))
@@ -72,15 +84,15 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
     override suspend fun updateSeasonFixture(id: Int, season: Int) {
         val newFixture = SeasonFixtureData(id, season, createRoundList(38))
 
-        val oldData = fakeFixtureDatabase.first().toMutableList()
+        val oldData = fakeRoundsDatabase.first().toMutableList()
         val newData = oldData + newFixture
 
-        fakeFixtureDatabase.emit(newData)
+        fakeRoundsDatabase.emit(newData)
     }
 
     override fun getSeasonFixture(id: Int, season: Int): Flow<SeasonFixtureData?> =
         callbackFlow {
-            fakeFixtureDatabase.collectValue(Dispatchers.Main) { newData ->
+            fakeRoundsDatabase.collectValue(Dispatchers.Main) { newData ->
                 val newValue = newData.find { it.id == id && it.season == season }
                 send(newValue)
             }
@@ -93,5 +105,47 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
             list.add("$it")
         }
         return list
+    }
+
+    /**
+     * Round RoundFixture
+     */
+    private val fakeMatchFixtureDatabase = MutableStateFlow(
+        listOf(
+            RoundFixtureData(2, 2021, "Preliminary Round", createFakeMatchList()),
+            RoundFixtureData(39, 2022, "Regular Season - 3", createFakeMatchList()),
+        )
+    )
+
+    override suspend fun updateRoundFixture(id: Int, season: Int, round: String) {
+        val newFixture = RoundFixtureData(id, season, round, createFakeMatchList())
+        fakeMatchFixtureDatabase.update { it + newFixture }
+    }
+
+    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixtureData?> =
+        callbackFlow {
+            fakeMatchFixtureDatabase.collectValue(Dispatchers.Main) { newData ->
+                send(
+                    newData.find { it.id == id && it.season == season && it.round == round }
+                )
+            }
+            awaitClose()
+        }
+
+    private fun createFakeMatchList(): List<MatchFixture> {
+        val fakeList = mutableListOf<MatchFixture>()
+        repeat(10) {
+            val itS = it.toString()
+            val newMatch = MatchFixture(
+                MatchInfo(itS, itS, itS, Venue(it, itS, itS), MatchStatus(itS, itS, it)),
+                MatchTeams(Team(it, itS, itS, false), Team(it, itS, itS, true)),
+                MatchScore(it, it),
+                AllMatchScores(
+                    MatchScore(it, it), MatchScore(it, it), MatchScore(it, it), MatchScore(it, it)
+                )
+            )
+            fakeList.add(newMatch)
+        }
+        return fakeList
     }
 }
