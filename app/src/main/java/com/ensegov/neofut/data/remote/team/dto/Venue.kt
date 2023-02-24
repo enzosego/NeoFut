@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Venue(
     val id: Int?,
-    val name: String,
-    val city: String
+    val name: String?,
+    val city: String?
 )

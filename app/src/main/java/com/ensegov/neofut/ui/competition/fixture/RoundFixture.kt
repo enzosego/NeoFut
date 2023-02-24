@@ -26,7 +26,7 @@ fun RoundFixture(
 
     LazyColumn(modifier) {
         items(fixture) { match ->
-            MatchDetail(match)
+            MatchCard(match)
         }
     }
 }

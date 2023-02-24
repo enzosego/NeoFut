@@ -22,11 +22,11 @@ import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.ui.home.getImageModel
 
 @Composable
-fun MatchDetail(match: MatchFixture) {
+fun MatchCard(match: MatchFixture) {
 
     val context = LocalContext.current
-    val homeTeam = match.teams.home
-    val awayTeam = match.teams.away
+    val homeTeam = match.teams?.home
+    val awayTeam = match.teams?.away
 
     Row(
         modifier = Modifier
@@ -36,27 +36,27 @@ fun MatchDetail(match: MatchFixture) {
         horizontalArrangement = Arrangement.Start
     ) {
         AsyncImage(
-            model = getImageModel(homeTeam.logoUrl ?: "", context),
+            model = getImageModel(homeTeam?.logoUrl ?: "", context),
             contentDescription = null,
         )
         Text(
-            text = homeTeam.name,
+            text = homeTeam?.name ?: "",
             fontSize = 20.sp
         )
-        Text(text = "${match.currentScore.home ?: 0}")
+        Text(text = "${match.currentScore?.home ?: 0}")
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(2.dp)
                 .background(color = Color.Green)
         )
-        Text(text = "${match.currentScore.away ?: 0}")
+        Text(text = "${match.currentScore?.away ?: 0}")
         Text(
-            text = awayTeam.name,
+            text = awayTeam?.name ?: "",
             fontSize = 20.sp
         )
         AsyncImage(
-            model = getImageModel(awayTeam.logoUrl ?: "", context),
+            model = getImageModel(awayTeam?.logoUrl ?: "", context),
             contentDescription = null,
         )
     }

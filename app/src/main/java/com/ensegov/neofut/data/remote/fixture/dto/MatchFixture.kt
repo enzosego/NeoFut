@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
 data class MatchFixture(
     @SerialName(value = "fixture")
     val info: MatchInfo,
-    val teams: MatchTeams,
+    val teams: MatchTeams?,
     @SerialName(value = "goals")
-    val currentScore: MatchScore,
-    val score: AllMatchScores
+    val currentScore: MatchScore?,
+    val score: AllMatchScores?
 )
