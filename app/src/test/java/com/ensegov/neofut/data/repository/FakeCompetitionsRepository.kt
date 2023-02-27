@@ -1,31 +1,20 @@
 package com.ensegov.neofut.data.repository
 
-import com.ensegov.neofut.data.local.model.competition.info.CompetitionData
 import com.ensegov.neofut.data.remote.competition.dto.Country
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.awaitClose
+import com.ensegov.neofut.domain.model.Competition
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 
 class FakeCompetitionsRepository : CompetitionsRepository {
 
-    private val fakeList = MutableStateFlow(emptyList<CompetitionData>())
+    private val fakeDatabase = MutableStateFlow(emptyList<Competition>())
 
-    override val allCompetitions: Flow<List<CompetitionData>> = callbackFlow {
-        fakeList.collectValue(Dispatchers.Main) { list ->
-            send(list)
-        }
-        awaitClose()
-    }
-
-    override suspend fun getAllCompetitions() {
-        val newList = mutableListOf<CompetitionData>()
+    override suspend fun fetchAllCompetitions(countryName: String) {
+        val newList = mutableListOf<Competition>()
         ('a'..'z').forEachIndexed { index, char ->
             newList.add(
-                CompetitionData(
+                Competition(
                     index,
                     char.toString(),
                     char.toString(),
@@ -36,6 +25,9 @@ class FakeCompetitionsRepository : CompetitionsRepository {
             )
         }
         delay(1000L)
-        fakeList.emit(newList)
+
+        fakeDatabase.emit(newList)
     }
+
+    override suspend fun getAllCompetitions(): Flow<List<Competition>> = fakeDatabase
 }

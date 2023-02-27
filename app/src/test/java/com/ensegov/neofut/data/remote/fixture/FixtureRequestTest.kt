@@ -34,10 +34,10 @@ class FixtureRequestTest : StringSpec({
         getResult(leagueFixtureResponseJson)
 
         with(result.fixture[0]) {
-            teams.home.winner shouldBe false
-            teams.away.winner shouldBe true
-            currentScore.home shouldBe 0
-            currentScore.away shouldBe 2
+            teams?.home?.winner shouldBe false
+            teams?.away?.winner shouldBe true
+            currentScore?.home shouldBe 0
+            currentScore?.away shouldBe 2
         }
     }
 
@@ -52,10 +52,10 @@ class FixtureRequestTest : StringSpec({
 
         with(result.fixture[8]) {
             info.status.long shouldBe "Not Started"
-            teams.home.winner shouldBe null
-            teams.away.winner shouldBe null
-            currentScore.home shouldBe null
-            currentScore.away shouldBe null
+            teams?.home?.winner shouldBe null
+            teams?.away?.winner shouldBe null
+            currentScore?.home shouldBe null
+            currentScore?.away shouldBe null
         }
     }
 
@@ -64,10 +64,10 @@ class FixtureRequestTest : StringSpec({
 
         with(result.fixture[0]) {
             info.status.long shouldBe "Match Finished"
-            teams.home.winner shouldBe true
-            teams.away.winner shouldBe false
-            currentScore.home shouldBe 1
-            currentScore.away shouldBe 0
+            teams?.home?.winner shouldBe true
+            teams?.away?.winner shouldBe false
+            currentScore?.home shouldBe 1
+            currentScore?.away shouldBe 0
         }
     }
 })

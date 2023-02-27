@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.repository
+package com.ensegov.neofut.domain.repository
 
 import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
@@ -8,6 +8,7 @@ import com.ensegov.neofut.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.standings.StandingsApi
 import com.ensegov.neofut.data.remote.standings.dto.asDatabaseModel
+import com.ensegov.neofut.data.repository.CompetitionDetailRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -19,10 +20,12 @@ class CompetitionDetailRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : CompetitionDetailRepository {
 
-    override suspend fun updateStandings(id: Int, season: Int) = withContext(ioDispatcher) {
+    override suspend fun updateStandings(id: Int, season: Int) {
         val newValue = standingsDataSource.getCurrentStandings(id, season).asDatabaseModel()
-            ?: return@withContext
-        database.standingsDao.upsert(newValue)
+            ?: return
+        withContext(ioDispatcher) {
+            database.standingsDao.upsert(newValue)
+        }
     }
 
     override fun getStandings(id: Int, season: Int): Flow<CompetitionStandings?> =
@@ -30,7 +33,9 @@ class CompetitionDetailRepositoryImpl(
 
     override suspend fun updateSeasonFixture(id: Int, season: Int) {
         val newValue = fixtureDataSource.getRounds(id, season).asDatabaseModel()
-        database.seasonFixtureDao.upsert(newValue)
+        withContext(ioDispatcher) {
+            database.seasonFixtureDao.upsert(newValue)
+        }
     }
 
     override fun getSeasonFixture(id: Int, season: Int): Flow<SeasonFixtureData> =
@@ -38,7 +43,9 @@ class CompetitionDetailRepositoryImpl(
 
     override suspend fun updateRoundFixture(id: Int, season: Int, round: String) {
         val newValue = fixtureDataSource.getFixture(id, season, round).asDatabaseModel()
-        database.roundFixtureDao.upsert(newValue)
+        withContext(ioDispatcher) {
+            database.roundFixtureDao.upsert(newValue)
+        }
     }
 
     override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixtureData?> =

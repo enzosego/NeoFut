@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.ensegov.neofut.ui.competition.model.Competition
+import com.ensegov.neofut.domain.model.Competition
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination

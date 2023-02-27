@@ -14,5 +14,5 @@ data class SeasonFixtureData(
     val roundList: List<String>
 )
 
-fun SeasonFixtureData.asUiModel() =
+fun SeasonFixtureData.asDomainModel() =
     roundList

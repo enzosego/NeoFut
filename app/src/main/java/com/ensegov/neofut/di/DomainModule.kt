@@ -1,26 +1,19 @@
 package com.ensegov.neofut.di
 
-import com.ensegov.neofut.domain.use_case.competition_detail.CompetitionDetailUseCases
-import com.ensegov.neofut.domain.use_case.competition_detail.GetRoundFixtureUseCase
-import com.ensegov.neofut.domain.use_case.competition_detail.GetSeasonFixtureUseCase
-import com.ensegov.neofut.domain.use_case.competition_detail.GetStandingsUseCase
-import com.ensegov.neofut.domain.use_case.home.GetCountryCompetitionsUseCase
-import com.ensegov.neofut.domain.use_case.home.HomeUseCases
+import com.ensegov.neofut.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.domain.repository.CompetitionDetailRepositoryImpl
+import com.ensegov.neofut.data.repository.CompetitionsRepository
+import com.ensegov.neofut.domain.repository.CompetitionsRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val domainModule = module {
 
-    /**
-     * Use Cases
-     */
-    // Home
-    factoryOf(::HomeUseCases)
-    factoryOf(::GetCountryCompetitionsUseCase)
+    // Repository
+    factory { Dispatchers.IO }
 
-    // Competition Detail
-    factoryOf(::CompetitionDetailUseCases)
-    factoryOf(::GetStandingsUseCase)
-    factoryOf(::GetSeasonFixtureUseCase)
-    factoryOf(::GetRoundFixtureUseCase)
+    factoryOf(::CompetitionsRepositoryImpl) { bind<CompetitionsRepository>() }
+    factoryOf(::CompetitionDetailRepositoryImpl) { bind<CompetitionDetailRepository>() }
 }

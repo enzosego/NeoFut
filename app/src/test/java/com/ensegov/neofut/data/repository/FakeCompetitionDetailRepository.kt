@@ -55,7 +55,7 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
                 val c = char.toString()
                 subList.add(
                     TeamPosition(
-                        i, Team(i, c, c),
+                        i, Team(i, c, c, ""),
                         i, i, c, c, c, c,
                         createFormStats(i),
                         createFormStats(i),
@@ -137,8 +137,8 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
         repeat(10) {
             val itS = it.toString()
             val newMatch = MatchFixture(
-                MatchInfo(itS, itS, itS, Venue(it, itS, itS), MatchStatus(itS, itS, it)),
-                MatchTeams(Team(it, itS, itS, false), Team(it, itS, itS, true)),
+                MatchInfo(it, itS, itS, itS, Venue(it, itS, itS), MatchStatus(itS, itS, it)),
+                MatchTeams(Team(it, itS, itS, itS, it, false), Team(it, itS, itS, itS, it, true)),
                 MatchScore(it, it),
                 AllMatchScores(
                     MatchScore(it, it), MatchScore(it, it), MatchScore(it, it), MatchScore(it, it)

@@ -3,8 +3,6 @@ package com.ensegov.neofut.ui.competition
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,10 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ensegov.neofut.ui.competition.fixture.Fixture
-import com.ensegov.neofut.ui.competition.fixture.RoundFixture
-import com.ensegov.neofut.ui.competition.model.Competition
+import com.ensegov.neofut.domain.model.Competition
 import org.koin.androidx.compose.koinViewModel
-import kotlin.math.round
 
 @Composable
 fun LeagueDetail(competition: Competition) {
