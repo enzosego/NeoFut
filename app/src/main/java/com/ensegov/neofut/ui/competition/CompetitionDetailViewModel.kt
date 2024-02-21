@@ -1,5 +1,6 @@
 package com.ensegov.neofut.ui.competition
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.data.local.model.fixture.season.asDomainModel
@@ -21,9 +22,22 @@ class CompetitionDetailViewModel(
 
     lateinit var standings: StateFlow<List<List<TeamPosition>>>
 
-    lateinit var roundList: StateFlow<List<String>>
+    private lateinit var roundList: StateFlow<List<String>>
 
-    lateinit var currentFixture: StateFlow<List<MatchFixture>>
+    var currentFixture: StateFlow<List<MatchFixture>> = flow<List<MatchFixture>> {}
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    private val currentRound: MutableStateFlow<String> = MutableStateFlow("")
+
+    init {
+        currentRound.onEach {
+            if (it.isEmpty())
+                return@onEach
+            viewModelScope.launch {
+                getRoundFixture(it)
+            }
+        }
+    }
 
     fun getStandings() {
         val newValue = competitionDetailRepository.getStandings(competitionId, competitionSeason)
@@ -49,7 +63,7 @@ class CompetitionDetailViewModel(
 
     private var currentJob: Job? = null
 
-    fun getRoundFixture(round: String) {
+    private fun getRoundFixture(round: String) {
         val newValue =
             competitionDetailRepository.getRoundFixture(competitionId, competitionSeason, round)
                 .map { it?.matchList ?: emptyList() }
@@ -65,6 +79,13 @@ class CompetitionDetailViewModel(
         }
         currentFixture = newValue
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    }
+
+    fun setCurrentRound(index: Int) = viewModelScope.launch {
+        Log.d("CompetitionDetailViewModel", "Index: $index")
+        currentRound.emit(
+            value = roundList.value.getOrNull(index) ?: ""
+        )
     }
 
     fun setValues(competition: Competition) {

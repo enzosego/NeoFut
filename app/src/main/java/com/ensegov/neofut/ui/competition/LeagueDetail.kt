@@ -1,11 +1,12 @@
 package com.ensegov.neofut.ui.competition
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,20 +27,35 @@ fun LeagueDetail(competition: Competition) {
     viewModel.getStandings()
 
     val standings by viewModel.standings.collectAsStateWithLifecycle()
-    val roundList by viewModel.roundList.collectAsStateWithLifecycle()
 
-    Column(
+    val rememberScope = rememberCoroutineScope()
+
+    val scroll: (Int) -> Unit = { index ->
+        viewModel.setCurrentRound(index)
+    }
+
+    scroll(0)
+
+    val currentFixture by viewModel.currentFixture.collectAsStateWithLifecycle()
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = competition.name,
-            color = Color.Blue,
-            fontSize = 30.sp
+        item {
+            Text(
+                text = competition.name,
+                color = Color.Blue,
+                fontSize = 30.sp
+            )
+        }
+        Fixture(
+            { currentFixture },
+            { rememberScope },
+            scroll
         )
-        Fixture { roundList }
         GroupTable { standings }
     }
 }

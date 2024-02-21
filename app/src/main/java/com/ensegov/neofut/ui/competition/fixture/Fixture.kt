@@ -1,39 +1,27 @@
 package com.ensegov.neofut.ui.competition.fixture
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
-@Composable
-fun Fixture(roundList: () -> List<String>) {
+fun LazyListScope.Fixture(
+    currentFixture: () -> List<MatchFixture>,
+    coroutineScope: () -> CoroutineScope,
+    scroll: (Int) -> Unit,
+) {
 
-    val listState = rememberLazyListState()
+    val scope = coroutineScope()
 
-    val scope = rememberCoroutineScope()
-
-    val navigateList: (Int) -> Int = { it + listState.firstVisibleItemIndex }
-
-    fun canScrollForward(): Boolean =
-        listState.firstVisibleItemIndex < listState.layoutInfo.totalItemsCount - 1
-
-    fun canScrollBack(): Boolean = listState.firstVisibleItemIndex > 0
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
+    item {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -42,38 +30,24 @@ fun Fixture(roundList: () -> List<String>) {
             Button(
                 onClick = {
                     scope.launch {
-                        listState.animateScrollToItem(navigateList(-1))
+                        scroll(-1)
                     }
-                },
-                enabled = canScrollBack()
+                }
             ) {
                 Text(text = "Prev")
             }
             Button(
                 onClick = {
                     scope.launch {
-                        listState.animateScrollToItem(navigateList(1))
+                        scroll(1)
                     }
-                },
-                enabled = canScrollForward()
+                }
             ) {
                 Text(text = "Next")
             }
         }
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            userScrollEnabled = false,
-            state = listState
-        ) {
-            items(roundList()) { round ->
-                RoundFixture(
-                    modifier = Modifier
-                        .padding(end = 400.dp),
-                    round
-                )
-            }
-        }
+    }
+    items(currentFixture()) { match ->
+        MatchCard(match)
     }
 }

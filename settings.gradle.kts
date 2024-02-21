@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "NeoFut"
-include ':app'
+include(":app")

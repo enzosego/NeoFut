@@ -3,7 +3,6 @@ package com.ensegov.neofut.ui.competition.fixture
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
@@ -30,7 +29,7 @@ fun MatchCard(match: MatchFixture) {
 
     Row(
         modifier = Modifier
-            .height(IntrinsicSize.Max)
+            .height(100.dp)
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
