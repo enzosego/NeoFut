@@ -9,7 +9,7 @@ import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.standings.StandingsApi
 import com.ensegov.neofut.data.remote.standings.dto.asDatabaseModel
-import com.ensegov.neofut.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

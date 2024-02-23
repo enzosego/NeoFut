@@ -1,11 +1,10 @@
 package com.ensegov.neofut.ui.competition
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
-import com.ensegov.neofut.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -41,7 +40,7 @@ class CompetitionDetailViewModel(
             initialValue = true
         )
 
-    val canShowNext: StateFlow<Boolean> = roundList.map { it.lastIndex > currentRoundIndex.value }
+    val canShowNext: StateFlow<Boolean> = currentRoundIndex.map { it < roundList.value.lastIndex }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

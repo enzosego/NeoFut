@@ -4,8 +4,8 @@ import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.local.model.competition.info.asDomainModel
 import com.ensegov.neofut.data.remote.competition.CompetitionsApi
 import com.ensegov.neofut.data.remote.competition.dto.asDatabaseModel
-import com.ensegov.neofut.data.repository.CompetitionsRepository
-import com.ensegov.neofut.domain.model.Competition
+import com.ensegov.neofut.data.repository.competitions.CompetitionsRepository
+import com.ensegov.neofut.ui.competition.model.Competition
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
