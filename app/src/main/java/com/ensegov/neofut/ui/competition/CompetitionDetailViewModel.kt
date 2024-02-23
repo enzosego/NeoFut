@@ -3,93 +3,99 @@ package com.ensegov.neofut.ui.competition
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ensegov.neofut.data.local.model.fixture.season.asDomainModel
 import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.data.repository.CompetitionDetailRepository
-import com.ensegov.neofut.domain.model.Competition
-import com.ensegov.neofut.domain.model.getLatestSeason
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class CompetitionDetailViewModel(
-    private val competitionDetailRepository: CompetitionDetailRepository
+    private val competitionDetailRepository: CompetitionDetailRepository,
+    private val competitionId: Int,
+    private val competitionSeason: Int
 ) : ViewModel() {
 
-    private var competitionId = 0
-    private var competitionSeason = 0
-
-    lateinit var standings: StateFlow<List<List<TeamPosition>>>
-
-    private lateinit var roundList: StateFlow<List<String>>
-
-    var currentFixture: StateFlow<List<MatchFixture>> = flow<List<MatchFixture>> {}
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-
-    private val currentRound: MutableStateFlow<String> = MutableStateFlow("")
-
-    init {
-        currentRound.onEach {
+    private val roundList: StateFlow<List<String>> = competitionDetailRepository
+        .getSeasonFixture(competitionId, competitionSeason)
+        .map { it?.roundList ?: emptyList() }
+        .onEach {
             if (it.isEmpty())
-                return@onEach
-            viewModelScope.launch {
-                getRoundFixture(it)
-            }
+                updateSeasonFixture()
+            else
+                getRoundFixture(it[0])
         }
-    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
 
-    fun getStandings() {
-        val newValue = competitionDetailRepository.getStandings(competitionId, competitionSeason)
-            .map { it?.groupList ?: emptyList() }
+    val currentFixture = MutableStateFlow(listOf<MatchFixture>())
+
+    private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
+
+    val canShowPrevious: StateFlow<Boolean> = currentRoundIndex.map { it > 0 }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            initialValue = true
+        )
+
+    val canShowNext: StateFlow<Boolean> = roundList.map { it.lastIndex > currentRoundIndex.value }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            initialValue = true
+        )
+
+    val standings: StateFlow<List<List<TeamPosition>>> = competitionDetailRepository
+        .getStandings(competitionId, competitionSeason)
+        .map { it?.groupList ?: emptyList() }
+        .onEach { if (it.isEmpty()) updateStandings() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            initialValue =emptyList()
+        )
+
+    private fun updateStandings() {
         viewModelScope.launch {
-            if (newValue.first().isEmpty())
-                competitionDetailRepository.updateStandings(competitionId, competitionSeason)
+            competitionDetailRepository.updateStandings(competitionId, competitionSeason)
         }
-        standings = newValue
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     }
 
-    fun getSeasonFixture() {
-        val newValue = competitionDetailRepository.getSeasonFixture(competitionId, competitionSeason)
-            .map { it?.asDomainModel() ?: emptyList() }
+    private fun updateSeasonFixture() {
         viewModelScope.launch {
-            if (newValue.first().isEmpty())
-                competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
+            competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
         }
-        roundList = newValue
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     }
-
-    private var currentJob: Job? = null
 
     private fun getRoundFixture(round: String) {
-        val newValue =
-            competitionDetailRepository.getRoundFixture(competitionId, competitionSeason, round)
-                .map { it?.matchList ?: emptyList() }
+        val fixture = competitionDetailRepository
+            .getRoundFixture(competitionId, competitionSeason, round)
         viewModelScope.launch {
-            if (newValue.first().isEmpty()) {
-                currentJob?.cancel()
-                currentJob = viewModelScope.launch {
-                    competitionDetailRepository.updateRoundFixture(
-                        competitionId, competitionSeason, round
-                    )
-                }
+            currentFixture.update {
+                fixture.first()?.matchList
+                    ?: competitionDetailRepository
+                        .updateRoundFixture(competitionId, competitionSeason, round)
             }
         }
-        currentFixture = newValue
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     }
 
-    fun setCurrentRound(index: Int) = viewModelScope.launch {
-        Log.d("CompetitionDetailViewModel", "Index: $index")
-        currentRound.emit(
-            value = roundList.value.getOrNull(index) ?: ""
-        )
+    fun onClickPrevious() {
+        val newIndex = currentRoundIndex.value.minus(1)
+        getRoundFixture(roundList.value[newIndex])
+        currentRoundIndex.update { newIndex }
     }
 
-    fun setValues(competition: Competition) {
-        competitionId = competition.id
-        competitionSeason = competition.getLatestSeason()
+    fun onClickNext() {
+        val newIndex = currentRoundIndex.value.plus(1)
+        getRoundFixture(roundList.value[newIndex])
+        currentRoundIndex.update { newIndex }
+    }
+
+    companion object {
+        private const val TIMEOUT_MILLIS = 5000L
+        private const val TAG = "CompetitionDetailViewModel"
     }
 }

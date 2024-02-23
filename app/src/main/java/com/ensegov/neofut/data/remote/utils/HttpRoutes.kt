@@ -2,7 +2,7 @@ package com.ensegov.neofut.data.remote.utils
 
 object HttpRoutes {
 
-    const val API_TOKEN = "80ba11cddcae3f57fce50334c2409cdf"
+    const val API_TOKEN = "6837ac69b743b3072644b6f0c5057e97"
 
     const val API_HOST = "v3.football.api-sports.io"
 

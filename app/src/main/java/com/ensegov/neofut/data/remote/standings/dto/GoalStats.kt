@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GoalStats(
     @SerialName(value = "for")
-    val scored: Int,
-    val against: Int
+    val scored: Int?,
+    val against: Int?
 )

@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 
-fun LazyListScope.GroupTable(standings: () -> List<List<TeamPosition>>) {
+fun LazyListScope.groupTable(standings: () -> List<List<TeamPosition>>) {
 
     standings().forEach {
         item {

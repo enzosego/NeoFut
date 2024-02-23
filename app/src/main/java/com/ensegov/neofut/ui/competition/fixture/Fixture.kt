@@ -9,17 +9,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
-fun LazyListScope.Fixture(
+fun LazyListScope.fixture(
     currentFixture: () -> List<MatchFixture>,
-    coroutineScope: () -> CoroutineScope,
-    scroll: (Int) -> Unit,
+    canShowPrevious: Boolean,
+    canShowNext: Boolean,
+    onClickPrevious: () -> Unit,
+    onClickNext: () -> Unit
 ) {
-
-    val scope = coroutineScope()
 
     item {
         Row(
@@ -28,20 +25,14 @@ fun LazyListScope.Fixture(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Button(
-                onClick = {
-                    scope.launch {
-                        scroll(-1)
-                    }
-                }
+                onClick = { onClickPrevious() },
+                enabled = canShowPrevious
             ) {
                 Text(text = "Prev")
             }
             Button(
-                onClick = {
-                    scope.launch {
-                        scroll(1)
-                    }
-                }
+                onClick = { onClickNext() },
+                enabled = canShowNext
             ) {
                 Text(text = "Next")
             }
