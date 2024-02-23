@@ -1,4 +1,4 @@
-package com.ensegov.neofut.domain.repository
+package com.ensegov.neofut.data.repository.detail
 
 import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings

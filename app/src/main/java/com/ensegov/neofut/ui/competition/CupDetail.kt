@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ensegov.neofut.domain.model.Competition
-import com.ensegov.neofut.domain.model.getLatestSeason
+import com.ensegov.neofut.ui.competition.model.Competition
+import com.ensegov.neofut.ui.competition.model.getLatestSeason
 import com.ensegov.neofut.ui.competition.fixture.fixture
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

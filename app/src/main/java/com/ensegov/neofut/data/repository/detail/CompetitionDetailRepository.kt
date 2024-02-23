@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.repository
+package com.ensegov.neofut.data.repository.detail
 
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
 import com.ensegov.neofut.data.local.model.fixture.round.RoundFixtureData

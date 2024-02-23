@@ -14,6 +14,7 @@ import com.ensegov.neofut.data.remote.standings.dto.GoalStats
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.data.remote.team.dto.Team
 import com.ensegov.neofut.data.remote.team.dto.Venue
+import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*

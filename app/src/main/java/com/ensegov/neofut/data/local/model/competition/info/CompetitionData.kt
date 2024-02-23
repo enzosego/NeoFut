@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ensegov.neofut.data.remote.competition.dto.Country
 import com.ensegov.neofut.data.remote.competition.dto.season.Season
-import com.ensegov.neofut.domain.model.Competition
+import com.ensegov.neofut.ui.competition.model.Competition
 
 @Entity(tableName = "competition_data")
 data class CompetitionData(

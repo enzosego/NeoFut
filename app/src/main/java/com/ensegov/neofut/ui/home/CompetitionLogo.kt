@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.ensegov.neofut.domain.model.Competition
+import com.ensegov.neofut.ui.competition.model.Competition
 import com.ensegov.neofut.ui.destinations.CompetitionScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 

@@ -1,4 +1,4 @@
-package com.ensegov.neofut.domain.model
+package com.ensegov.neofut.ui.competition.model
 
 import com.ensegov.neofut.data.remote.competition.dto.Country
 import com.ensegov.neofut.data.remote.competition.dto.season.Season

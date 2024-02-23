@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.repository
+package com.ensegov.neofut.data.repository.competitions
 
 import com.ensegov.neofut.ui.competition.model.Competition
 import kotlinx.coroutines.flow.Flow

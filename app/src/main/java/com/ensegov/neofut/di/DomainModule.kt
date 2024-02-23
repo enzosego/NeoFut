@@ -1,9 +1,9 @@
 package com.ensegov.neofut.di
 
-import com.ensegov.neofut.data.repository.CompetitionDetailRepository
-import com.ensegov.neofut.domain.repository.CompetitionDetailRepositoryImpl
-import com.ensegov.neofut.data.repository.CompetitionsRepository
-import com.ensegov.neofut.domain.repository.CompetitionsRepositoryImpl
+import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
+import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepositoryImpl
+import com.ensegov.neofut.data.repository.competitions.CompetitionsRepository
+import com.ensegov.neofut.data.repository.competitions.CompetitionsRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf

@@ -3,8 +3,8 @@ package com.ensegov.neofut.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ensegov.neofut.data.repository.CompetitionsRepository
-import com.ensegov.neofut.domain.model.Competition
+import com.ensegov.neofut.data.repository.competitions.CompetitionsRepository
+import com.ensegov.neofut.ui.competition.model.Competition
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
