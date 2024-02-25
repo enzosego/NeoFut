@@ -24,8 +24,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     val viewModel: HomeViewModel = koinViewModel()
 
-    viewModel.getCompetitions()
-
     val competitionList: List<Competition> by viewModel.competitionList.collectAsState()
 
     Column(

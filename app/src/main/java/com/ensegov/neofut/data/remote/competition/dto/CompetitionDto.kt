@@ -19,6 +19,7 @@ fun CompetitionDto.asDatabaseModel() =
         info.name,
         info.type,
         info.logoUrl,
-        country,
-        seasons
+        country.name,
+        country.code,
+        country.flagUrl
     )

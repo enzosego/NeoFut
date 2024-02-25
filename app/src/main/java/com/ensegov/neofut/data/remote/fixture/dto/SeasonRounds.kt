@@ -1,6 +1,5 @@
 package com.ensegov.neofut.data.remote.fixture.dto
 
-import com.ensegov.neofut.data.local.model.fixture.season.SeasonFixtureData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,11 +9,3 @@ data class SeasonRounds(
     @SerialName(value = "response")
     val roundList: List<String>
 )
-
-fun SeasonRounds.asDatabaseModel(): SeasonFixtureData {
-    return SeasonFixtureData(
-        parameters.league,
-        parameters.season,
-        roundList
-    )
-}

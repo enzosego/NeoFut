@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ensegov.neofut.data.remote.competition.dto.Country
-import com.ensegov.neofut.data.remote.competition.dto.season.Season
 import com.ensegov.neofut.ui.competition.model.Competition
 
 @Entity(tableName = "competition_data")
@@ -17,13 +16,24 @@ data class CompetitionData(
     val type: String,
     @ColumnInfo(name = "logo_url")
     val logoUrl: String?,
-    @ColumnInfo(name = "country")
-    val country: Country,
-    @ColumnInfo(name = "emblem")
-    val seasons: List<Season>,
+    @ColumnInfo(name = "country_name")
+    val countryName: String,
+    @ColumnInfo(name = "country_code")
+    val countryCode: String? = null,
+    @ColumnInfo(name = "country_flag_url")
+    val countryFlagUrl: String? = null
 )
 
-fun CompetitionData.asDomainModel() =
+fun CompetitionData.asUiModel(seasons: List<SeasonData>) =
     Competition(
-        id, name, type, logoUrl, country, seasons
+        id,
+        name,
+        type,
+        logoUrl,
+        Country(
+            countryName,
+            countryCode,
+            countryFlagUrl
+        ),
+        seasons.map { it.asUiModel() }
     )

@@ -17,15 +17,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
 import com.ensegov.neofut.ui.home.getImageModel
 
 @Composable
-fun MatchCard(match: MatchFixture) {
+fun MatchCard(match: SimpleMatchFixture) {
 
     val context = LocalContext.current
-    val homeTeam = match.teams?.home
-    val awayTeam = match.teams?.away
+    val homeTeam = match.homeTeam
+    val awayTeam = match.awayTeam
 
     Row(
         modifier = Modifier
@@ -35,27 +35,27 @@ fun MatchCard(match: MatchFixture) {
         horizontalArrangement = Arrangement.Start
     ) {
         AsyncImage(
-            model = getImageModel(homeTeam?.logoUrl ?: "", context),
+            model = getImageModel(homeTeam.logoUrl ?: "", context),
             contentDescription = null,
         )
         Text(
-            text = homeTeam?.name ?: "",
+            text = homeTeam.name,
             fontSize = 20.sp
         )
-        Text(text = "${match.currentScore?.home ?: 0}")
+        Text(text = "${match.data.homeScore ?: 0}")
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(2.dp)
                 .background(color = Color.Green)
         )
-        Text(text = "${match.currentScore?.away ?: 0}")
+        Text(text = "${match.data.awayScore ?: 0}")
         Text(
-            text = awayTeam?.name ?: "",
+            text = awayTeam.name,
             fontSize = 20.sp
         )
         AsyncImage(
-            model = getImageModel(awayTeam?.logoUrl ?: "", context),
+            model = getImageModel(awayTeam.logoUrl ?: "", context),
             contentDescription = null,
         )
     }

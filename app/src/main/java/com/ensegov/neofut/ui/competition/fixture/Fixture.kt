@@ -8,12 +8,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
 
 fun LazyListScope.fixture(
-    currentFixture: () -> List<MatchFixture>,
-    canShowPrevious: Boolean,
-    canShowNext: Boolean,
+    currentFixture: () -> List<SimpleMatchFixture>,
+    canShowPrevious: () -> Boolean,
+    canShowNext:  () -> Boolean,
     onClickPrevious: () -> Unit,
     onClickNext: () -> Unit
 ) {
@@ -26,13 +26,13 @@ fun LazyListScope.fixture(
         ) {
             Button(
                 onClick = { onClickPrevious() },
-                enabled = canShowPrevious
+                enabled = canShowPrevious()
             ) {
                 Text(text = "Prev")
             }
             Button(
                 onClick = { onClickNext() },
-                enabled = canShowNext
+                enabled = canShowNext()
             ) {
                 Text(text = "Next")
             }

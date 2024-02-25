@@ -2,7 +2,7 @@ package com.ensegov.neofut.ui.competition
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
 import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
 import kotlinx.coroutines.flow.*
@@ -16,7 +16,6 @@ class CompetitionDetailViewModel(
 
     private val roundList: StateFlow<List<String>> = competitionDetailRepository
         .getSeasonFixture(competitionId, competitionSeason)
-        .map { it?.roundList ?: emptyList() }
         .onEach {
             if (it.isEmpty())
                 updateSeasonFixture()
@@ -29,7 +28,7 @@ class CompetitionDetailViewModel(
             initialValue = emptyList()
         )
 
-    val currentFixture = MutableStateFlow(listOf<MatchFixture>())
+    val currentFixture = MutableStateFlow(listOf<SimpleMatchFixture>())
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -49,7 +48,6 @@ class CompetitionDetailViewModel(
 
     val standings: StateFlow<List<List<TeamPosition>>> = competitionDetailRepository
         .getStandings(competitionId, competitionSeason)
-        .map { it?.groupList ?: emptyList() }
         .onEach { if (it.isEmpty()) updateStandings() }
         .stateIn(
             scope = viewModelScope,
@@ -74,9 +72,10 @@ class CompetitionDetailViewModel(
             .getRoundFixture(competitionId, competitionSeason, round)
         viewModelScope.launch {
             currentFixture.update {
-                fixture.first()?.matchList
-                    ?: competitionDetailRepository
+                fixture.first().ifEmpty {
+                    competitionDetailRepository
                         .updateRoundFixture(competitionId, competitionSeason, round)
+                    }
             }
         }
     }

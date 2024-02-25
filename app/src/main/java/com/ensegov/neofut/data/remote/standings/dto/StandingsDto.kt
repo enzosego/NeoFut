@@ -1,6 +1,5 @@
 package com.ensegov.neofut.data.remote.standings.dto
 
-import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,14 +9,8 @@ data class StandingsDto(
     val responseItem: List<StandingsResponseItem>,
 )
 
-fun StandingsDto.asDatabaseModel(): CompetitionStandings? =
+fun StandingsDto.asDatabaseModel(): List<List<TeamPosition>>? =
     if (responseItem.isEmpty())
         null
     else
-        with(responseItem[0].competitionStandingsDto) {
-            CompetitionStandings(
-                id,
-                season,
-                groupList
-            )
-        }
+        responseItem[0].competitionStandingsDto.groupList

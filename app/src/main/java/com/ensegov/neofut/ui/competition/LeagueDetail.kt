@@ -45,8 +45,8 @@ fun LeagueDetail(competition: Competition) {
         }
         fixture(
             { currentFixture },
-            canShowPrevious,
-            canShowNext,
+            {  canShowPrevious  },
+            { canShowNext },
             viewModel::onClickPrevious,
             viewModel::onClickNext
         )

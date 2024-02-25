@@ -1,5 +1,6 @@
 package com.ensegov.neofut.data.remote.standings.dto
 
+import com.ensegov.neofut.data.local.model.competition.standings.PositionInfo
 import com.ensegov.neofut.data.remote.team.dto.Team
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -22,3 +23,17 @@ data class TeamPosition(
     @SerialName(value = "away")
     val awayMatches: FormStats,
 )
+
+fun TeamPosition.asDatabaseModel(competitionId: Int, season: Int) =
+    PositionInfo(
+        competitionId = competitionId,
+        teamId = team.id,
+        season = season,
+        position = position,
+        points = points,
+        goalsDiff = goalsDiff,
+        group = group,
+        form = form,
+        status = status,
+        description = description
+    )

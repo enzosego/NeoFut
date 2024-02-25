@@ -7,27 +7,20 @@ import com.ensegov.neofut.data.repository.competitions.CompetitionsRepository
 import com.ensegov.neofut.ui.competition.model.Competition
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-
-private const val TAG = "HomeViewModel"
 
 class HomeViewModel(
     private val competitionsRepository: CompetitionsRepository
 ) : ViewModel() {
 
-    lateinit var competitionList: StateFlow<List<Competition>>
-
-    fun getCompetitions() {
-        val newValue = competitionsRepository.getAllCompetitions()
-        competitionList = newValue
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-        viewModelScope.launch {
-            if (newValue.first().isEmpty())
-                updateCompetitions()
-        }
-    }
+    val competitionList: StateFlow<List<Competition>> = competitionsRepository.getAllCompetitions()
+        .onEach { if (it.isEmpty()) updateCompetitions() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            initialValue = emptyList()
+        )
 
     private suspend fun updateCompetitions() {
         try {
@@ -35,5 +28,10 @@ class HomeViewModel(
         } catch (e: Exception) {
             Log.d(TAG, "Error: $e")
         }
+    }
+
+    companion object {
+        private const val TAG = "HomeViewModel"
+        private const val TIMEOUT_MILLIS = 5000L
     }
 }

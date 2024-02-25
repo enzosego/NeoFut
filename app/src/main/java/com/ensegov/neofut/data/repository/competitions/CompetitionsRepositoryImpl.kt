@@ -1,12 +1,14 @@
 package com.ensegov.neofut.data.repository.competitions
 
 import com.ensegov.neofut.data.local.NeoFutDatabase
-import com.ensegov.neofut.data.local.model.competition.info.asDomainModel
+import com.ensegov.neofut.data.local.model.competition.info.asUiModel
 import com.ensegov.neofut.data.remote.competition.CompetitionsApi
 import com.ensegov.neofut.data.remote.competition.dto.asDatabaseModel
+import com.ensegov.neofut.data.remote.competition.dto.season.asDatabaseModel
 import com.ensegov.neofut.ui.competition.model.Competition
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CompetitionsRepositoryImpl(
@@ -16,16 +18,25 @@ class CompetitionsRepositoryImpl(
 ) : CompetitionsRepository {
 
     override suspend fun fetchAllCompetitions(countryName: String) {
-        val newList = competitionsApi.getCountryCompetitions(countryName)
+        val result = competitionsApi.getCountryCompetitions(countryName)
+        val newList = result
             .map { it.asDatabaseModel() }
+        val seasons = result.map { competition ->
+            competition.seasons.map { season ->
+                season.asDatabaseModel(competition.info.id)
+            }
+        }.flatten()
         withContext(ioDispatcher) {
-            database.competitionDao.upsertAll(*newList.toTypedArray())
+            database.competitionDao.insertAllCompetitions(*newList.toTypedArray())
+            database.competitionDao.insertAllSeasons(*seasons.toTypedArray())
         }
     }
 
     override fun getAllCompetitions(): Flow<List<Competition>> =
         database.competitionDao.getAll()
             .map { list ->
-                list.map { it.asDomainModel() }
+                list.map { (competition, seasons) ->
+                    competition.asUiModel(seasons)
+                }
             }
 }

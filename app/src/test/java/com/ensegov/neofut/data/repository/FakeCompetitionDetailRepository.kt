@@ -1,7 +1,8 @@
 package com.ensegov.neofut.data.repository
 
 import com.ensegov.neofut.data.local.model.competition.standings.CompetitionStandings
-import com.ensegov.neofut.data.local.model.fixture.round.RoundFixtureData
+import com.ensegov.neofut.data.local.model.fixture.RoundFixture
+import com.ensegov.neofut.data.local.model.fixture.RoundName
 import com.ensegov.neofut.data.local.model.fixture.season.SeasonFixtureData
 import com.ensegov.neofut.data.remote.fixture.dto.MatchFixture
 import com.ensegov.neofut.data.remote.fixture.dto.match.AllMatchScores
@@ -77,6 +78,10 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
      */
     private val fakeRoundsDatabase = MutableStateFlow(
         listOf(
+            RoundName(2, 2024, "Round 1"),
+            RoundName(2, 2024, "Round 2"),
+            RoundName(128, 2024, "Round 1"),
+            RoundName(128, 2024, "Round 2")
             SeasonFixtureData(2, 2022, createRoundList(48)),
             SeasonFixtureData(128, 2022, createRoundList(28))
         )
@@ -113,17 +118,17 @@ class FakeCompetitionDetailRepository : CompetitionDetailRepository {
      */
     private val fakeMatchFixtureDatabase = MutableStateFlow(
         listOf(
-            RoundFixtureData(2, 2021, "Preliminary Round", createFakeMatchList()),
-            RoundFixtureData(39, 2022, "Regular Season - 3", createFakeMatchList()),
+            RoundFixture(2, 2021, "Preliminary Round", createFakeMatchList()),
+            RoundFixture(39, 2022, "Regular Season - 3", createFakeMatchList()),
         )
     )
 
     override suspend fun updateRoundFixture(id: Int, season: Int, round: String) {
-        val newFixture = RoundFixtureData(id, season, round, createFakeMatchList())
+        val newFixture = RoundFixture(id, season, round, createFakeMatchList())
         fakeMatchFixtureDatabase.update { it + newFixture }
     }
 
-    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixtureData?> =
+    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixture?> =
         callbackFlow {
             fakeMatchFixtureDatabase.collectValue(Dispatchers.Main) { newData ->
                 send(

@@ -1,5 +1,6 @@
 package com.ensegov.neofut.data.remote.team.dto
 
+import com.ensegov.neofut.data.local.model.competition.standings.TeamInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,3 +14,13 @@ data class Team(
     val founded: Int? = null,
     val winner: Boolean? = null
 )
+
+fun Team.asDatabaseModel() =
+    TeamInfo(
+        id = id,
+        name = name,
+        code = code,
+        logoUrl = logoUrl,
+        founded = founded,
+        winner = winner
+    )
