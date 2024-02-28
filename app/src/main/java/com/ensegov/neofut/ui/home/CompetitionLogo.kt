@@ -19,7 +19,7 @@ internal fun CompetitionLogo(competition: Competition, navigator: DestinationsNa
     val context = LocalContext.current
 
     AsyncImage(
-        model = getImageModel(competition.logoUrl ?: "", context),
+        model = getImageModel(competition.logoUrl, context),
         contentDescription = null,
         modifier = Modifier
             .fillMaxSize()

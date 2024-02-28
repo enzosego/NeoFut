@@ -26,14 +26,14 @@ data class CompetitionData(
 
 fun CompetitionData.asUiModel(seasons: List<SeasonData>) =
     Competition(
-        id,
-        name,
-        type,
-        logoUrl,
-        Country(
+        id = id,
+        name = name,
+        type = type,
+        logoUrl = logoUrl ?: "",
+        country = Country(
             countryName,
             countryCode,
             countryFlagUrl
         ),
-        seasons.map { it.asUiModel() }
+        seasons = seasons.map { it.asUiModel() }
     )

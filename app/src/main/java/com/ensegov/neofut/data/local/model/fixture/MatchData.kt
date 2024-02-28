@@ -3,6 +3,7 @@ package com.ensegov.neofut.data.local.model.fixture
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ensegov.neofut.ui.competition.model.MatchDataShort
 
 @Entity(tableName = "match_data")
 data class MatchData(
@@ -29,3 +30,12 @@ data class MatchData(
     @ColumnInfo(name = "away_team_id")
     val awayTeamId: Int
 )
+
+fun MatchData.asShortUiModel() =
+    MatchDataShort(
+        id = id,
+        homeScore = homeScore ?: 0,
+        awayScore = awayScore ?: 0,
+        status = statusShort,
+        timeElapsed = timeElapsed ?: 0
+    )

@@ -8,10 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
+import com.ensegov.neofut.ui.competition.model.MatchUiShort
 
 fun LazyListScope.fixture(
-    currentFixture: () -> List<SimpleMatchFixture>,
+    currentFixture: () -> List<MatchUiShort>,
     canShowPrevious: () -> Boolean,
     canShowNext:  () -> Boolean,
     onClickPrevious: () -> Unit,

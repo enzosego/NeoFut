@@ -9,7 +9,7 @@ data class Competition(
     val id: Int,
     val name: String,
     val type: String,
-    val logoUrl: String?,
+    val logoUrl: String,
     val country: Country,
     val seasons: List<Season>,
 )

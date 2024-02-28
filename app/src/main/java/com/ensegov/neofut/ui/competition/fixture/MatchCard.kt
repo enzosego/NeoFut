@@ -5,58 +5,61 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
-import com.ensegov.neofut.ui.home.getImageModel
+import com.ensegov.neofut.ui.competition.model.MatchUiShort
 
 @Composable
-fun MatchCard(match: SimpleMatchFixture) {
-
-    val context = LocalContext.current
-    val homeTeam = match.homeTeam
-    val awayTeam = match.awayTeam
-
+fun MatchCard(
+    match: MatchUiShort,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .height(100.dp)
-            .padding(vertical = 12.dp),
+            .fillMaxWidth()
+            .padding(vertical = 12.dp)
+            .background(MaterialTheme.colorScheme.secondary),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        AsyncImage(
-            model = getImageModel(homeTeam.logoUrl ?: "", context),
-            contentDescription = null,
+        TeamLogo(
+            url = match.homeTeam.logoUrl,
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 10.dp)
         )
         Text(
-            text = homeTeam.name,
+            text = match.homeTeam.name,
             fontSize = 20.sp
         )
-        Text(text = "${match.data.homeScore ?: 0}")
+        Text(text = "${match.data.homeScore}")
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(2.dp)
                 .background(color = Color.Green)
         )
-        Text(text = "${match.data.awayScore ?: 0}")
+        Text(text = "${match.data.awayScore}")
         Text(
-            text = awayTeam.name,
+            text = match.awayTeam.name,
             fontSize = 20.sp
         )
-        AsyncImage(
-            model = getImageModel(awayTeam.logoUrl ?: "", context),
-            contentDescription = null,
+        TeamLogo(
+            url = match.awayTeam.logoUrl,
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 10.dp)
         )
     }
 }

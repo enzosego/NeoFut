@@ -4,13 +4,14 @@ import com.ensegov.neofut.data.local.NeoFutDatabase
 import com.ensegov.neofut.data.local.model.competition.standings.TeamInfo
 import com.ensegov.neofut.data.local.model.competition.standings.asUiModel
 import com.ensegov.neofut.data.local.model.fixture.RoundName
-import com.ensegov.neofut.data.local.model.fixture.SimpleMatchFixture
+import com.ensegov.neofut.data.local.model.fixture.asShortUiModel
 import com.ensegov.neofut.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.standings.StandingsApi
-import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.data.remote.standings.dto.asDatabaseModel
 import com.ensegov.neofut.data.remote.team.dto.asDatabaseModel
+import com.ensegov.neofut.ui.competition.model.CompetitionGroup
+import com.ensegov.neofut.ui.competition.model.MatchUiShort
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -54,9 +55,9 @@ class CompetitionDetailRepositoryImpl(
         }
     }
 
-    override fun getStandings(id: Int, season: Int): Flow<List<List<TeamPosition>>> =
+    override fun getStandings(id: Int, season: Int): Flow<List<CompetitionGroup>> =
         database.standingsDao.getStandings(id, season)
-            .map { position -> position.asUiModel() }
+            .map { list -> list.asUiModel() }
 
     override suspend fun updateSeasonFixture(id: Int, season: Int) {
         val newValue = fixtureDataSource.getRounds(id, season).roundList
@@ -73,7 +74,7 @@ class CompetitionDetailRepositoryImpl(
     override fun getSeasonFixture(id: Int, season: Int): Flow<List<String>> =
         database.fixtureDao.getSeasonRounds(id, season)
 
-    override suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<SimpleMatchFixture> {
+    override suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchUiShort> {
         val response = fixtureDataSource.getFixture(id, season, round).fixture
             .mapNotNull { it.asDatabaseModel(id, season, round) }
         val matches = response.map { it.data }
@@ -85,9 +86,12 @@ class CompetitionDetailRepositoryImpl(
             database.fixtureDao.insertAllMatches(*matches.toTypedArray())
             database.fixtureDao.insertAllTeams(*teams.toTypedArray())
         }
-        return response
+        return response.map { it.asShortUiModel() }
     }
 
-    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<SimpleMatchFixture>> =
+    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchUiShort>> =
             database.fixtureDao.getMatchFixture(id, season, round)
+                .map { list ->
+                    list.map { it.asShortUiModel() }
+                }
 }

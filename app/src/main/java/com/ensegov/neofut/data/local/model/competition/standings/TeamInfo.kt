@@ -3,7 +3,7 @@ package com.ensegov.neofut.data.local.model.competition.standings
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ensegov.neofut.data.remote.team.dto.Team
+import com.ensegov.neofut.ui.competition.model.TeamInfoShort
 
 @Entity(tableName = "team")
 data class TeamInfo(
@@ -16,17 +16,11 @@ data class TeamInfo(
     @ColumnInfo(name = "logo_url")
     val logoUrl: String?,
     @ColumnInfo(name = "founded")
-    val founded: Int? = null,
-    @ColumnInfo(name = "winner")
-    val winner: Boolean? = null
+    val founded: Int? = null
 )
 
-fun TeamInfo.asUiModel() =
-    Team(
-        id = id,
+fun TeamInfo.asShortUiModel() =
+    TeamInfoShort(
         name = name,
-        code = code,
-        logoUrl = logoUrl,
-        founded = founded,
-        winner = winner
+        logoUrl = logoUrl ?: ""
     )

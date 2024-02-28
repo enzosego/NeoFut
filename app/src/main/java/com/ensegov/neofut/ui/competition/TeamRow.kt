@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
+import com.ensegov.neofut.ui.competition.model.PositionUiData
 
 @Composable
-fun TeamRow(position: TeamPosition) {
+fun TeamRow(position: PositionUiData) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 12.dp)
@@ -24,7 +25,7 @@ fun TeamRow(position: TeamPosition) {
                 .width(30.dp),
         )
         Text(
-            text = position.team.name,
+            text = position.team,
             fontSize = 23.sp,
             modifier = Modifier
                 .width(200.dp)
@@ -37,4 +38,21 @@ fun TeamRow(position: TeamPosition) {
                 .padding(start = 8.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun TeamRowPreview() {
+    TeamRow(
+        PositionUiData(
+            team = "River Plate",
+            teamLogo = "",
+            position =  1,
+            points = 53,
+            goalsDiff = 24,
+            form = null,
+            status = null,
+            description = null
+        )
+    )
 }

@@ -21,6 +21,5 @@ fun Team.asDatabaseModel() =
         name = name,
         code = code,
         logoUrl = logoUrl,
-        founded = founded,
-        winner = winner
+        founded = founded
     )
