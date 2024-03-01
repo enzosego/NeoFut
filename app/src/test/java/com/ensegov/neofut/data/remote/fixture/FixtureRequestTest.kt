@@ -1,6 +1,7 @@
 package com.ensegov.neofut.data.remote.fixture
 
-import com.ensegov.neofut.data.remote.fixture.dto.FixtureResponse
+import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
+import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.FixtureResponse
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*

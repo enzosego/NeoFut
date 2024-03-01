@@ -15,7 +15,7 @@
         android:theme="@style/Theme.NeoFut"
         tools:targetApi="31">
         <activity
-            android:name=".ui.NeoFutActivity"
+            android:name=".NeoFutActivity"
             android:exported="true"
             android:theme="@style/Theme.NeoFut">
             <intent-filter>

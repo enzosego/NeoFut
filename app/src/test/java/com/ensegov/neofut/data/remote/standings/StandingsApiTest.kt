@@ -1,6 +1,7 @@
 package com.ensegov.neofut.data.remote.standings
 
-import com.ensegov.neofut.data.remote.standings.dto.TeamPosition
+import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
+import com.ensegov.neofut.competition_detail.data.remote.standings.dto.TeamPosition
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.*

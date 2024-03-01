@@ -1,5 +1,6 @@
 package com.ensegov.neofut.data.remote.fixture
 
+import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
