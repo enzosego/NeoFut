@@ -39,7 +39,9 @@ class CompetitionDetailViewModel(
             initialValue = true
         )
 
-    val canShowNext: StateFlow<Boolean> = currentRoundIndex.map { it < roundList.value.lastIndex }
+    val canShowNext: StateFlow<Boolean> = currentRoundIndex.combine(roundList) { index, list ->
+        index < list.lastIndex
+    }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
