@@ -41,9 +41,9 @@ class CompetitionDetailRepositoryImpl(
         val teamForms = response.map { list ->
             list.map {
                 listOf(
-                    it.allMatches.asDatabaseModel(variation = "all", it.team.id),
-                    it.homeMatches.asDatabaseModel(variation = "home", it.team.id),
-                    it.awayMatches.asDatabaseModel(variation = "away", it.team.id)
+                    it.allMatches.asDatabaseModel(variation = "all", it.team.id, id),
+                    it.homeMatches.asDatabaseModel(variation = "home", it.team.id, id),
+                    it.awayMatches.asDatabaseModel(variation = "away", it.team.id, id)
                 )
             }
         }.flatten().flatten()

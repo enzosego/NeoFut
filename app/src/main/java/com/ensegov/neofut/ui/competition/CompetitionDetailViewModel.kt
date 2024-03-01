@@ -1,5 +1,6 @@
 package com.ensegov.neofut.ui.competition
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.data.repository.detail.CompetitionDetailRepository
@@ -50,7 +51,10 @@ class CompetitionDetailViewModel(
 
     val standings: StateFlow<List<CompetitionGroup>> = competitionDetailRepository
         .getStandings(competitionId, competitionSeason)
-        .onEach { if (it.isEmpty()) updateStandings() }
+        .onEach {
+            if (it.isEmpty()) updateStandings()
+            else Log.d(TAG, "$it")
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

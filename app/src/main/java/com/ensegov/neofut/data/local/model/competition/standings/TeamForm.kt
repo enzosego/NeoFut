@@ -2,14 +2,18 @@ package com.ensegov.neofut.data.local.model.competition.standings
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.ensegov.neofut.data.remote.standings.dto.FormStats
 import com.ensegov.neofut.data.remote.standings.dto.GoalStats
 
-@Entity(tableName = "team_form")
+@Entity(
+    tableName = "team_form",
+    primaryKeys = ["team_id", "competition_id"]
+)
 data class TeamForm(
-    @PrimaryKey @ColumnInfo(name = "team_id")
+    @ColumnInfo(name = "team_id")
     val teamId: Int,
+    @ColumnInfo(name = "competition_id")
+    val competitionId: Int,
     @ColumnInfo(name = "variation")
     val variation: String,
     @ColumnInfo(name = "played")

@@ -2,12 +2,13 @@ package com.ensegov.neofut.data.local.model.competition.standings
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.ensegov.neofut.data.remote.team.dto.Team
 
-@Entity(tableName = "position")
+@Entity(
+    tableName = "position",
+    primaryKeys = ["team_id", "competition_id", "season"]
+)
 data class PositionInfo(
-    @PrimaryKey @ColumnInfo(name = "team_id")
+    @ColumnInfo(name = "team_id")
     val teamId: Int,
     @ColumnInfo(name = "competition_id")
     val competitionId: Int,

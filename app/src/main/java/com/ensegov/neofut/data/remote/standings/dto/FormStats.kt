@@ -12,10 +12,11 @@ data class FormStats(
     val goals: GoalStats? = null
 )
 
-fun FormStats.asDatabaseModel(variation: String, teamId: Int) =
+fun FormStats.asDatabaseModel(variation: String, teamId: Int, competitionId: Int) =
     TeamForm(
         variation = variation,
         teamId = teamId,
+        competitionId = competitionId,
         played = played,
         win = win,
         draw = draw,
