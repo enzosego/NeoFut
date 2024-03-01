@@ -14,7 +14,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ensegov.neofut.competition_detail.presentation.model.Competition
 import com.ensegov.neofut.competition_detail.presentation.model.getLatestSeason
-import com.ensegov.neofut.competition_detail.presentation.fixture.fixture
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
+import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureErrorLayout
+import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureLayout
+import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureLoadingLayout
 import com.ensegov.neofut.competition_detail.presentation.standings.groupTable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -44,13 +47,17 @@ fun LeagueDetail(competition: Competition) {
                 fontSize = 30.sp
             )
         }
-        fixture(
-            { currentFixture },
-            {  canShowPrevious  },
-            { canShowNext },
-            viewModel::onClickPrevious,
-            viewModel::onClickNext
-        )
+        when(currentFixture) {
+            is FixtureUiState.Loading -> fixtureLoadingLayout()
+            is FixtureUiState.Success -> fixtureLayout(
+                { (currentFixture as FixtureUiState.Success).data },
+                { canShowPrevious },
+                { canShowNext },
+                viewModel::onClickPrevious,
+                viewModel::onClickNext
+            )
+            is FixtureUiState.Error -> fixtureErrorLayout()
+        }
         groupTable { standings }
     }
 }

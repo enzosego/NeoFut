@@ -10,14 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 
-fun LazyListScope.fixture(
+internal fun LazyListScope.fixtureLayout(
     currentFixture: () -> List<MatchUiShort>,
     canShowPrevious: () -> Boolean,
     canShowNext:  () -> Boolean,
     onClickPrevious: () -> Unit,
-    onClickNext: () -> Unit
+    onClickNext: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-
     item {
         Row(
             modifier = Modifier

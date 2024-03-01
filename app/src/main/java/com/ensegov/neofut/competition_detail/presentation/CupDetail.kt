@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ensegov.neofut.competition_detail.presentation.model.Competition
 import com.ensegov.neofut.competition_detail.presentation.model.getLatestSeason
-import com.ensegov.neofut.competition_detail.presentation.fixture.fixture
 import com.ensegov.neofut.competition_detail.presentation.standings.groupTable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -44,13 +43,6 @@ fun CupDetail(competition: Competition) {
                 fontSize = 30.sp
             )
         }
-        fixture(
-            { currentFixture },
-            { canShowPrevious },
-            { canShowNext },
-            viewModel::onClickPrevious,
-            viewModel::onClickNext
-        )
         groupTable { standings }
     }
 }

@@ -3,9 +3,9 @@ package com.ensegov.neofut.competition_detail.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
 import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -29,7 +29,8 @@ class CompetitionDetailViewModel(
             initialValue = emptyList()
         )
 
-    val currentFixture = MutableStateFlow(listOf<MatchUiShort>())
+    val currentFixture: MutableStateFlow<FixtureUiState> =
+        MutableStateFlow(FixtureUiState.Loading)
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -74,14 +75,21 @@ class CompetitionDetailViewModel(
     }
 
     private fun getRoundFixture(round: String) {
+        currentFixture.update { FixtureUiState.Loading }
         val fixture = competitionDetailRepository
             .getRoundFixture(competitionId, competitionSeason, round)
         viewModelScope.launch {
             currentFixture.update {
-                fixture.first().ifEmpty {
-                    competitionDetailRepository
-                        .updateRoundFixture(competitionId, competitionSeason, round)
-                    }
+                try {
+                    FixtureUiState.Success(
+                        fixture.first().ifEmpty {
+                            competitionDetailRepository
+                                .updateRoundFixture(competitionId, competitionSeason, round)
+                        }
+                    )
+                } catch (e: Exception) {
+                    FixtureUiState.Error
+                }
             }
         }
     }
