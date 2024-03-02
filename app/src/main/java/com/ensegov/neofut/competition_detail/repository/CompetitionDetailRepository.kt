@@ -2,13 +2,15 @@ package com.ensegov.neofut.competition_detail.repository
 
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
+import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
 import kotlinx.coroutines.flow.Flow
 
 interface CompetitionDetailRepository {
 
-    suspend fun updateStandings(id: Int, season: Int)
+    suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup>
 
-    fun getStandings(id: Int, season: Int): Flow<List<CompetitionGroup>>
+    suspend fun getStandings(id: Int, season: Int): List<CompetitionGroup>
 
     suspend fun updateSeasonFixture(id: Int, season: Int)
 

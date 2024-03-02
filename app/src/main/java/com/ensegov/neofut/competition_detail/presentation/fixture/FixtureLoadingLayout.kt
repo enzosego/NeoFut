@@ -19,7 +19,7 @@ internal fun LazyListScope.fixtureLoadingLayout(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             repeat(8) {
-                LoadingListItem()
+                FixtureLoadingItem()
             }
         }
     }

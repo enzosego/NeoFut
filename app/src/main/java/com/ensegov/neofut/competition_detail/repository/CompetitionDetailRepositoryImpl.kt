@@ -9,10 +9,12 @@ import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
 import com.ensegov.neofut.competition_detail.data.remote.standings.dto.asDatabaseModel
+import com.ensegov.neofut.competition_detail.data.remote.standings.dto.asUiModel
 import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
-import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -24,9 +26,9 @@ class CompetitionDetailRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : CompetitionDetailRepository {
 
-    override suspend fun updateStandings(id: Int, season: Int) {
+    override suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup> {
         val response = standingsDataSource.getCurrentStandings(id, season).asDatabaseModel()
-            ?: return
+            ?: return emptyList()
 
         val positions = response.map { list ->
             list.map {
@@ -53,11 +55,18 @@ class CompetitionDetailRepositoryImpl(
             database.standingsDao.insertTeams(*teams.toTypedArray())
             database.standingsDao.insertTeamForms(*teamForms.toTypedArray())
         }
+        return response.map { list ->
+            CompetitionGroup(
+                groupName = list[0].group,
+                teamList = list.map { it.asUiModel() }
+            )
+        }
     }
 
-    override fun getStandings(id: Int, season: Int): Flow<List<CompetitionGroup>> =
-        database.standingsDao.getStandings(id, season)
-            .map { list -> list.asUiModel() }
+    override suspend fun getStandings(id: Int, season: Int): List<CompetitionGroup> =
+        withContext(ioDispatcher) {
+            database.standingsDao.getStandings(id, season).asUiModel()
+        }
 
     override suspend fun updateSeasonFixture(id: Int, season: Int) {
         val newValue = fixtureDataSource.getRounds(id, season).roundList

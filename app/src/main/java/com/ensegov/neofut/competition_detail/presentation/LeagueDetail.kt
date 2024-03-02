@@ -19,6 +19,9 @@ import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureErrorLa
 import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureLayout
 import com.ensegov.neofut.competition_detail.presentation.fixture.fixtureLoadingLayout
 import com.ensegov.neofut.competition_detail.presentation.standings.groupTable
+import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
+import com.ensegov.neofut.competition_detail.presentation.standings.standingsErrorLayout
+import com.ensegov.neofut.competition_detail.presentation.standings.standingsLoadingLayout
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -58,6 +61,12 @@ fun LeagueDetail(competition: Competition) {
             )
             is FixtureUiState.Error -> fixtureErrorLayout()
         }
-        groupTable { standings }
+        when(standings) {
+            is StandingsUiState.Loading -> standingsLoadingLayout()
+            is StandingsUiState.Success -> groupTable {
+                (standings as StandingsUiState.Success).data
+            }
+            is StandingsUiState.Error -> standingsErrorLayout()
+        }
     }
 }

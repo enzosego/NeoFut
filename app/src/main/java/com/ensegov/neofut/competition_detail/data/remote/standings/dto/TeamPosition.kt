@@ -2,6 +2,7 @@ package com.ensegov.neofut.competition_detail.data.remote.standings.dto
 
 import com.ensegov.neofut.competition_detail.data.local.standings.PositionInfo
 import com.ensegov.neofut.competition_detail.data.remote.team.Team
+import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -33,6 +34,18 @@ fun TeamPosition.asDatabaseModel(competitionId: Int, season: Int) =
         points = points,
         goalsDiff = goalsDiff,
         group = group,
+        form = form,
+        status = status,
+        description = description
+    )
+
+fun TeamPosition.asUiModel() =
+    PositionUiData(
+        team = team.name,
+        teamLogo = team.logoUrl ?: "",
+        position = position,
+        points = points,
+        goalsDiff = goalsDiff,
         form = form,
         status = status,
         description = description

@@ -1,63 +1,54 @@
 package com.ensegov.neofut.competition_detail.presentation.standings
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
+import com.ensegov.neofut.competition_detail.presentation.utils.shimmerEffect
 
 @Composable
-fun TeamRow(position: PositionUiData) {
+internal fun StandingsLoadingItem(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .height(45.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "${position.position}",
-            fontSize = 23.sp,
+        Box(
             modifier = Modifier
+                .height(25.dp)
                 .width(30.dp)
                 .padding(start = 8.dp)
+                .shimmerEffect()
         )
-        Text(
-            text = position.team,
-            fontSize = 23.sp,
+        Box(
             modifier = Modifier
+                .height(25.dp)
                 .width(200.dp)
-                .padding(start = 8.dp)
+                .padding(start = 12.dp)
+                .shimmerEffect()
         )
-        Text(
-            text = "${position.points}",
-            fontSize = 23.sp,
+        Box(
             modifier = Modifier
+                .height(25.dp)
+                .width(30.dp)
                 .padding(start = 8.dp)
+                .shimmerEffect()
         )
     }
 }
 
 @Preview
 @Composable
-fun TeamRowPreview() {
-    TeamRow(
-        PositionUiData(
-            team = "River Plate",
-            teamLogo = "",
-            position =  1,
-            points = 53,
-            goalsDiff = 24,
-            form = null,
-            status = null,
-            description = null
-        )
-    )
+private fun FixtureLoadingItemPreview() {
+    StandingsLoadingItem()
 }

@@ -15,7 +15,7 @@ interface StandingsDao {
     @Query("SELECT * FROM position " +
             "WHERE :id = position.competition_id AND :season = position.season " +
             "ORDER BY position.`group` ASC, position.position ASC")
-    fun getStandings(id: Int, season: Int): Flow<List<TeamPositionInfo>>
+    fun getStandings(id: Int, season: Int): List<TeamPositionInfo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPositions(vararg positionInfo: PositionInfo)

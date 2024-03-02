@@ -1,11 +1,10 @@
 package com.ensegov.neofut.competition_detail.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
 import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
-import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
+import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -50,27 +49,39 @@ class CompetitionDetailViewModel(
             initialValue = true
         )
 
-    val standings: StateFlow<List<CompetitionGroup>> = competitionDetailRepository
-        .getStandings(competitionId, competitionSeason)
-        .onEach {
-            if (it.isEmpty()) updateStandings()
-            else Log.d(TAG, "$it")
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-            initialValue =emptyList()
-        )
+    val standings: MutableStateFlow<StandingsUiState> =
+        MutableStateFlow(StandingsUiState.Loading)
 
-    private fun updateStandings() {
-        viewModelScope.launch {
-            competitionDetailRepository.updateStandings(competitionId, competitionSeason)
-        }
+    init {
+        getStandings()
     }
 
     private fun updateSeasonFixture() {
         viewModelScope.launch {
-            competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
+            try {
+                competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
+            } catch (e: Exception) {
+                standings
+            }
+        }
+    }
+
+    private fun getStandings() {
+        standings.update { StandingsUiState.Loading }
+        viewModelScope.launch {
+            val newValue = competitionDetailRepository.getStandings(competitionId, competitionSeason)
+            standings.update {
+                try {
+                    StandingsUiState.Success(
+                        newValue.ifEmpty {
+                            competitionDetailRepository
+                                .updateStandings(competitionId, competitionSeason)
+                        }
+                    )
+                } catch (e: Exception) {
+                    StandingsUiState.Error
+                }
+            }
         }
     }
 
