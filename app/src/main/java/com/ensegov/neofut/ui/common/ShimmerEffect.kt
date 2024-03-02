@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.presentation.utils
+package com.ensegov.neofut.ui.common
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable

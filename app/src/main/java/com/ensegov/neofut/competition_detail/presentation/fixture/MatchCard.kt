@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.competition_detail.presentation.TeamLogo
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.TeamInfoShort
+import com.ensegov.neofut.ui.common.LogoLayout
 
 @Composable
 fun MatchCard(
@@ -36,8 +36,8 @@ fun MatchCard(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        TeamLogo(
-            url = match.homeTeam.logoUrl,
+        LogoLayout(
+            logoUrl = match.homeTeam.logoUrl,
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(vertical = 10.dp)
@@ -55,8 +55,8 @@ fun MatchCard(
             fontSize = 18.sp,
             modifier = Modifier.width(120.dp)
         )
-        TeamLogo(
-            url = match.awayTeam.logoUrl,
+        LogoLayout(
+            logoUrl = match.awayTeam.logoUrl,
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(vertical = 10.dp)

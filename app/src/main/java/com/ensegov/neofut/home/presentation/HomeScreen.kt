@@ -3,7 +3,7 @@ package com.ensegov.neofut.home.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.ensegov.neofut.destinations.CompetitionScreenDestination
+import com.ensegov.neofut.destinations.CompetitionDetailScreenDestination
 import com.ensegov.neofut.home.presentation.model.CompetitionsUiState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -24,7 +24,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         is CompetitionsUiState.Success -> CompetitionsLayout(
             competitionList = (competitionUiState as CompetitionsUiState.Success).list,
             navigate = { competition ->
-                navigator.navigate(CompetitionScreenDestination(competition))
+                navigator.navigate(CompetitionDetailScreenDestination(competition))
             }
         )
         is CompetitionsUiState.Error -> CompetitionsErrorLayout()

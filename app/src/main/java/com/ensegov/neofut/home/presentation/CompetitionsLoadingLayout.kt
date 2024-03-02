@@ -1,7 +1,6 @@
 package com.ensegov.neofut.home.presentation
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -13,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ensegov.neofut.competition_detail.presentation.utils.shimmerEffect
+import com.ensegov.neofut.ui.common.shimmerEffect
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable

@@ -20,7 +20,7 @@ internal fun LazyListScope.fixtureLayout(
 ) {
     item {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
