@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CompetitionsRepository {
 
-    suspend fun fetchAllCompetitions(countryName: String)
+    suspend fun fetchAllCompetitions(countryName: String): List<Competition>
 
-    fun getAllCompetitions(): Flow<List<Competition>>
+    suspend fun getAllCompetitions(): List<Competition>
 }

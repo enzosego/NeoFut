@@ -1,17 +1,10 @@
 package com.ensegov.neofut.home.presentation
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.destinations.CompetitionScreenDestination
+import com.ensegov.neofut.home.presentation.model.CompetitionsUiState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -24,28 +17,16 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     val viewModel: HomeViewModel = koinViewModel()
 
-    val competitionList: List<Competition> by viewModel.competitionList.collectAsState()
+    val competitionUiState by viewModel.competitionList.collectAsState()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-    ) {
-        Text(
-            text = "Available Competitions:",
-            fontSize = 30.sp,
-            modifier = Modifier
-                .padding(top = 25.dp)
+    when(competitionUiState) {
+        is CompetitionsUiState.Loading -> CompetitionsLoadingLayout()
+        is CompetitionsUiState.Success -> CompetitionsLayout(
+            competitionList = (competitionUiState as CompetitionsUiState.Success).list,
+            navigate = { competition ->
+                navigator.navigate(CompetitionScreenDestination(competition))
+            }
         )
-        LazyVerticalGrid(
-            GridCells.Fixed(count = 2),
-            content = {
-                items(competitionList.size) { i ->
-                    CompetitionLogo(competitionList[i], navigator)
-                }
-            },
-            modifier = Modifier.padding(top = 50.dp)
-        )
+        is CompetitionsUiState.Error -> CompetitionsErrorLayout()
     }
 }

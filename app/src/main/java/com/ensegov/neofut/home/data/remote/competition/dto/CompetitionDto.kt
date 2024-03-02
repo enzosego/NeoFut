@@ -1,5 +1,6 @@
 package com.ensegov.neofut.home.data.remote.competition.dto
 
+import com.ensegov.neofut.competition_detail.presentation.model.Competition
 import com.ensegov.neofut.home.data.local.model.CompetitionData
 import com.ensegov.neofut.home.data.remote.competition.dto.season.Season
 import kotlinx.serialization.SerialName
@@ -22,4 +23,14 @@ fun CompetitionDto.asDatabaseModel() =
         country.name,
         country.code,
         country.flagUrl
+    )
+
+fun CompetitionDto.asUiModel() =
+    Competition(
+        id = info.id,
+        name = info.name,
+        type = info.type,
+        logoUrl = info.logoUrl ?: "",
+        country = country,
+        seasons = seasons
     )

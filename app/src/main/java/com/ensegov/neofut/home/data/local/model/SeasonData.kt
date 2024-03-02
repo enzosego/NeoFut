@@ -5,9 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ensegov.neofut.home.data.remote.competition.dto.season.Season
 
-@Entity(tableName = "season")
+@Entity(
+    tableName = "season",
+    primaryKeys = ["competition_id", "year"]
+)
 data class SeasonData(
-    @PrimaryKey @ColumnInfo(name = "competition_id")
+    @ColumnInfo(name = "competition_id")
     val competitionId: Int,
     @ColumnInfo(name = "year")
     val year: Int,
