@@ -81,6 +81,7 @@ dependencies {
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:$destinationsVersion")
+    implementation("io.github.raamcosta.compose-destinations:animations-core:$destinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$destinationsVersion")
 
     // Coil for Compose
