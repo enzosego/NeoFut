@@ -1,44 +1,35 @@
 package com.ensegov.neofut.competition_detail.presentation.fixture
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.ui.Modifier
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
-internal fun LazyListScope.fixtureLayout(
-    currentFixture: () -> List<MatchUiShort>,
-    canShowPrevious: () -> Boolean,
-    canShowNext:  () -> Boolean,
-    onClickPrevious: () -> Unit,
-    onClickNext: () -> Unit,
-    modifier: Modifier = Modifier
+@Composable
+internal fun FixtureLayout(
+    competitionId: Int,
+    competitionSeason: Int,
 ) {
-    item {
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(
-                onClick = { onClickPrevious() },
-                enabled = canShowPrevious()
-            ) {
-                Text(text = "Prev")
-            }
-            Button(
-                onClick = { onClickNext() },
-                enabled = canShowNext()
-            ) {
-                Text(text = "Next")
-            }
-        }
-    }
-    items(currentFixture()) { match ->
-        MatchCard(match)
+
+    val viewModel: FixtureViewModel = koinViewModel(
+        parameters = { parametersOf(competitionId, competitionSeason) }
+    )
+
+    val currentFixture by viewModel.currentFixture.collectAsStateWithLifecycle()
+    val canShowPrevious by viewModel.canShowPrevious.collectAsStateWithLifecycle()
+    val canShowNext by viewModel.canShowNext.collectAsStateWithLifecycle()
+
+    when(currentFixture) {
+        is FixtureUiState.Loading -> FixtureLoadingLayout()
+        is FixtureUiState.Success -> FixtureSuccessLayout(
+            { (currentFixture as FixtureUiState.Success).data },
+            { canShowPrevious },
+            { canShowNext },
+            viewModel::onClickPrevious,
+            viewModel::onClickNext
+        )
+        is FixtureUiState.Error -> FixtureErrorLayout()
     }
 }

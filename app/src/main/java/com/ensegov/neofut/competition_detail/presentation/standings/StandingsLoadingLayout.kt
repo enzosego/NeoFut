@@ -1,22 +1,20 @@
 package com.ensegov.neofut.competition_detail.presentation.standings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ensegov.neofut.ui.theme.NeoFutTheme
 
-internal fun LazyListScope.standingsLoadingLayout(
+@Composable
+internal fun StandingsLoadingLayout(
     modifier: Modifier = Modifier
 ) {
-    item {
-        Column(
-            modifier = modifier
-        ) {
-            repeat(12) {
-                StandingsLoadingItem()
-            }
+    Column(
+        modifier = modifier
+    ) {
+        repeat(12) {
+            StandingsLoadingItem()
         }
     }
 }
@@ -24,7 +22,7 @@ internal fun LazyListScope.standingsLoadingLayout(
 @Preview
 @Composable
 private fun StandingsLoadingLayoutPreview() {
-    LazyColumn {
-        standingsLoadingLayout()
+    NeoFutTheme {
+        StandingsLoadingLayout()
     }
 }

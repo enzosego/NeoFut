@@ -9,18 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ensegov.neofut.ui.theme.NeoFutTheme
 
-internal fun LazyListScope.fixtureLoadingLayout(
+@Composable
+internal fun FixtureLoadingLayout(
     modifier: Modifier = Modifier
 ) {
-    item {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            repeat(8) {
-                FixtureLoadingItem()
-            }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        repeat(8) {
+            FixtureLoadingItem()
         }
     }
 }
@@ -28,7 +28,7 @@ internal fun LazyListScope.fixtureLoadingLayout(
 @Preview
 @Composable
 private fun FixtureLoadingLayoutPreview() {
-    LazyColumn {
-        fixtureLoadingLayout()
+    NeoFutTheme {
+        FixtureLoadingLayout()
     }
 }
