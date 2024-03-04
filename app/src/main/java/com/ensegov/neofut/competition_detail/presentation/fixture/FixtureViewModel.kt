@@ -1,14 +1,22 @@
-package com.ensegov.neofut.competition_detail.presentation
+package com.ensegov.neofut.competition_detail.presentation.fixture
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
 import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
-import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CompetitionDetailViewModel(
+class FixtureViewModel(
     private val competitionDetailRepository: CompetitionDetailRepository,
     private val competitionId: Int,
     private val competitionSeason: Int
@@ -49,47 +57,20 @@ class CompetitionDetailViewModel(
             initialValue = true
         )
 
-    val standings: MutableStateFlow<StandingsUiState> =
-        MutableStateFlow(StandingsUiState.Loading)
-
-    init {
-        getStandings()
-    }
-
     private fun updateSeasonFixture() {
         viewModelScope.launch {
             try {
                 competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
             } catch (e: Exception) {
-                standings
-            }
-        }
-    }
-
-    private fun getStandings() {
-        standings.update { StandingsUiState.Loading }
-        viewModelScope.launch {
-            val newValue = competitionDetailRepository.getStandings(competitionId, competitionSeason)
-            standings.update {
-                try {
-                    StandingsUiState.Success(
-                        newValue.ifEmpty {
-                            competitionDetailRepository
-                                .updateStandings(competitionId, competitionSeason)
-                        }
-                    )
-                } catch (e: Exception) {
-                    StandingsUiState.Error
-                }
+                Log.d(TAG, "${e.message}")
             }
         }
     }
 
     private fun getRoundFixture(round: String) {
-        currentFixture.update { FixtureUiState.Loading }
-        val fixture = competitionDetailRepository
-            .getRoundFixture(competitionId, competitionSeason, round)
         viewModelScope.launch {
+            val fixture = competitionDetailRepository
+                .getRoundFixture(competitionId, competitionSeason, round)
             currentFixture.update {
                 try {
                     FixtureUiState.Success(
@@ -107,18 +88,20 @@ class CompetitionDetailViewModel(
 
     fun onClickPrevious() {
         val newIndex = currentRoundIndex.value.minus(1)
+        currentFixture.update { FixtureUiState.Loading }
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }
     }
 
     fun onClickNext() {
         val newIndex = currentRoundIndex.value.plus(1)
+        currentFixture.update { FixtureUiState.Loading }
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }
     }
 
     companion object {
         private const val TIMEOUT_MILLIS = 5000L
-        private const val TAG = "CompetitionDetailViewModel"
+        private const val TAG = "FixtureViewModel"
     }
 }
