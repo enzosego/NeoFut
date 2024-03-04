@@ -1,8 +1,9 @@
 package com.ensegov.neofut.home.data.remote.competition.dto
 
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.home.data.local.model.CompetitionData
-import com.ensegov.neofut.home.data.remote.competition.dto.season.Season
+import com.ensegov.neofut.home.data.remote.competition.dto.season.SeasonDto
+import com.ensegov.neofut.home.data.remote.competition.dto.season.asUiModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,7 +12,7 @@ data class CompetitionDto(
     @SerialName(value = "league")
     val info: CompetitionInfo,
     val country: Country,
-    val seasons: List<Season>
+    val seasons: List<SeasonDto>
 )
 
 fun CompetitionDto.asDatabaseModel() =
@@ -32,5 +33,5 @@ fun CompetitionDto.asUiModel() =
         type = info.type,
         logoUrl = info.logoUrl ?: "",
         country = country,
-        seasons = seasons
+        seasons = seasons.map { it.asUiModel() }
     )

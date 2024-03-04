@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.home.data.remote.competition.dto.Country
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 

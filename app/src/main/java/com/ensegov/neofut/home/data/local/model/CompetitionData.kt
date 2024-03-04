@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ensegov.neofut.home.data.remote.competition.dto.Country
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 
 @Entity(tableName = "competition_data")
 data class CompetitionData(

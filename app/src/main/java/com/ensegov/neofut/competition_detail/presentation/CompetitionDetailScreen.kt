@@ -17,11 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.ensegov.neofut.competition_detail.presentation.fixture.FixtureLayout
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.competition_detail.presentation.model.CompetitionDetailTab
-import com.ensegov.neofut.competition_detail.presentation.model.getLatestSeason
+import com.ensegov.neofut.home.presentation.model.getLatestSeason
 import com.ensegov.neofut.competition_detail.presentation.standings.StandingsLayout
 import com.ensegov.neofut.competition_detail.presentation.tab.DetailTabRow
+import com.ensegov.neofut.home.presentation.model.toTabList
 import com.ramcosta.composedestinations.annotation.Destination
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -30,7 +31,12 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun CompetitionDetailScreen(competition: Competition) {
 
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { CompetitionDetailTab.entries.size })
+    val tabs = remember {
+        competition.seasons.find { 
+            it.year == competition.getLatestSeason()
+        }?.coverageData?.toTabList() ?: emptyList()
+    }
+    val pagerState = rememberPagerState(pageCount = { tabs.size })
     val selectedTabIndex = remember { derivedStateOf { pagerState.currentPage } }
 
     Scaffold(
@@ -42,26 +48,29 @@ fun CompetitionDetailScreen(competition: Competition) {
                 .padding(top = paddingValues.calculateTopPadding())
         ) {
             DetailTabRow(
+                tabs = { tabs },
                 scope = { scope },
                 pagerState = { pagerState },
                 selectedTabIndex = { selectedTabIndex }
             )
             HorizontalPager(
                 state = pagerState,
-                key = { CompetitionDetailTab.entries[it] },
+                key = { tabs[it].title },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                when (CompetitionDetailTab.entries[it]) {
-                    CompetitionDetailTab.Fixture -> FixtureLayout(
+                when (tabs[it]) {
+                    is CompetitionDetailTab.Fixture -> FixtureLayout(
                         competitionId = competition.id,
                         competitionSeason = competition.getLatestSeason()
                     )
-                    CompetitionDetailTab.Standings -> StandingsLayout(
+                    is CompetitionDetailTab.Standings -> StandingsLayout(
                         competitionId = competition.id,
                         competitionSeason = competition.getLatestSeason()
                     )
+                    is CompetitionDetailTab.Goals -> Text(text = "Goals")
+                    is CompetitionDetailTab.Assists -> Text(text = "Assists")
                 }
             }
         }

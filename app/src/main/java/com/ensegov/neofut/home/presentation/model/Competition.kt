@@ -1,7 +1,6 @@
-package com.ensegov.neofut.competition_detail.presentation.model
+package com.ensegov.neofut.home.presentation.model
 
 import com.ensegov.neofut.home.data.remote.competition.dto.Country
-import com.ensegov.neofut.home.data.remote.competition.dto.season.Season
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,7 +1,6 @@
 package com.ensegov.neofut.home.data.repository
 
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
-import kotlinx.coroutines.flow.Flow
+import com.ensegov.neofut.home.presentation.model.Competition
 
 interface CompetitionsRepository {
 

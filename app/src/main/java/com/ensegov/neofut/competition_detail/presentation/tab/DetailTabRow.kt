@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.tab
 
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailTabRow(
+    tabs: () -> List<CompetitionDetailTab>,
     scope: () -> CoroutineScope,
     pagerState: () -> PagerState,
     selectedTabIndex: () -> State<Int>,
@@ -37,14 +39,22 @@ fun DetailTabRow(
         selectedTabIndex = selectedTabIndex().value,
         modifier = modifier.fillMaxWidth()
     ) {
-        CompetitionDetailTab.entries.forEachIndexed { index, currentTab ->
+        for ((index, currentTab) in tabs().withIndex()) {
+            if (!currentTab.hasCoverage)
+                continue
             Tab(
                 selected = selectedTabIndex().value == index,
                 selectedContentColor = MaterialTheme.colorScheme.primary,
                 unselectedContentColor = MaterialTheme.colorScheme.outline,
                 onClick = {
                     scope().launch {
-                        pagerState().animateScrollToPage(currentTab.ordinal)
+                        pagerState().animateScrollToPage(
+                            page = index,
+                            animationSpec = spring(
+                                dampingRatio = .75f,
+                                stiffness = 200f
+                            )
+                        )
                     }
                 }
             ) {
@@ -69,8 +79,14 @@ fun DetailTabRow(
 private fun DetailTabRowPreview() {
     val pagerState = rememberPagerState(pageCount = { 1 })
     val index = remember { mutableIntStateOf(1) }
+    val tabs = listOf(
+        CompetitionDetailTab.Fixture(),
+        CompetitionDetailTab.Standings(hasCoverage = true),
+        CompetitionDetailTab.Goals(hasCoverage = true)
+    )
     NeoFutTheme {
         DetailTabRow(
+            tabs = { tabs },
             scope = { CoroutineScope(Dispatchers.Main) },
             pagerState = { pagerState },
             selectedTabIndex = { index })

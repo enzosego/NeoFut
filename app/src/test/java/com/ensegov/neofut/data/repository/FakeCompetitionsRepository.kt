@@ -2,7 +2,7 @@ package com.ensegov.neofut.data.repository
 
 import com.ensegov.neofut.home.data.remote.competition.dto.Country
 import com.ensegov.neofut.home.data.repository.CompetitionsRepository
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

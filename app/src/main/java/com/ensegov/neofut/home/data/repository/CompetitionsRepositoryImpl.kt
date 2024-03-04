@@ -6,7 +6,7 @@ import com.ensegov.neofut.home.data.local.model.asUiModel
 import com.ensegov.neofut.home.data.remote.competition.CompetitionsApi
 import com.ensegov.neofut.home.data.remote.competition.dto.asDatabaseModel
 import com.ensegov.neofut.home.data.remote.competition.dto.season.asDatabaseModel
-import com.ensegov.neofut.competition_detail.presentation.model.Competition
+import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.home.data.remote.competition.dto.asUiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

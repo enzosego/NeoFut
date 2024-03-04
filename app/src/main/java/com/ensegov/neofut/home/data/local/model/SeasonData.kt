@@ -1,9 +1,9 @@
 package com.ensegov.neofut.home.data.local.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.ensegov.neofut.home.data.remote.competition.dto.season.Season
+import com.ensegov.neofut.home.presentation.model.Season
 
 @Entity(
     tableName = "season",
@@ -20,12 +20,12 @@ data class SeasonData(
     val end: String,
     @ColumnInfo(name = "current")
     val current: Boolean,
+    @Embedded
+    val coverageData: CoverageData
 )
 
 fun SeasonData.asUiModel() =
     Season(
         year = year,
-        start = start,
-        end = end,
-        current = current
+        coverageData = coverageData.asUiModel()
     )
