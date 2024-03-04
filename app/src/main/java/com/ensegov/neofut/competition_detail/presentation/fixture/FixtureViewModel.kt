@@ -1,6 +1,9 @@
 package com.ensegov.neofut.competition_detail.presentation.fixture
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
@@ -36,8 +39,7 @@ class FixtureViewModel(
             initialValue = emptyList()
         )
 
-    val currentFixture: MutableStateFlow<FixtureUiState> =
-        MutableStateFlow(FixtureUiState.Loading)
+    var currentFixture: FixtureUiState by mutableStateOf(FixtureUiState.Loading)
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -71,7 +73,7 @@ class FixtureViewModel(
         viewModelScope.launch {
             val fixture = competitionDetailRepository
                 .getRoundFixture(competitionId, competitionSeason, round)
-            currentFixture.update {
+            currentFixture=
                 try {
                     FixtureUiState.Success(
                         fixture.first().ifEmpty {
@@ -82,20 +84,19 @@ class FixtureViewModel(
                 } catch (e: Exception) {
                     FixtureUiState.Error
                 }
-            }
         }
     }
 
     fun onClickPrevious() {
         val newIndex = currentRoundIndex.value.minus(1)
-        currentFixture.update { FixtureUiState.Loading }
+        currentFixture = FixtureUiState.Loading
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }
     }
 
     fun onClickNext() {
+        currentFixture = FixtureUiState.Loading
         val newIndex = currentRoundIndex.value.plus(1)
-        currentFixture.update { FixtureUiState.Loading }
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }
     }
