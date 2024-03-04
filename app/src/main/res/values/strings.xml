@@ -2,4 +2,8 @@
     <string name="app_name">NeoFut</string>
     <string name="team_logo">Team logo</string>
     <string name="competition_logo">Competition logo</string>
+    <string name="team_position">Pos</string>
+    <string name="team_name">Team</string>
+    <string name="team_points">Pts</string>
+    <string name="goal_diff">GD</string>
 </resources>
