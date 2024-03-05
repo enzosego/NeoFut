@@ -11,11 +11,12 @@ data class GoalStatisticsDto(
     val penalty: PenaltyStats
 )
 
-fun GoalStatisticsDto.asDatabaseModel(playerId: Int, competitionId: Int) =
+fun GoalStatisticsDto.asDatabaseModel(playerId: Int, competitionId: Int, season: Int) =
     GoalData(
         playerId = playerId,
         teamId = team.id,
+        season = season,
         competitionId = competitionId,
-        totalGoals = goals.total,
-        penaltyGoals = penalty.scored
+        totalGoals = goals.total ?: 0,
+        penaltyGoals = penalty.scored ?: 0
     )

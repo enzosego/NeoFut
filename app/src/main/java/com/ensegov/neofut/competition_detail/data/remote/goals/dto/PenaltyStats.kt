@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class PenaltyStats(
-    val scored: Int,
-    val missed: Int
+    val scored: Int?,
+    val missed: Int?
 )

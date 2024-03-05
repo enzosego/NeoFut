@@ -1,6 +1,7 @@
 package com.ensegov.neofut.competition_detail.data.remote.player
 
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
+import com.ensegov.neofut.competition_detail.presentation.goals.model.PlayerUiData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -26,5 +27,13 @@ fun PlayerDto.asDatabaseModel(teamId: Int) =
         lastName = lastName,
         age = age,
         nationality = nationality,
+        photoUrl = photo
+    )
+
+fun PlayerDto.asUiModel() =
+    PlayerUiData(
+        name = name,
+        firstName = firstName,
+        lastName = lastName,
         photoUrl = photo
     )

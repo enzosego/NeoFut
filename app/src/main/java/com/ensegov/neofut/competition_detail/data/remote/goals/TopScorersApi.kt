@@ -18,7 +18,7 @@ class TopScorersApi(
         tag = "api_call_goals"
     ).client
 
-    suspend fun getTopScorers(leagueId: Int, season: Int): List<TopScorersResponse> =
+    suspend fun getTopScorers(leagueId: Int, season: Int): TopScorersResponse =
         client.getWithToken(
             url = "${HttpRoutes.TOP_SCORERS_REQUEST}?season=$season&league=$leagueId"
         ).body()

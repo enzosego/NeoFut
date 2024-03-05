@@ -5,7 +5,7 @@ import androidx.room.Entity
 
 @Entity(
     tableName = "goal_data",
-    primaryKeys = ["player_id", "team_id", "competition_id"]
+    primaryKeys = ["player_id", "team_id", "competition_id", "season"]
 )
 data class GoalData(
     @ColumnInfo(name = "player_id")
@@ -14,6 +14,8 @@ data class GoalData(
     val teamId: Int,
     @ColumnInfo(name = "competition_id")
     val competitionId: Int,
+    @ColumnInfo(name = "season")
+    val season: Int,
     @ColumnInfo(name = "total_goals")
     val totalGoals: Int,
     @ColumnInfo(name = "penalty_goals")

@@ -2,6 +2,8 @@ package com.ensegov.neofut.di
 
 import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
 import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepositoryImpl
+import com.ensegov.neofut.competition_detail.repository.goals.TopScorersRepository
+import com.ensegov.neofut.competition_detail.repository.goals.TopScorersRepositoryImpl
 import com.ensegov.neofut.home.data.repository.CompetitionsRepository
 import com.ensegov.neofut.home.data.repository.CompetitionsRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -16,4 +18,5 @@ val domainModule = module {
 
     factoryOf(::CompetitionsRepositoryImpl) { bind<CompetitionsRepository>() }
     factoryOf(::CompetitionDetailRepositoryImpl) { bind<CompetitionDetailRepository>() }
+    factoryOf(::TopScorersRepositoryImpl) { bind<TopScorersRepository>() }
 }

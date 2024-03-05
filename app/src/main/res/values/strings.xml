@@ -6,4 +6,9 @@
     <string name="team_name">Team</string>
     <string name="team_points">Pts</string>
     <string name="goal_diff">GD</string>
+    <string name="top_scorers">Top scorers</string>
+    <string name="player_name">Player</string>
+    <string name="goals">Goals</string>
+    <string name="penalty_goals">Penalty</string>
+    <string name="player_photo">Player photo</string>
 </resources>
