@@ -24,8 +24,8 @@ class TopStatsRepositoryImpl(
         withContext(ioDispatcher) {
             database.topStatsDao.getTopScorers(competitionId, season)
                 .groupBy { it.goals.totalGoals }
-                .toList()
-                .flatMapIndexed { index, (_, list) ->
+                .map { it.value }
+                .flatMapIndexed { index, list ->
                     list.map { scorer ->
                         scorer.asUiModel(position = index + 1)
                     }
@@ -45,8 +45,8 @@ class TopStatsRepositoryImpl(
 
         return response
             .groupBy { it.statistics[0].goals.total }
-            .toList()
-            .flatMapIndexed { index, (_, list) ->
+            .map { it.value }
+            .flatMapIndexed { index, list ->
                 list.map { scorer ->
                     scorer.asUiModel(position = index + 1)
                 }
@@ -64,8 +64,8 @@ class TopStatsRepositoryImpl(
         withContext(ioDispatcher) {
             database.topStatsDao.getTopAssists(competitionId, season)
                 .groupBy { it.goals.assists }
-                .toList()
-                .flatMapIndexed { index, (_, list) ->
+                .map { it.value }
+                .flatMapIndexed { index, list ->
                     list.map { player ->
                         player.asUiModel(position = index + 1)
                     }
@@ -82,8 +82,8 @@ class TopStatsRepositoryImpl(
 
         return response
             .groupBy { it.statistics[0].goals.assists }
-            .toList()
-            .flatMapIndexed { index, (_, list) ->
+            .map { it.value }
+            .flatMapIndexed { index, list ->
                 list.map { scorer ->
                     scorer.asUiModel(position = index + 1)
                 }
