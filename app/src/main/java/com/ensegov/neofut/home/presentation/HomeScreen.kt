@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.ensegov.neofut.destinations.CompetitionDetailScreenDestination
-import com.ensegov.neofut.ui.common.model.UiState
+import com.ensegov.neofut.common.presentation.model.UiState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

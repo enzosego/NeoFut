@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.TeamInfoShort
-import com.ensegov.neofut.ui.common.layout.LogoLayout
+import com.ensegov.neofut.common.presentation.layout.LogoLayout
 
 @Composable
 fun MatchCard(

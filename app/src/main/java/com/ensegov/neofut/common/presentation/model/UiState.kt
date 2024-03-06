@@ -1,4 +1,4 @@
-package com.ensegov.neofut.ui.common.model
+package com.ensegov.neofut.common.presentation.model
 
 sealed interface UiState<out T> {
     data class Success<T>(val data: T): UiState<T>

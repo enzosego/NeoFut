@@ -1,4 +1,4 @@
-package com.ensegov.neofut.ui.common.layout
+package com.ensegov.neofut.common.presentation.layout
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

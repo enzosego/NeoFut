@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.home.data.repository.CompetitionsRepository
 import com.ensegov.neofut.home.presentation.model.Competition
-import com.ensegov.neofut.ui.common.model.UiState
+import com.ensegov.neofut.common.presentation.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
