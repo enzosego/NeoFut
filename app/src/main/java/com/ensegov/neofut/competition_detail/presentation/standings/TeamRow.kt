@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
-import com.ensegov.neofut.ui.common.LogoLayout
+import com.ensegov.neofut.ui.common.layout.LogoLayout
 
 @Composable
 fun TeamRow(position: PositionUiData) {

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.home.data.remote.competition.dto.Country
-import com.ensegov.neofut.ui.common.LogoLayout
+import com.ensegov.neofut.ui.common.layout.LogoLayout
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable

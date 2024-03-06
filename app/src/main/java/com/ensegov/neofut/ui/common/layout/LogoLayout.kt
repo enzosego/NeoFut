@@ -1,4 +1,4 @@
-package com.ensegov.neofut.ui.common
+package com.ensegov.neofut.ui.common.layout
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

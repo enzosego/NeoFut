@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.PlayerStatsLoadingLayout
-import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiState
+import com.ensegov.neofut.ui.common.model.UiState
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -19,10 +19,10 @@ fun TopScorersLayout(
     val topScorers by viewModel.playerStats.collectAsStateWithLifecycle()
 
     when (topScorers) {
-        is PlayerStatsUiState.Loading -> PlayerStatsLoadingLayout()
-        is PlayerStatsUiState.Success -> TopScorersTable(
-            { (topScorers as PlayerStatsUiState.Success).data }
+        is UiState.Loading -> PlayerStatsLoadingLayout()
+        is UiState.Success -> TopScorersTable(
+            { (topScorers as UiState.Success).data }
         )
-        is PlayerStatsUiState.Error -> TopScorersErrorLayout()
+        is UiState.Error -> TopScorersErrorLayout()
     }
 }

@@ -6,8 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.ui.common.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,7 @@ class FixtureViewModel(
             initialValue = emptyList()
         )
 
-    var currentFixture: FixtureUiState by mutableStateOf(FixtureUiState.Loading)
+    var currentFixture: UiState<List<MatchUiShort>> by mutableStateOf(UiState.Loading)
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -75,27 +76,27 @@ class FixtureViewModel(
                 .getRoundFixture(competitionId, competitionSeason, round)
             currentFixture=
                 try {
-                    FixtureUiState.Success(
+                    UiState.Success(
                         fixture.first().ifEmpty {
                             fixtureRepository
                                 .updateRoundFixture(competitionId, competitionSeason, round)
                         }
                     )
                 } catch (e: Exception) {
-                    FixtureUiState.Error
+                    UiState.Error
                 }
         }
     }
 
     fun onClickPrevious() {
         val newIndex = currentRoundIndex.value.minus(1)
-        currentFixture = FixtureUiState.Loading
+        currentFixture = UiState.Loading
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }
     }
 
     fun onClickNext() {
-        currentFixture = FixtureUiState.Loading
+        currentFixture = UiState.Loading
         val newIndex = currentRoundIndex.value.plus(1)
         getRoundFixture(roundList.value[newIndex])
         currentRoundIndex.update { newIndex }

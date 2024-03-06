@@ -3,7 +3,7 @@ package com.ensegov.neofut.competition_detail.presentation.standings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
+import com.ensegov.neofut.ui.common.model.UiState
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -18,10 +18,10 @@ fun StandingsLayout(
     val standings by viewModel.standings.collectAsStateWithLifecycle()
 
     when(standings) {
-        is StandingsUiState.Loading -> StandingsLoadingLayout()
-        is StandingsUiState.Success -> GroupTable {
-            (standings as StandingsUiState.Success).data
+        is UiState.Loading -> StandingsLoadingLayout()
+        is UiState.Success -> GroupTable {
+            (standings as UiState.Success).data
         }
-        is StandingsUiState.Error -> StandingsErrorLayout()
+        is UiState.Error -> StandingsErrorLayout()
     }
 }

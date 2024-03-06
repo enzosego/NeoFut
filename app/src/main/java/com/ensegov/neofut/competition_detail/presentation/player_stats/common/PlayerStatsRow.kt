@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiData
-import com.ensegov.neofut.ui.common.LogoLayout
-import com.ensegov.neofut.ui.common.PlayerPhotoLayout
+import com.ensegov.neofut.ui.common.layout.LogoLayout
+import com.ensegov.neofut.ui.common.layout.PlayerPhotoLayout
 
 @Composable
 fun PlayerStatsRow(

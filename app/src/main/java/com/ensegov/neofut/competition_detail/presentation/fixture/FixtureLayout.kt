@@ -3,7 +3,7 @@ package com.ensegov.neofut.competition_detail.presentation.fixture
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
+import com.ensegov.neofut.ui.common.model.UiState
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -21,14 +21,14 @@ internal fun FixtureLayout(
     val canShowNext by viewModel.canShowNext.collectAsStateWithLifecycle()
 
     when (currentFixture) {
-        is FixtureUiState.Loading -> FixtureLoadingLayout()
-        is FixtureUiState.Success -> FixtureSuccessLayout(
+        is UiState.Loading -> FixtureLoadingLayout()
+        is UiState.Success -> FixtureSuccessLayout(
             { currentFixture.data },
             { canShowPrevious },
             { canShowNext },
             viewModel::onClickPrevious,
             viewModel::onClickNext
         )
-        is FixtureUiState.Error -> FixtureErrorLayout()
+        is UiState.Error -> FixtureErrorLayout()
     }
 }

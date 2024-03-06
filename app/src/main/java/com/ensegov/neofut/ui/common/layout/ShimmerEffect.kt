@@ -1,4 +1,4 @@
-package com.ensegov.neofut.ui.common
+package com.ensegov.neofut.ui.common.layout
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
