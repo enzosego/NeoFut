@@ -12,8 +12,8 @@ import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
 import com.ensegov.neofut.competition_detail.data.local.fixture.FixtureDao
 import com.ensegov.neofut.competition_detail.data.local.fixture.MatchData
 import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
-import com.ensegov.neofut.competition_detail.data.local.goals.GoalData
-import com.ensegov.neofut.competition_detail.data.local.goals.TopScorerDao
+import com.ensegov.neofut.competition_detail.data.local.top_stats.StatsData
+import com.ensegov.neofut.competition_detail.data.local.top_stats.TopStatsDao
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
 
 @Database(
@@ -26,7 +26,7 @@ import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
         TeamForm::class,
         MatchData::class,
         PlayerData::class,
-        GoalData::class
+        StatsData::class
     ],
     version = 1,
     exportSchema = false
@@ -36,5 +36,5 @@ abstract class NeoFutDatabase : RoomDatabase() {
     abstract val standingsDao: StandingsDao
     abstract val competitionDao: CompetitionDataDao
     abstract val fixtureDao: FixtureDao
-    abstract val topScorerDao: TopScorerDao
+    abstract val topStatsDao: TopStatsDao
 }

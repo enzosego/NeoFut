@@ -11,4 +11,6 @@
     <string name="goals">Goals</string>
     <string name="penalty_goals">Penalty</string>
     <string name="player_photo">Player photo</string>
+    <string name="top_assists">Top assists</string>
+    <string name="assists">Assists</string>
 </resources>

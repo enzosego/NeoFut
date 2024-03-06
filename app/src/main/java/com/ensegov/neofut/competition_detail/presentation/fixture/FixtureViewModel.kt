@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
-import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
+import com.ensegov.neofut.competition_detail.data.repository.CompetitionDetailRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

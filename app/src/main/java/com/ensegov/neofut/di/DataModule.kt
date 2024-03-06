@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.home.data.remote.competition.CompetitionsApi
 import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
-import com.ensegov.neofut.competition_detail.data.remote.goals.TopScorersApi
+import com.ensegov.neofut.competition_detail.data.remote.top_stats.TopStatsApi
 import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
 import io.ktor.client.engine.android.*
 import org.koin.android.ext.koin.androidContext
@@ -20,7 +20,7 @@ val dataModule = module {
     single { CompetitionsApi(get(), logging = true) }
     single { StandingsApi(get(), logging = true) }
     single { FixtureApi(get(), logging = true) }
-    single { TopScorersApi(get(), logging = true) }
+    single { TopStatsApi(get(), logging = true) }
 }
 
 private fun createDatabase(context: Context): NeoFutDatabase =

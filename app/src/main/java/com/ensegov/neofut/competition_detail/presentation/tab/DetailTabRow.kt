@@ -48,13 +48,7 @@ fun DetailTabRow(
                 unselectedContentColor = MaterialTheme.colorScheme.outline,
                 onClick = {
                     scope().launch {
-                        pagerState().animateScrollToPage(
-                            page = index,
-                            animationSpec = spring(
-                                dampingRatio = .75f,
-                                stiffness = 200f
-                            )
-                        )
+                        pagerState().animateScrollToPage(page = index)
                     }
                 }
             ) {
@@ -82,7 +76,8 @@ private fun DetailTabRowPreview() {
     val tabs = listOf(
         CompetitionDetailTab.Fixture(),
         CompetitionDetailTab.Standings(hasCoverage = true),
-        CompetitionDetailTab.Goals(hasCoverage = true)
+        CompetitionDetailTab.Goals(hasCoverage = true),
+        CompetitionDetailTab.Assists(hasCoverage = true)
     )
     NeoFutTheme {
         DetailTabRow(

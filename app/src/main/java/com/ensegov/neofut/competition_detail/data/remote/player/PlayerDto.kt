@@ -1,7 +1,7 @@
 package com.ensegov.neofut.competition_detail.data.remote.player
 
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
-import com.ensegov.neofut.competition_detail.presentation.goals.model.PlayerUiData
+import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerUiData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

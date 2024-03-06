@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
-import com.ensegov.neofut.competition_detail.repository.CompetitionDetailRepository
+import com.ensegov.neofut.competition_detail.data.repository.CompetitionDetailRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

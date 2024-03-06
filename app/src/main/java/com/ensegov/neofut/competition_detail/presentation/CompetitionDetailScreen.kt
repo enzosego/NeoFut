@@ -17,9 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.ensegov.neofut.competition_detail.presentation.fixture.FixtureLayout
-import com.ensegov.neofut.competition_detail.presentation.goals.layout.TopScorersLayout
+import com.ensegov.neofut.competition_detail.presentation.player_stats.goals.TopScorersLayout
 import com.ensegov.neofut.home.presentation.model.Competition
 import com.ensegov.neofut.competition_detail.presentation.model.CompetitionDetailTab
+import com.ensegov.neofut.competition_detail.presentation.player_stats.assists.TopAssistsLayout
 import com.ensegov.neofut.home.presentation.model.getLatestSeason
 import com.ensegov.neofut.competition_detail.presentation.standings.StandingsLayout
 import com.ensegov.neofut.competition_detail.presentation.tab.DetailTabRow
@@ -74,7 +75,10 @@ fun CompetitionDetailScreen(competition: Competition) {
                         competitionId = competition.id,
                         competitionSeason = competition.getLatestSeason()
                     )
-                    is CompetitionDetailTab.Assists -> Text(text = "Assists")
+                    is CompetitionDetailTab.Assists -> TopAssistsLayout(
+                        competitionId = competition.id,
+                        competitionSeason = competition.getLatestSeason()
+                    )
                 }
             }
         }

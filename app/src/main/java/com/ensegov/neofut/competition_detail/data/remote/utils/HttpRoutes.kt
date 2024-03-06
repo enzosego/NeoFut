@@ -17,4 +17,6 @@ object HttpRoutes {
     const val TEAM_REQUEST = "$BASE_URL/teams"
 
     const val TOP_SCORERS_REQUEST = "$BASE_URL/players/topscorers"
+
+    const val TOP_ASSISTS_REQUEST = "$BASE_URL/players/topassists"
 }
