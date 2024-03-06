@@ -36,7 +36,9 @@ fun CompetitionDetailScreen(competition: Competition) {
     val tabs = remember {
         competition.seasons.find { 
             it.year == competition.getLatestSeason()
-        }?.coverageData?.toTabList() ?: emptyList()
+        }?.coverageData?.toTabList()
+            ?.filter { it.hasCoverage }
+            ?: emptyList()
     }
     val pagerState = rememberPagerState(pageCount = { tabs.size })
     val selectedTabIndex = remember { derivedStateOf { pagerState.currentPage } }
