@@ -13,4 +13,5 @@
     <string name="player_photo">Player photo</string>
     <string name="top_assists">Top assists</string>
     <string name="assists">Assists</string>
+    <string name="no_assists_list">There are no available assists stats for this competition at the moment.</string>
 </resources>
