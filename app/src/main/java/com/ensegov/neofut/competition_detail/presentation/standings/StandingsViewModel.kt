@@ -4,13 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.standings.model.StandingsUiState
-import com.ensegov.neofut.competition_detail.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.competition_detail.data.repository.standings.StandingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StandingsViewModel(
-    private val competitionDetailRepository: CompetitionDetailRepository,
+    private val standingsRepository: StandingsRepository,
     private val competitionId: Int,
     private val competitionSeason: Int
 ) : ViewModel() {
@@ -25,12 +25,12 @@ class StandingsViewModel(
     private fun getStandings() {
         standings.update { StandingsUiState.Loading }
         viewModelScope.launch {
-            val newValue = competitionDetailRepository.getStandings(competitionId, competitionSeason)
+            val newValue = standingsRepository.getStandings(competitionId, competitionSeason)
             standings.update {
                 try {
                     StandingsUiState.Success(
                         newValue.ifEmpty {
-                            competitionDetailRepository
+                            standingsRepository
                                 .updateStandings(competitionId, competitionSeason)
                         }
                     )

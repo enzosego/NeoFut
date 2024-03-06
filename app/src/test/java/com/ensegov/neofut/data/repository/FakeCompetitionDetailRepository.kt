@@ -15,12 +15,12 @@ import com.ensegov.neofut.competition_detail.data.remote.standings.dto.GoalStats
 import com.ensegov.neofut.competition_detail.data.remote.standings.dto.TeamPosition
 import com.ensegov.neofut.competition_detail.data.remote.team.Team
 import com.ensegov.neofut.competition_detail.data.remote.team.Venue
-import com.ensegov.neofut.competition_detail.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 
-class FakeCompetitionDetailRepository : CompetitionDetailRepository {
+class FakeCompetitionDetailRepository : FixtureRepository {
 
     /**
      * Standings

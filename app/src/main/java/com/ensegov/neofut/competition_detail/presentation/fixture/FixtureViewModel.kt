@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.FixtureUiState
-import com.ensegov.neofut.competition_detail.data.repository.CompetitionDetailRepository
+import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,12 +20,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FixtureViewModel(
-    private val competitionDetailRepository: CompetitionDetailRepository,
+    private val fixtureRepository: FixtureRepository,
     private val competitionId: Int,
     private val competitionSeason: Int
 ) : ViewModel() {
 
-    private val roundList: StateFlow<List<String>> = competitionDetailRepository
+    private val roundList: StateFlow<List<String>> = fixtureRepository
         .getSeasonFixture(competitionId, competitionSeason)
         .onEach {
             if (it.isEmpty())
@@ -62,7 +62,7 @@ class FixtureViewModel(
     private fun updateSeasonFixture() {
         viewModelScope.launch {
             try {
-                competitionDetailRepository.updateSeasonFixture(competitionId, competitionSeason)
+                fixtureRepository.updateSeasonFixture(competitionId, competitionSeason)
             } catch (e: Exception) {
                 Log.d(TAG, "${e.message}")
             }
@@ -71,13 +71,13 @@ class FixtureViewModel(
 
     private fun getRoundFixture(round: String) {
         viewModelScope.launch {
-            val fixture = competitionDetailRepository
+            val fixture = fixtureRepository
                 .getRoundFixture(competitionId, competitionSeason, round)
             currentFixture=
                 try {
                     FixtureUiState.Success(
                         fixture.first().ifEmpty {
-                            competitionDetailRepository
+                            fixtureRepository
                                 .updateRoundFixture(competitionId, competitionSeason, round)
                         }
                     )

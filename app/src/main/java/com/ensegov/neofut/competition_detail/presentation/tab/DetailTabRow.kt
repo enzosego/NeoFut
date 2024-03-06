@@ -1,6 +1,5 @@
 package com.ensegov.neofut.competition_detail.presentation.tab
 
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,9 +38,7 @@ fun DetailTabRow(
         selectedTabIndex = selectedTabIndex().value,
         modifier = modifier.fillMaxWidth()
     ) {
-        for ((index, currentTab) in tabs().withIndex()) {
-            if (!currentTab.hasCoverage)
-                continue
+        tabs().forEachIndexed { index, tab ->
             Tab(
                 selected = selectedTabIndex().value == index,
                 selectedContentColor = MaterialTheme.colorScheme.primary,
@@ -55,9 +52,12 @@ fun DetailTabRow(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = currentTab.title)
+                    Text(text = tab.title)
                     Icon(
-                        imageVector = currentTab.selectedIcon,
+                        imageVector = if (index == selectedTabIndex().value)
+                            tab.selectedIcon
+                        else
+                            tab.unselectedIcon,
                         contentDescription = null,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
