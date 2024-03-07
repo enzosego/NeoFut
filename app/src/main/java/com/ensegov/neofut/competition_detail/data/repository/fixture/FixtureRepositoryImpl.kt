@@ -26,7 +26,7 @@ class FixtureRepositoryImpl(
                 name = it
             ) }
         withContext(ioDispatcher) {
-            database.fixtureDao.insertAllRounds(*newValue.toTypedArray())
+            database.fixtureDao.insertAllRounds(newValue)
         }
     }
 
@@ -42,8 +42,7 @@ class FixtureRepositoryImpl(
         teams.addAll(response.map { it.awayTeam })
 
         withContext(ioDispatcher) {
-            database.fixtureDao.insertAllMatches(*matches.toTypedArray())
-            database.fixtureDao.insertAllTeams(*teams.toTypedArray())
+            database.fixtureDao.insertTeamsAndMatches(matches, teams)
         }
         return response.map { it.asShortUiModel() }
     }

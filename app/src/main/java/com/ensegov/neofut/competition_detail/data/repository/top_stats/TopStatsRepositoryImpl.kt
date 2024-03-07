@@ -97,15 +97,14 @@ class TopStatsRepositoryImpl(
         competitionId: Int,
         season: Int
     ) {
-        val goalStats = statsList.map {
+        val stats = statsList.map {
             it.statistics[0].asDatabaseModel(it.player.id ,competitionId, season, type)
         }
         val players = statsList.map {
             it.player.asDatabaseModel(it.statistics[0].team.id)
         }
         withContext(ioDispatcher) {
-            database.topStatsDao.insertGoalData(*goalStats.toTypedArray())
-            database.topStatsDao.insertPlayerData(*players.toTypedArray())
+            database.topStatsDao.insertStatsAndPlayerData(stats, players)
         }
     }
 }

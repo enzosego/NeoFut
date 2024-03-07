@@ -12,20 +12,26 @@ import kotlinx.coroutines.flow.Flow
 interface FixtureDao {
 
     @Insert
-    fun insertAllRounds(vararg round: RoundName)
+    fun insertAllRounds(roundList: List<RoundName>)
 
     @Query("SELECT name FROM round " +
             "WHERE :id = competition_id AND :season = season")
     fun getSeasonRounds(id: Int, season: Int): Flow<List<String>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllMatches(vararg matchData: MatchData)
+    fun insertAllMatches(matchList: List<MatchData>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllTeams(vararg teamInfo: TeamInfo)
+    fun insertAllTeams(teamList: List<TeamInfo>)
 
     @Transaction
     @Query("SELECT * FROM match_data " +
             "WHERE :id = competition_id AND :season = season AND :round = round")
     fun getMatchFixture(id: Int, season: Int, round: String): Flow<List<SimpleMatchFixture>>
+
+    @Transaction
+    suspend fun insertTeamsAndMatches(matchList: List<MatchData>, teamList: List<TeamInfo>) {
+        insertAllMatches(matchList)
+        insertAllTeams(teamList)
+    }
 }

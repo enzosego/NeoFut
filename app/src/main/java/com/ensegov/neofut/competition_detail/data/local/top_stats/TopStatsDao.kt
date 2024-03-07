@@ -21,8 +21,14 @@ interface TopStatsDao {
     fun getTopAssists(competitionId: Int, season: Int): List<TopStatsData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGoalData(vararg goalData: StatsData)
+    fun insertStatsData(statList: List<StatsData>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlayerData(vararg playerData: PlayerData)
+    fun insertPlayerData(playerList: List<PlayerData>)
+
+    @Transaction
+    suspend fun insertStatsAndPlayerData(statList: List<StatsData>, playerList: List<PlayerData>) {
+        insertStatsData(statList)
+        insertPlayerData(playerList)
+    }
 }

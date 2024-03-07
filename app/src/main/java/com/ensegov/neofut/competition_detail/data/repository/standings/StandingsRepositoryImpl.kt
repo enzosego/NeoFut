@@ -19,30 +19,28 @@ class StandingsRepositoryImpl(
     override suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup> {
         val response = standingsApi.getCurrentStandings(id, season)
 
-        val positions = response.map { list ->
+        val positions = response.flatMap { list ->
             list.map {
                 it.asDatabaseModel(id, season)
             }
-        }.flatten()
-        val teams = response.map { list ->
+        }
+        val teams = response.flatMap { list ->
             list.map {
                 it.team.asDatabaseModel()
             }
-        }.flatten()
-        val teamForms = response.map { list ->
-            list.map {
+        }
+        val teamForms = response.flatMap { list ->
+            list.flatMap {
                 listOf(
                     it.allMatches.asDatabaseModel(variation = "all", it.team.id, id),
                     it.homeMatches.asDatabaseModel(variation = "home", it.team.id, id),
                     it.awayMatches.asDatabaseModel(variation = "away", it.team.id, id)
                 )
             }
-        }.flatten().flatten()
+        }
 
         withContext(ioDispatcher) {
-            database.standingsDao.insertPositions(*positions.toTypedArray())
-            database.standingsDao.insertTeams(*teams.toTypedArray())
-            database.standingsDao.insertTeamForms(*teamForms.toTypedArray())
+            database.standingsDao.insertStandingsData(positions, teams, teamForms)
         }
         return response.map { list ->
             CompetitionGroup(

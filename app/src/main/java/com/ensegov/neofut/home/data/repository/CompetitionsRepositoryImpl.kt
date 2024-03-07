@@ -1,6 +1,5 @@
 package com.ensegov.neofut.home.data.repository
 
-import android.util.Log
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.home.data.local.model.asUiModel
 import com.ensegov.neofut.home.data.remote.competition.CompetitionsApi
@@ -19,19 +18,15 @@ class CompetitionsRepositoryImpl(
 
     override suspend fun fetchAllCompetitions(countryName: String): List<Competition> {
         val result = competitionsApi.getCountryCompetitions(countryName)
-        val newList = result
-            .map {
-                Log.d("CompetitionsRepository", "${it.info.id}")
-                it.asDatabaseModel()
-            }
-        val seasons = result.map { competition ->
+        val competitions = result
+            .map { it.asDatabaseModel() }
+        val seasons = result.flatMap { competition ->
             competition.seasons.map { season ->
                 season.asDatabaseModel(competition.info.id)
             }
-        }.flatten()
+        }
         withContext(ioDispatcher) {
-            database.competitionDao.insertAllCompetitions(*newList.toTypedArray())
-            database.competitionDao.insertAllSeasons(*seasons.toTypedArray())
+            database.competitionDao.insertCompetitionWithSeasons(competitions, seasons)
         }
         return result.map {
             it.asUiModel()

@@ -3,6 +3,7 @@ package com.ensegov.neofut.home.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.ensegov.neofut.home.data.local.model.CompetitionData
 import com.ensegov.neofut.home.data.local.model.SeasonData
@@ -15,8 +16,17 @@ interface CompetitionDataDao {
     fun getAll(): Map<CompetitionData, List<SeasonData>>
 
     @Upsert
-    fun insertAllCompetitions(vararg competitionData: CompetitionData)
+    fun insertAllCompetitions(competitionData: List<CompetitionData>)
 
     @Insert
-    fun insertAllSeasons(vararg seasonData: SeasonData)
+    fun insertAllSeasons(seasonData: List<SeasonData>)
+
+    @Transaction
+    suspend fun insertCompetitionWithSeasons(
+        competitionList: List<CompetitionData>,
+        seasonList: List<SeasonData>
+    ) {
+        insertAllCompetitions(competitionList)
+        insertAllSeasons(seasonList)
+    }
 }
