@@ -17,8 +17,7 @@ class StandingsRepositoryImpl(
 ) : StandingsRepository {
 
     override suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup> {
-        val response = standingsApi.getCurrentStandings(id, season).asDatabaseModel()
-            ?: return emptyList()
+        val response = standingsApi.getCurrentStandings(id, season)
 
         val positions = response.map { list ->
             list.map {

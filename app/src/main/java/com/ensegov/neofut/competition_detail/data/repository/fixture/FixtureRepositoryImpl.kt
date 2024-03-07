@@ -19,7 +19,7 @@ class FixtureRepositoryImpl(
 ) : FixtureRepository {
 
     override suspend fun updateSeasonFixture(id: Int, season: Int) {
-        val newValue = fixtureDataSource.getRounds(id, season).roundList
+        val newValue = fixtureDataSource.getRounds(id, season)
             .map { RoundName(
                 competitionId = id,
                 season = season,
@@ -34,7 +34,7 @@ class FixtureRepositoryImpl(
         database.fixtureDao.getSeasonRounds(id, season)
 
     override suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchUiShort> {
-        val response = fixtureDataSource.getFixture(id, season, round).fixture
+        val response = fixtureDataSource.getFixture(id, season, round)
             .mapNotNull { it.asDatabaseModel(id, season, round) }
         val matches = response.map { it.data }
         val teams = mutableListOf<TeamInfo>()

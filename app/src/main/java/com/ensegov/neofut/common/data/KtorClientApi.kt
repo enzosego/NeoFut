@@ -5,6 +5,9 @@ import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
@@ -13,7 +16,7 @@ open class KtorClientApi(
     logging: Boolean = false,
     tag: String = "api_call"
 ) {
-    val client = HttpClient(engine) {
+    private val client = HttpClient(engine) {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
@@ -27,4 +30,10 @@ open class KtorClientApi(
                 }
             }
     }
+
+    suspend fun request(url: String): HttpResponse =
+        client.get(url) {
+            header("x-rapidapi-key", HttpRoutes.API_TOKEN)
+            header("x-rapidapi-host", HttpRoutes.API_HOST)
+        }
 }

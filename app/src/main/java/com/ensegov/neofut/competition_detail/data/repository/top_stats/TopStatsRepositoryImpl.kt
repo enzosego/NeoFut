@@ -40,7 +40,7 @@ class TopStatsRepositoryImpl(
         competitionId: Int,
         season: Int
     ): List<PlayerStatsUiData> {
-        val response = topStatsApi.getTopScorers(competitionId, season).response
+        val response = topStatsApi.getTopScorers(competitionId, season)
         updateStats(response, type = "goals", competitionId, season)
 
         return response
@@ -77,7 +77,7 @@ class TopStatsRepositoryImpl(
         competitionId: Int,
         season: Int
     ): List<PlayerStatsUiData> {
-        val response = topStatsApi.getTopAssists(competitionId, season).response
+        val response = topStatsApi.getTopAssists(competitionId, season)
         updateStats(response, type = "assists", competitionId, season)
 
         return response

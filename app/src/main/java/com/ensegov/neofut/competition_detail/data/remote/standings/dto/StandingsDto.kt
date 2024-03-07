@@ -6,11 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StandingsDto(
     @SerialName("response")
-    val responseItem: List<StandingsResponseItem>,
+    val itemList: List<StandingsResponseItem>,
 )
-
-fun StandingsDto.asDatabaseModel(): List<List<TeamPosition>>? =
-    if (responseItem.isEmpty())
-        null
-    else
-        responseItem[0].competitionStandingsDto.groupList
