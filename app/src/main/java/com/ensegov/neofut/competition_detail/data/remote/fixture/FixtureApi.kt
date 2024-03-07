@@ -2,22 +2,16 @@ package com.ensegov.neofut.competition_detail.data.remote.fixture
 
 import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.FixtureResponse
 import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.SeasonRounds
-import com.ensegov.neofut.competition_detail.data.remote.utils.HttpRoutes
-import com.ensegov.neofut.competition_detail.data.remote.utils.KtorClientBuilder
-import com.ensegov.neofut.competition_detail.data.remote.utils.getWithToken
+import com.ensegov.neofut.common.data.HttpRoutes
+import com.ensegov.neofut.common.data.KtorClientApi
+import com.ensegov.neofut.common.data.getWithToken
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
 
 class FixtureApi(
     engine: HttpClientEngine,
     logging: Boolean = true
-) {
-
-    private val client = KtorClientBuilder(
-        engine,
-        logging,
-        tag = "api_call_fixture"
-    ).client
+) : KtorClientApi(engine, logging, tag = "api_call_fixture") {
 
     suspend fun getRounds(leagueId: Int, season: Int): SeasonRounds =
         client.getWithToken(

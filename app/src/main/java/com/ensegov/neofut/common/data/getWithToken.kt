@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.remote.utils
+package com.ensegov.neofut.common.data
 
 import io.ktor.client.*
 import io.ktor.client.request.*
