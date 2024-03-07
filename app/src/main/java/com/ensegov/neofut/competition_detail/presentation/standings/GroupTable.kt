@@ -27,8 +27,7 @@ fun GroupTable(
 ) {
 
     LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         standings().forEach { group ->
             item {
@@ -37,7 +36,9 @@ fun GroupTable(
                     color = Color.Blue,
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
                 )
             }
             item {
