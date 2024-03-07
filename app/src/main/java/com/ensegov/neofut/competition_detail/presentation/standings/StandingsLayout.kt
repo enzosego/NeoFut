@@ -19,9 +19,9 @@ fun StandingsLayout(
 
     when(standings) {
         is UiState.Loading -> StandingsLoadingLayout()
-        is UiState.Success -> GroupTable {
-            (standings as UiState.Success).data
-        }
+        is UiState.Success -> GroupTable(
+            { (standings as UiState.Success).data }
+        )
         is UiState.Error -> StandingsErrorLayout()
     }
 }

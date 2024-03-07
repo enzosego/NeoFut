@@ -29,22 +29,21 @@ fun TeamRow(position: PositionUiData) {
     ) {
         Text(
             text = "${position.position}",
-            fontSize = 23.sp,
+            fontSize = 20.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .width(40.dp)
+            modifier = Modifier.weight(.1f)
         )
         Row(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(200.dp),
+                .weight(.7f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             LogoLayout(
                 logoUrl = position.teamLogo,
                 modifier = Modifier
                     .height(35.dp)
-                    .weight(.25f)
+                    .weight(.2f)
             )
             Text(
                 text = position.team,
@@ -55,17 +54,17 @@ fun TeamRow(position: PositionUiData) {
         }
         Text(
             text = "${position.points}",
-            fontSize = 23.sp,
+            fontSize = 16.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .width(45.dp)
+                .weight(.1f)
                 .padding(start = 8.dp)
         )
         Text(
             text = "${position.goalsDiff}",
-            fontSize = 23.sp,
+            fontSize = 16.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.width(45.dp)
+            modifier = Modifier.weight(.1f)
         )
     }
 }
@@ -79,7 +78,7 @@ fun TeamRowPreview() {
             teamLogo = "",
             position =  10,
             points = 53,
-            goalsDiff = 24,
+            goalsDiff = -24,
             form = null,
             status = null,
             description = null

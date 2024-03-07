@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -22,9 +21,15 @@ import com.ensegov.neofut.competition_detail.presentation.standings.model.Positi
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable
-internal fun GroupTable(standings: () -> List<CompetitionGroup>) {
+fun GroupTable(
+    standings: () -> List<CompetitionGroup>,
+    modifier: Modifier = Modifier
+) {
 
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
         standings().forEach { group ->
             item {
                 Text(
@@ -45,22 +50,22 @@ internal fun GroupTable(standings: () -> List<CompetitionGroup>) {
                     Text(
                         text = stringResource(R.string.team_position),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.width(40.dp)
+                        modifier = Modifier.weight(.1f)
                     )
                     Text(
                         text = stringResource(R.string.team_name),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.width(200.dp)
+                        modifier = Modifier.weight(.7f)
                     )
                     Text(
                         text = stringResource(R.string.team_points),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.width(45.dp)
+                        modifier = Modifier.weight(.1f)
                     )
                     Text(
                         text = stringResource(R.string.goal_diff),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.width(45.dp)
+                        modifier = Modifier.weight(.1f)
                     )
                 }
             }
@@ -92,6 +97,6 @@ private fun GroupTablePreview() {
         )
     }
     NeoFutTheme {
-        GroupTable { mockData }
+        GroupTable({ mockData })
     }
 }
