@@ -6,7 +6,7 @@ import io.ktor.util.date.getTimeMillis
 
 @Entity(
     tableName = "update_time",
-    primaryKeys = ["type", "competition_id", "season"]
+    primaryKeys = ["type", "competition_id", "season", "round_name"]
 )
 data class UpdateTimeData(
     @ColumnInfo(name = "type")
@@ -15,6 +15,8 @@ data class UpdateTimeData(
     val competitionId: Int,
     @ColumnInfo(name = "season")
     val season: Int,
+    @ColumnInfo(name = "round_name")
+    val roundName: String = "",
     @ColumnInfo(name = "time")
     val time: Long
 )

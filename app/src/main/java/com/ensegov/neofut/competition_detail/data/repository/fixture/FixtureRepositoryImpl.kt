@@ -70,6 +70,7 @@ class FixtureRepositoryImpl(
                 type = "round_fixture",
                 competitionId = id,
                 season = season,
+                roundName = round,
                 time = getTimeMillis(),
             )
         )
@@ -96,11 +97,13 @@ class FixtureRepositoryImpl(
 
     override suspend fun canUpdateRoundFixture(
         id: Int,
-        season: Int
+        season: Int,
+        round: String
     ): Boolean = withContext(ioDispatcher) {
         val timeDiff = database.updateTimeDao.getLastUpdateTime(
             type = "round_fixture",
             competitionId = id,
+            roundName = round,
             season = season
         )?.getTimeDiffInHours()
         timeDiff == null || timeDiff >= 24

@@ -84,7 +84,9 @@ class FixtureViewModel(
     private fun updateRoundFixture(round: String) {
         viewModelScope.launch {
             currentFixture =
-                if (fixtureRepository.canUpdateRoundFixture(competitionId, competitionSeason))
+                if (fixtureRepository
+                    .canUpdateRoundFixture(competitionId, competitionSeason, round)
+                )
                     try {
                         UiState.Success(
                             fixtureRepository

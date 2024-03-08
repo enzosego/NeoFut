@@ -11,6 +11,12 @@ interface UpdateTimeDao {
     fun insertTime(timeData: UpdateTimeData)
 
     @Query("SELECT * FROM update_time " +
-            "WHERE :type = type AND :competitionId = competition_id AND :season = season")
-    fun getLastUpdateTime(type: String, competitionId: Int, season: Int): UpdateTimeData?
+            "WHERE :type = type AND :competitionId = competition_id AND :season = season " +
+            "AND :roundName = round_name")
+    fun getLastUpdateTime(
+        type: String,
+        competitionId: Int,
+        season: Int,
+        roundName: String = ""
+    ): UpdateTimeData?
 }

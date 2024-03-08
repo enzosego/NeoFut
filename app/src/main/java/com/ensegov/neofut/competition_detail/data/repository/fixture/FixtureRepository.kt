@@ -15,5 +15,5 @@ interface FixtureRepository {
 
     suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean
 
-    suspend fun canUpdateRoundFixture(id: Int, season: Int): Boolean
+    suspend fun canUpdateRoundFixture(id: Int, season: Int, round: String): Boolean
 }
