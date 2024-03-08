@@ -35,18 +35,22 @@ class TopScorersViewModel(
     }
 
     private fun updateTopScorers() = viewModelScope.launch {
-        if (topStatsRepository.canUpdateTopScorers(competitionId, competitionSeason))
-            try {
-                _playerStats.update {
+        _playerStats.update {
+            if (topStatsRepository.canUpdateTopScorers(competitionId, competitionSeason))
+                try {
                     UiState.Success(
                         topStatsRepository
                             .updateTopScorers(competitionId, competitionSeason)
                     )
+                } catch (e: Exception) {
+                    Log.d(TAG, "${e.message}")
+                    UiState.Error
                 }
-            } catch (e: Exception) {
-                _playerStats.update { UiState.Error }
-                Log.d(TAG, "${e.message}")
-            }
+            else if (_playerStats.value is UiState.Loading)
+                UiState.Success(emptyList())
+            else
+                _playerStats.value
+        }
     }
 
     companion object {

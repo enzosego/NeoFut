@@ -33,17 +33,21 @@ class StandingsViewModel(
     }
 
     private fun updateStandings() = viewModelScope.launch {
-        if (standingsRepository.canUpdateStandings(competitionId, competitionSeason))
-            try {
-                standings.update {
+        standings.update {
+            if (standingsRepository.canUpdateStandings(competitionId, competitionSeason))
+                try {
                     UiState.Success(
                         standingsRepository.updateStandings(competitionId, competitionSeason)
                     )
+                } catch (e: Exception) {
+                    Log.d(TAG, "${e.message}")
+                    UiState.Error
                 }
-            } catch (e: Exception) {
-                standings.update { UiState.Error }
-                Log.d(TAG, "${e.message}")
-            }
+            else if (standings.value is UiState.Loading)
+                UiState.Success(emptyList())
+            else
+                standings.value
+        }
     }
 
     companion object {

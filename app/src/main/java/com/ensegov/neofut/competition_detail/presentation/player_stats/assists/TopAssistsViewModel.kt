@@ -40,18 +40,22 @@ class TopAssistsViewModel(
     }
 
     private fun updateTopAssists() = viewModelScope.launch {
-        if (topStatsRepository.canUpdateTopAssists(competitionId, competitionSeason))
-            try {
-                _playerStats.update {
+        _playerStats.update {
+            if (topStatsRepository.canUpdateTopAssists(competitionId, competitionSeason))
+                try {
                     UiState.Success(
                         topStatsRepository
                             .updateTopAssists(competitionId, competitionSeason)
                     )
+                } catch (e: Exception) {
+                    Log.d(TAG, "${e.message}")
+                    UiState.Error
                 }
-            } catch (e: Exception) {
-                _playerStats.update { UiState.Error }
-                Log.d(TAG, "${e.message}")
-            }
+            else if (_playerStats.value is UiState.Loading)
+                UiState.Success(emptyList())
+            else
+                _playerStats.value
+        }
     }
 
     companion object {

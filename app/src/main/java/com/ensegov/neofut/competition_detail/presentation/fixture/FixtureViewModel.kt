@@ -83,16 +83,21 @@ class FixtureViewModel(
 
     private fun updateRoundFixture(round: String) {
         viewModelScope.launch {
-            if (fixtureRepository.canUpdateRoundFixture(competitionId, competitionSeason))
-                try {
-                    currentFixture = UiState.Success(
-                        fixtureRepository
-                            .updateRoundFixture(competitionId, competitionSeason, round)
-                    )
-                } catch (e: Exception) {
-                    currentFixture = UiState.Error
-                    Log.d(TAG, "${e.message}")
-                }
+            currentFixture =
+                if (fixtureRepository.canUpdateRoundFixture(competitionId, competitionSeason))
+                    try {
+                        UiState.Success(
+                            fixtureRepository
+                                .updateRoundFixture(competitionId, competitionSeason, round)
+                        )
+                    } catch (e: Exception) {
+                        Log.d(TAG, "${e.message}")
+                        UiState.Error
+                    }
+                else if (currentFixture is UiState.Loading)
+                    UiState.Success(emptyList())
+                else
+                    currentFixture
         }
     }
 
