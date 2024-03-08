@@ -26,24 +26,29 @@ class TopScorersViewModel(
     }
 
     private fun getTopScorers() {
-        _playerStats.update { UiState.Loading }
         viewModelScope.launch {
             val newValue = topStatsRepository.getTopScorers(competitionId, competitionSeason)
-            _playerStats.update {
-                try {
-                    UiState.Success(
-                        newValue.ifEmpty {
-                            topStatsRepository
-                                .getTopScorersFromNetwork(competitionId, competitionSeason)
-                        }
-                    )
-                } catch (e: Exception) {
-                    Log.d(TAG, "${e.message}")
-                    UiState.Error
-                }
-            }
+            if (newValue.isNotEmpty())
+                _playerStats.update { UiState.Success(newValue) }
+            updateTopScorers()
         }
     }
+
+    private fun updateTopScorers() = viewModelScope.launch {
+        if (topStatsRepository.canUpdateTopScorers(competitionId, competitionSeason))
+            try {
+                _playerStats.update {
+                    UiState.Success(
+                        topStatsRepository
+                            .updateTopScorers(competitionId, competitionSeason)
+                    )
+                }
+            } catch (e: Exception) {
+                _playerStats.update { UiState.Error }
+                Log.d(TAG, "${e.message}")
+            }
+    }
+
     companion object {
         const val TAG = "TopScorersViewModel"
     }

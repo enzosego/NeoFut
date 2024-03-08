@@ -22,27 +22,36 @@ class TopAssistsViewModel(
     val playerStats: StateFlow<UiState<List<PlayerStatsUiData>>> = _playerStats
 
     init {
-        getTopScorers()
+        getTopAssists()
     }
 
-    private fun getTopScorers() {
+    private fun getTopAssists() {
         _playerStats.update { UiState.Loading }
         viewModelScope.launch {
             val newValue = topStatsRepository.getTopAssists(competitionId, competitionSeason)
-            _playerStats.update {
-                try {
+            if (newValue.isNotEmpty())
+                _playerStats.update {
                     UiState.Success(
-                        newValue.ifEmpty {
-                            topStatsRepository
-                                .getTopAssistsFromNetwork(competitionId, competitionSeason)
-                        }
+                        newValue
                     )
-                } catch (e: Exception) {
-                    Log.d(TAG, "${e.message}")
-                    UiState.Error
                 }
-            }
+            updateTopAssists()
         }
+    }
+
+    private fun updateTopAssists() = viewModelScope.launch {
+        if (topStatsRepository.canUpdateTopAssists(competitionId, competitionSeason))
+            try {
+                _playerStats.update {
+                    UiState.Success(
+                        topStatsRepository
+                            .updateTopAssists(competitionId, competitionSeason)
+                    )
+                }
+            } catch (e: Exception) {
+                _playerStats.update { UiState.Error }
+                Log.d(TAG, "${e.message}")
+            }
     }
 
     companion object {

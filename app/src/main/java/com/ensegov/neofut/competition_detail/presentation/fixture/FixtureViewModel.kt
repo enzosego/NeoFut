@@ -28,12 +28,7 @@ class FixtureViewModel(
 
     private val roundList: StateFlow<List<String>> = fixtureRepository
         .getSeasonFixture(competitionId, competitionSeason)
-        .onEach {
-            if (it.isEmpty())
-                updateSeasonFixture()
-            else
-                getRoundFixture(it[0])
-        }
+        .onEach { if (it.isNotEmpty()) getRoundFixture(it[0]) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -60,13 +55,19 @@ class FixtureViewModel(
             initialValue = true
         )
 
+    init {
+        updateSeasonFixture()
+    }
+
     private fun updateSeasonFixture() {
         viewModelScope.launch {
-            try {
-                fixtureRepository.updateSeasonFixture(competitionId, competitionSeason)
-            } catch (e: Exception) {
-                Log.d(TAG, "${e.message}")
-            }
+            if (fixtureRepository.canUpdateSeasonRounds(competitionId, competitionSeason))
+                try {
+                    fixtureRepository
+                        .updateSeasonFixture(competitionId, competitionSeason)
+                } catch (e: Exception) {
+                    Log.d(TAG, "${e.message}")
+                }
         }
     }
 
@@ -74,16 +75,23 @@ class FixtureViewModel(
         viewModelScope.launch {
             val fixture = fixtureRepository
                 .getRoundFixture(competitionId, competitionSeason, round)
-            currentFixture=
+            if (fixture.first().isNotEmpty())
+                currentFixture = UiState.Success(fixture.first())
+            updateRoundFixture(round)
+        }
+    }
+
+    private fun updateRoundFixture(round: String) {
+        viewModelScope.launch {
+            if (fixtureRepository.canUpdateRoundFixture(competitionId, competitionSeason))
                 try {
-                    UiState.Success(
-                        fixture.first().ifEmpty {
-                            fixtureRepository
-                                .updateRoundFixture(competitionId, competitionSeason, round)
-                        }
+                    currentFixture = UiState.Success(
+                        fixtureRepository
+                            .updateRoundFixture(competitionId, competitionSeason, round)
                     )
                 } catch (e: Exception) {
-                    UiState.Error
+                    currentFixture = UiState.Error
+                    Log.d(TAG, "${e.message}")
                 }
         }
     }

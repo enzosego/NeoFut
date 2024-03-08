@@ -12,4 +12,8 @@ interface FixtureRepository {
     suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchUiShort>
 
     fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchUiShort>>
+
+    suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean
+
+    suspend fun canUpdateRoundFixture(id: Int, season: Int): Boolean
 }

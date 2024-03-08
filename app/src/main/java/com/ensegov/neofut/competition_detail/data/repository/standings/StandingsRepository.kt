@@ -7,4 +7,6 @@ interface StandingsRepository {
     suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup>
 
     suspend fun getStandings(id: Int, season: Int): List<CompetitionGroup>
+
+    suspend fun canUpdateStandings(id: Int, season: Int): Boolean
 }

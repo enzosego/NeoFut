@@ -24,26 +24,29 @@ class StandingsViewModel(
     }
 
     private fun getStandings() {
-        standings.update { UiState.Loading }
         viewModelScope.launch {
             val newValue = standingsRepository.getStandings(competitionId, competitionSeason)
-            standings.update {
-                try {
-                    UiState.Success(
-                        newValue.ifEmpty {
-                            standingsRepository
-                                .updateStandings(competitionId, competitionSeason)
-                        }
-                    )
-                } catch (e: Exception) {
-                    Log.d(TAG, "${e.message}")
-                    UiState.Error
-                }
-            }
+            if (newValue.isNotEmpty())
+                standings.update { UiState.Success(newValue) }
+            updateStandings()
         }
     }
 
+    private fun updateStandings() = viewModelScope.launch {
+        if (standingsRepository.canUpdateStandings(competitionId, competitionSeason))
+            try {
+                standings.update {
+                    UiState.Success(
+                        standingsRepository.updateStandings(competitionId, competitionSeason)
+                    )
+                }
+            } catch (e: Exception) {
+                standings.update { UiState.Error }
+                Log.d(TAG, "${e.message}")
+            }
+    }
+
     companion object {
-        private const val TAG = "CompetitionDetailViewModel"
+        private const val TAG = "StandingsViewModel"
     }
 }
