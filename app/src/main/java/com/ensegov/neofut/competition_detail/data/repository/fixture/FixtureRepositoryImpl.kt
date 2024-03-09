@@ -3,17 +3,18 @@ package com.ensegov.neofut.competition_detail.data.repository.fixture
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
 import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.competition_detail.data.local.fixture.SimpleMatchFixture
 import com.ensegov.neofut.competition_detail.data.local.fixture.asShortUiModel
+import com.ensegov.neofut.competition_detail.data.local.fixture.getDate
 import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.asDatabaseModel
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInDays
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInHours
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class FixtureRepositoryImpl(
@@ -55,7 +56,7 @@ class FixtureRepositoryImpl(
         id: Int,
         season: Int,
         round: String
-    ): List<MatchUiShort> = withContext(ioDispatcher) {
+    ): List<MatchDay> = withContext(ioDispatcher) {
 
         val response = fixtureDataSource.getFixture(id, season, round)
             .mapNotNull { it.asDatabaseModel(id, season, round) }
@@ -74,14 +75,17 @@ class FixtureRepositoryImpl(
                 time = getTimeMillis(),
             )
         )
-        response.map { it.asShortUiModel() }
+        response.sortToUiModel()
     }
 
-    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchUiShort>> =
-            database.fixtureDao.getMatchFixture(id, season, round)
-                .map { list ->
-                    list.map { it.asShortUiModel() }
-                }
+    override suspend fun getRoundFixture(
+        id: Int,
+        season: Int,
+        round: String
+    ): List<MatchDay> = withContext(ioDispatcher) {
+        database.fixtureDao.getMatchFixture(id, season, round)
+            .sortToUiModel()
+    }
 
     override suspend fun canUpdateSeasonRounds(
         id: Int,
@@ -109,3 +113,18 @@ class FixtureRepositoryImpl(
         timeDiff == null || timeDiff >= 24
     }
 }
+
+private fun List<SimpleMatchFixture>.sortToUiModel(): List<MatchDay> =
+    this.groupBy { Pair(it.data.getDate().year, it.data.getDate().dayOfYear) }
+        .toSortedMap(compareBy<Pair<Int, Int>> { it.first }.thenBy { it.second })
+        .map { (_, list) ->
+            val date = list[0].data.getDate()
+            MatchDay(
+                date = "${date.dayOfWeek} ${date.month} ${date.dayOfMonth}",
+                matchList = list.sortedWith(
+                    compareBy<SimpleMatchFixture> { it.data.getDate().dayOfMonth }
+                        .thenBy { it.data.getDate().year }
+                )
+                    .map { it.asShortUiModel() }
+            )
+        }

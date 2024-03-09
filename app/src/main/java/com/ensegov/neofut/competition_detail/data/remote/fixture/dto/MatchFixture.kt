@@ -9,6 +9,9 @@ import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match.Match
 import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 @Serializable
 data class MatchFixture(
@@ -26,10 +29,11 @@ fun MatchFixture.asDatabaseModel(competitionId: Int, season: Int, round: String)
     else
         SimpleMatchFixture(
             data = MatchData(
-                info.id,
-                competitionId,
-                season,
-                round,
+                id = info.id,
+                competitionId = competitionId,
+                season = season,
+                round = round,
+                date = info.date.toTimeInMillis(),
                 currentScore.home,
                 currentScore.away,
                 info.status.long,
@@ -41,3 +45,12 @@ fun MatchFixture.asDatabaseModel(competitionId: Int, season: Int, round: String)
             homeTeam = teams.home.asDatabaseModel(),
             awayTeam = teams.away.asDatabaseModel(),
         )
+
+private fun String.toTimeInMillis(
+    dateFormat: String = "yyyy-MM-dd'T'HH:mm:ss",
+    timeZone: TimeZone = TimeZone.getTimeZone("UTC")
+): Long {
+    val parser = SimpleDateFormat(dateFormat, Locale.getDefault())
+    parser.timeZone = timeZone
+    return parser.parse(this)!!.time
+}

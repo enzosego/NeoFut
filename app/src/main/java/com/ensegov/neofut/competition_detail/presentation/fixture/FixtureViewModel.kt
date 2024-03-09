@@ -7,13 +7,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import com.ensegov.neofut.common.presentation.model.UiState
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -35,7 +34,7 @@ class FixtureViewModel(
             initialValue = emptyList()
         )
 
-    var currentFixture: UiState<List<MatchUiShort>> by mutableStateOf(UiState.Loading)
+    var currentFixture: UiState<List<MatchDay>> by mutableStateOf(UiState.Loading)
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -75,8 +74,8 @@ class FixtureViewModel(
         viewModelScope.launch {
             val fixture = fixtureRepository
                 .getRoundFixture(competitionId, competitionSeason, round)
-            if (fixture.first().isNotEmpty())
-                currentFixture = UiState.Success(fixture.first())
+            if (fixture.isNotEmpty())
+                currentFixture = UiState.Success(fixture)
             updateRoundFixture(round)
         }
     }

@@ -27,7 +27,7 @@ interface FixtureDao {
     @Transaction
     @Query("SELECT * FROM match_data " +
             "WHERE :id = competition_id AND :season = season AND :round = round")
-    fun getMatchFixture(id: Int, season: Int, round: String): Flow<List<SimpleMatchFixture>>
+    fun getMatchFixture(id: Int, season: Int, round: String): List<SimpleMatchFixture>
 
     @Transaction
     suspend fun insertTeamsAndMatches(matchList: List<MatchData>, teamList: List<TeamInfo>) {

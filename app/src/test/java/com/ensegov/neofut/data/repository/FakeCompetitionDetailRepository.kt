@@ -128,7 +128,7 @@ class FakeCompetitionDetailRepository : FixtureRepository {
         fakeMatchFixtureDatabase.update { it + newFixture }
     }
 
-    override fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixture?> =
+    override suspend fun getRoundFixture(id: Int, season: Int, round: String): Flow<RoundFixture?> =
         callbackFlow {
             fakeMatchFixtureDatabase.collectValue(Dispatchers.Main) { newData ->
                 send(

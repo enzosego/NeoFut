@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
+import java.time.Instant
+import java.time.LocalDateTime
+import java.util.TimeZone
 
 @Entity(tableName = "match_data")
 data class MatchData(
@@ -15,6 +18,8 @@ data class MatchData(
     val season: Int,
     @ColumnInfo(name = "round")
     val round: String,
+    @ColumnInfo(name = "date")
+    val date: Long,
     @ColumnInfo(name = "home_score")
     val homeScore: Int?,
     @ColumnInfo(name = "away_score")
@@ -39,3 +44,10 @@ fun MatchData.asShortUiModel() =
         status = statusShort,
         timeElapsed = timeElapsed ?: 0
     )
+
+fun MatchData.getDate(): LocalDateTime {
+    return LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(this.date),
+        TimeZone.getDefault().toZoneId()
+    )
+}

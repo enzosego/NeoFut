@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.data.repository.fixture
 
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import kotlinx.coroutines.flow.Flow
 
@@ -9,9 +10,9 @@ interface FixtureRepository {
 
     fun getSeasonFixture(id: Int, season: Int): Flow<List<String>>
 
-    suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchUiShort>
+    suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchDay>
 
-    fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchUiShort>>
+    suspend fun getRoundFixture(id: Int, season: Int, round: String): List<MatchDay>
 
     suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean
 
