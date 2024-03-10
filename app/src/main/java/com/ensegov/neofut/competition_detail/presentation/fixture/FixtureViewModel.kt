@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import com.ensegov.neofut.common.presentation.model.UiState
+import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,18 +23,17 @@ import kotlinx.coroutines.launch
 
 class FixtureViewModel(
     private val fixtureRepository: FixtureRepository,
-    private val competitionId: Int,
-    private val competitionSeason: Int
+    private val id: Int,
+    private val season: Int
 ) : ViewModel() {
 
     private val roundList: StateFlow<List<RoundName>> = fixtureRepository
-        .getSeasonRounds(competitionId, competitionSeason)
+        .getSeasonRounds(id, season)
         .onEach { list ->
             val currentRound = list.find { round -> round.current }
             if (list.isEmpty() || currentRound == null)
                 return@onEach
             else {
-                Log.d(TAG, list.toString())
                 getRoundFixture(currentRound.name)
                 currentRoundIndex.update { list.indexOf(currentRound) }
             }
@@ -70,10 +70,10 @@ class FixtureViewModel(
 
     private fun updateSeasonFixture() {
         viewModelScope.launch {
-            if (fixtureRepository.canUpdateSeasonRounds(competitionId, competitionSeason))
+            if (fixtureRepository.canUpdateSeasonRounds(id, season))
                 try {
                     fixtureRepository
-                        .updateSeasonRounds(competitionId, competitionSeason)
+                        .updateSeasonRounds(id, season)
                 } catch (e: Exception) {
                     Log.d(TAG, "${e.message}")
                 }
@@ -83,7 +83,7 @@ class FixtureViewModel(
     private fun getRoundFixture(round: String) {
         viewModelScope.launch {
             val fixture = fixtureRepository
-                .getRoundFixture(competitionId, competitionSeason, round)
+                .getRoundFixture(id, season, round)
             if (fixture.isNotEmpty())
                 currentFixture = UiState.Success(fixture)
             updateRoundFixture(round)
@@ -92,23 +92,11 @@ class FixtureViewModel(
 
     private fun updateRoundFixture(round: String) {
         viewModelScope.launch {
-            currentFixture =
-                if (fixtureRepository
-                    .canUpdateRoundFixture(competitionId, competitionSeason, round)
-                )
-                    try {
-                        UiState.Success(
-                            fixtureRepository
-                                .updateRoundFixture(competitionId, competitionSeason, round)
-                        )
-                    } catch (e: Exception) {
-                        Log.d(TAG, "${e.message}")
-                        UiState.Error
-                    }
-                else if (currentFixture is UiState.Loading)
-                    UiState.Success(emptyList())
-                else
-                    currentFixture
+            currentFixture = currentFixture.updateFromNetwork(
+                canUpdate = { fixtureRepository.canUpdateRoundFixture(id, season, round) },
+                request = { fixtureRepository.updateRoundFixture(id, season, round) },
+                tag = TAG
+            )
         }
     }
 

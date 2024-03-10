@@ -1,11 +1,11 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats.goals
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.top_stats.TopStatsRepository
 import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiData
 import com.ensegov.neofut.common.presentation.model.UiState
+import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 
 class TopScorersViewModel(
     private val topStatsRepository: TopStatsRepository,
-    private val competitionId: Int,
-    private val competitionSeason: Int
+    private val id: Int,
+    private val season: Int
 ) : ViewModel() {
 
     private val _playerStats: MutableStateFlow<UiState<List<PlayerStatsUiData>>> =
@@ -27,7 +27,7 @@ class TopScorersViewModel(
 
     private fun getTopScorers() {
         viewModelScope.launch {
-            val newValue = topStatsRepository.getTopScorers(competitionId, competitionSeason)
+            val newValue = topStatsRepository.getTopScorers(id, season)
             if (newValue.isNotEmpty())
                 _playerStats.update { UiState.Success(newValue) }
             updateTopScorers()
@@ -36,20 +36,11 @@ class TopScorersViewModel(
 
     private fun updateTopScorers() = viewModelScope.launch {
         _playerStats.update {
-            if (topStatsRepository.canUpdateTopScorers(competitionId, competitionSeason))
-                try {
-                    UiState.Success(
-                        topStatsRepository
-                            .updateTopScorers(competitionId, competitionSeason)
-                    )
-                } catch (e: Exception) {
-                    Log.d(TAG, "${e.message}")
-                    UiState.Error
-                }
-            else if (_playerStats.value is UiState.Loading)
-                UiState.Success(emptyList())
-            else
-                _playerStats.value
+            _playerStats.value.updateFromNetwork(
+                canUpdate = { topStatsRepository.canUpdateTopScorers(id, season) },
+                request = { topStatsRepository.updateTopAssists(id, season) },
+                tag = TAG
+            )
         }
     }
 
