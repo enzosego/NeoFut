@@ -18,6 +18,11 @@ class FixtureApi(
             url = "${HttpRoutes.FIXTURE_REQUEST}/rounds?league=$leagueId&season=$season"
         ).body<SeasonRounds>().response
 
+    suspend fun getCurrentRound(leagueId: Int, season: Int): String =
+        request(
+            url = "${HttpRoutes.FIXTURE_REQUEST}/rounds?league=$leagueId&season=$season&current=true"
+        ).body<SeasonRounds>().response.first()
+
     suspend fun getFixture(leagueId: Int, season: Int, round: String): List<MatchFixture> =
         request(
             url = "${HttpRoutes.FIXTURE_REQUEST}?league=$leagueId&season=$season&round=$round"

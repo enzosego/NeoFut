@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import com.ensegov.neofut.common.presentation.model.UiState
+import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,9 +26,18 @@ class FixtureViewModel(
     private val competitionSeason: Int
 ) : ViewModel() {
 
-    private val roundList: StateFlow<List<String>> = fixtureRepository
-        .getSeasonFixture(competitionId, competitionSeason)
-        .onEach { if (it.isNotEmpty()) getRoundFixture(it[0]) }
+    private val roundList: StateFlow<List<RoundName>> = fixtureRepository
+        .getSeasonRounds(competitionId, competitionSeason)
+        .onEach { list ->
+            val currentRound = list.find { round -> round.current }
+            if (list.isEmpty() || currentRound == null)
+                return@onEach
+            else {
+                Log.d(TAG, list.toString())
+                getRoundFixture(currentRound.name)
+                currentRoundIndex.update { list.indexOf(currentRound) }
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -63,7 +73,7 @@ class FixtureViewModel(
             if (fixtureRepository.canUpdateSeasonRounds(competitionId, competitionSeason))
                 try {
                     fixtureRepository
-                        .updateSeasonFixture(competitionId, competitionSeason)
+                        .updateSeasonRounds(competitionId, competitionSeason)
                 } catch (e: Exception) {
                     Log.d(TAG, "${e.message}")
                 }
@@ -105,14 +115,14 @@ class FixtureViewModel(
     fun onClickPrevious() {
         val newIndex = currentRoundIndex.value.minus(1)
         currentFixture = UiState.Loading
-        getRoundFixture(roundList.value[newIndex])
+        getRoundFixture(roundList.value[newIndex].name)
         currentRoundIndex.update { newIndex }
     }
 
     fun onClickNext() {
         currentFixture = UiState.Loading
         val newIndex = currentRoundIndex.value.plus(1)
-        getRoundFixture(roundList.value[newIndex])
+        getRoundFixture(roundList.value[newIndex].name)
         currentRoundIndex.update { newIndex }
     }
 

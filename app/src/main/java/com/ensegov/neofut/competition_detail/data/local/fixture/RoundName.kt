@@ -4,14 +4,19 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "round")
+@Entity(
+    tableName = "round",
+    primaryKeys = ["competition_id", "season", "name", "index"]
+)
 data class RoundName(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
-    val id: Int = 0,
+    @ColumnInfo(name = "index")
+    val index: Int,
     @ColumnInfo(name = "competition_id")
     val competitionId: Int,
     @ColumnInfo(name = "season")
     val season: Int,
     @ColumnInfo(name = "name")
-    val name: String
+    val name: String,
+    @ColumnInfo(name = "current")
+    val current: Boolean = false
 )

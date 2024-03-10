@@ -19,11 +19,11 @@ import kotlinx.coroutines.withContext
 
 class FixtureRepositoryImpl(
     private val database: NeoFutDatabase,
-    private val fixtureDataSource: FixtureApi,
+    private val fixtureApi: FixtureApi,
     private val ioDispatcher: CoroutineDispatcher
 ) : FixtureRepository {
 
-    override suspend fun updateSeasonFixture(id: Int, season: Int) = withContext(ioDispatcher) {
+    override suspend fun updateSeasonRounds(id: Int, season: Int) = withContext(ioDispatcher) {
         val lastUpdate = database.updateTimeDao.getLastUpdateTime(
             type = "season_fixture",
             competitionId = id,
@@ -32,11 +32,13 @@ class FixtureRepositoryImpl(
         if (lastUpdate != null && lastUpdate.getTimeDiffInDays() <= 15)
             return@withContext
 
-        val newValue = fixtureDataSource.getRounds(id, season)
-            .map { RoundName(
+        val newValue = fixtureApi.getRounds(id, season)
+            .mapIndexed { index, name ->
+                RoundName(
+                index = index,
                 competitionId = id,
                 season = season,
-                name = it
+                name = name
             ) }
         database.fixtureDao.insertAllRounds(newValue)
         database.updateTimeDao.insertTime(
@@ -47,10 +49,21 @@ class FixtureRepositoryImpl(
                 time = getTimeMillis(),
             )
         )
+        updateCurrentRound(id, season)
     }
 
-    override fun getSeasonFixture(id: Int, season: Int): Flow<List<String>> =
+    override fun getSeasonRounds(id: Int, season: Int): Flow<List<RoundName>> =
         database.fixtureDao.getSeasonRounds(id, season)
+
+    override suspend fun updateCurrentRound(id: Int, season: Int) {
+        if (!canUpdateCurrentRound(id, season))
+            return
+        database.fixtureDao.updateCurrentRound(
+            roundName = fixtureApi.getCurrentRound(id, season),
+            id = id,
+            season = season
+        )
+    }
 
     override suspend fun updateRoundFixture(
         id: Int,
@@ -58,7 +71,7 @@ class FixtureRepositoryImpl(
         round: String
     ): List<MatchDay> = withContext(ioDispatcher) {
 
-        val response = fixtureDataSource.getFixture(id, season, round)
+        val response = fixtureApi.getFixture(id, season, round)
             .mapNotNull { it.asDatabaseModel(id, season, round) }
         val matches = response.map { it.data }
         val teams = mutableListOf<TeamInfo>()
@@ -97,6 +110,18 @@ class FixtureRepositoryImpl(
             season = season
         )?.getTimeDiffInDays()
         timeDiff == null || timeDiff >= 24
+    }
+
+    override suspend fun canUpdateCurrentRound(
+        id: Int,
+        season: Int
+    ): Boolean = withContext(ioDispatcher) {
+        val timeDiff = database.updateTimeDao.getLastUpdateTime(
+            type = "current_round",
+            competitionId = id,
+            season = season
+        )?.getTimeDiffInDays()
+        timeDiff == null || timeDiff >= 2
     }
 
     override suspend fun canUpdateRoundFixture(
