@@ -13,7 +13,7 @@ suspend fun <T> UiState<List<T>>.updateFromNetwork(
     request: suspend () -> List<T>,
     tag: String
 ): UiState<List<T>> =
-    if (canUpdate())
+    if (canUpdate() && this is UiState.Loading)
         try {
             UiState.Success(request())
         } catch (e: Exception) {
