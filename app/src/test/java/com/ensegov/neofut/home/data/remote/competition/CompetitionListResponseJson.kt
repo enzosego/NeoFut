@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.remote.competition
+package com.ensegov.neofut.home.data.remote.competition
 
 internal const val competitionListResponseJson = """
 {

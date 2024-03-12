@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.remote.standings
+package com.ensegov.neofut.competition_detail.data.remote.standings
 
 internal const val cupStandingsResponseJson = """
 {

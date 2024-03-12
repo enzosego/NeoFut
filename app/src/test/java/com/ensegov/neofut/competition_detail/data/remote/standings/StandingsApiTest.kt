@@ -1,6 +1,5 @@
-package com.ensegov.neofut.data.remote.standings
+package com.ensegov.neofut.competition_detail.data.remote.standings
 
-import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
 import com.ensegov.neofut.competition_detail.data.remote.standings.dto.TeamPosition
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -23,9 +22,6 @@ class StandingsApiTest : StringSpec({
         val standingApi = StandingsApi(engine, logging = false)
 
         result = standingApi.getCurrentStandings(0, 0)
-            .responseItem[0]
-            .competitionStandingsDto
-            .groupList
     }
 
     "Cup request - should have eight groups".config(blockingTest = true) {

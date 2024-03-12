@@ -1,6 +1,5 @@
-package com.ensegov.neofut.data.remote.fixture
+package com.ensegov.neofut.competition_detail.data.remote.fixture
 
-import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
@@ -21,7 +20,7 @@ class RoundsRequestTest : StringSpec ({
             )
         }
         val fixtureApi = FixtureApi(mockEngine, false)
-        result = fixtureApi.getRounds(0, 0).roundList
+        result = fixtureApi.getRounds(0, 0)
     }
 
     "League rounds request - should have 38 total".config(blockingTest = true) {

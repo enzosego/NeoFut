@@ -1,4 +1,4 @@
-package com.ensegov.neofut.data.remote.competition
+package com.ensegov.neofut.home.data.remote.competition
 
 import com.ensegov.neofut.home.data.remote.competition.CompetitionsApi
 import io.kotest.core.spec.style.StringSpec
