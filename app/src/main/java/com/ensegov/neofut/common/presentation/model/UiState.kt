@@ -13,12 +13,15 @@ suspend fun <T> UiState<List<T>>.updateFromNetwork(
     request: suspend () -> List<T>,
     tag: String
 ): UiState<List<T>> =
-    if (canUpdate() && this is UiState.Loading)
+    if (canUpdate())
         try {
             UiState.Success(request())
         } catch (e: Exception) {
             Log.d(tag, "${e.message}")
-            UiState.Error
+            if (this is UiState.Loading)
+                UiState.Error
+            else
+                this
         }
     else if (this is UiState.Loading)
         UiState.Success(emptyList())

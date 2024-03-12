@@ -125,6 +125,9 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     androidTestImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
+    // Mockk
+    testImplementation("io.mockk:mockk:1.13.10")
+
     testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 
     // KotlinX Coroutines Testing

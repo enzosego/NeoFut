@@ -22,7 +22,7 @@ class FixtureRequestTest : StringSpec({
 
         val fixtureApi = FixtureApi(mockEngine, logging = false)
         result = fixtureApi.getFixture(0, 0, "")
-   }
+    }
 
     "League - should contain ten matches".config(blockingTest = true) {
         getResult(leagueFixtureResponseJson)
