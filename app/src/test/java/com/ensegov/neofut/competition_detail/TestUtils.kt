@@ -1,9 +1,14 @@
 package com.ensegov.neofut.competition_detail
 
+import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.TeamInfoShort
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
 
-internal fun createFakeList(groupCount: Int) =
+internal fun createFakeGroups(groupCount: Int) =
     List(groupCount) {
         CompetitionGroup(
             groupName = "Group $it",
@@ -17,6 +22,32 @@ internal fun createFakeList(groupCount: Int) =
                     form = null,
                     status = null,
                     description = null
+                )
+            }
+        )
+    }
+
+internal fun createFakeRoundFixture(count: Int) =
+    List(count) {
+        MatchDay(
+            date = "$it",
+            matchList = List(count) { index ->
+                MatchUiShort(
+                    data = MatchDataShort(
+                        id = index,
+                        homeScore = index,
+                        awayScore = index - 1,
+                        status = "",
+                        timeElapsed = 45
+                    ),
+                    homeTeam = TeamInfoShort(
+                        name = "${(index + 1)}",
+                        logoUrl = ""
+                    ),
+                    awayTeam = TeamInfoShort(
+                        name = "${(index + 1) * 2}",
+                        logoUrl = ""
+                    )
                 )
             }
         )

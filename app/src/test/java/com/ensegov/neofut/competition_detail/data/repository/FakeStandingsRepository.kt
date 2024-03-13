@@ -1,6 +1,6 @@
 package com.ensegov.neofut.competition_detail.data.repository
 
-import com.ensegov.neofut.competition_detail.createFakeList
+import com.ensegov.neofut.competition_detail.createFakeGroups
 import com.ensegov.neofut.competition_detail.data.repository.standings.StandingsRepository
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import kotlinx.coroutines.delay
@@ -16,12 +16,12 @@ class FakeStandingsRepository(
         if (requestFailure)
             throw Exception()
         else
-            return createFakeList(5)
+            return createFakeGroups(5)
     }
 
     override suspend fun getStandings(id: Int, season: Int): List<CompetitionGroup> =
         if (hasPersistedData)
-            createFakeList(groupCount = 3)
+            createFakeGroups(groupCount = 3)
         else
             emptyList()
 

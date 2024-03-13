@@ -2,8 +2,8 @@ package com.ensegov.neofut.competition_detail.presentation.standings
 
 import android.util.Log
 import com.ensegov.neofut.common.presentation.model.UiState
+import com.ensegov.neofut.competition_detail.createFakeGroups
 import com.ensegov.neofut.competition_detail.data.repository.FakeStandingsRepository
-import com.ensegov.neofut.competition_detail.createFakeList
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -21,8 +21,8 @@ class StandingsViewModelTest : StringSpec({
     mockkStatic(Log::class)
     every { Log.d(any(), any()) } returns 0
 
-    val databaseResult = UiState.Success(createFakeList(3))
-    val networkResult = UiState.Success(createFakeList(5))
+    val databaseResult = UiState.Success(createFakeGroups(3))
+    val networkResult = UiState.Success(createFakeGroups(5))
 
     beforeTest {
         Dispatchers.setMain(Dispatchers.Default)

@@ -56,6 +56,7 @@ class FixtureViewModel(
         )
 
     val canShowNext: StateFlow<Boolean> = currentRoundIndex.combine(roundList) { index, list ->
+        println("$index - ${list.lastIndex}")
         index < list.lastIndex
     }
         .stateIn(
