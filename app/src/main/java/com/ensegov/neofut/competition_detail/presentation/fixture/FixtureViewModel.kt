@@ -46,8 +46,8 @@ class FixtureViewModel(
 
     var currentFixture: UiState<List<MatchDay>> by mutableStateOf(UiState.Loading)
 
-    private val _isUpdatingFromNetwork = MutableStateFlow(false)
-    val isUpdatingFromNetwork: StateFlow<Boolean> = _isUpdatingFromNetwork
+    var isUpdatingFromNetwork by mutableStateOf(false)
+        private set
 
     private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -59,7 +59,6 @@ class FixtureViewModel(
         )
 
     val canShowNext: StateFlow<Boolean> = currentRoundIndex.combine(roundList) { index, list ->
-        println("$index - ${list.lastIndex}")
         index < list.lastIndex
     }
         .stateIn(
@@ -99,7 +98,7 @@ class FixtureViewModel(
             currentFixture.updateFromNetwork(
                 canUpdate = { fixtureRepository.canUpdateRoundFixture(id, season, round) },
                 update = { newValue -> currentFixture = newValue },
-                changeIsUpdatingValue = { _isUpdatingFromNetwork.update { it } },
+                changeIsUpdatingValue = { isUpdatingFromNetwork = it },
                 request = { fixtureRepository.updateRoundFixture(id, season, round) },
                 tag = TAG
             )

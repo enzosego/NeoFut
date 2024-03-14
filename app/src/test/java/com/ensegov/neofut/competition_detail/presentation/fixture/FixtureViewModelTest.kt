@@ -32,7 +32,7 @@ class FixtureViewModelTest : StringSpec({
     val databaseFixture = UiState.Success(createFakeRoundFixture(count = 8))
     val networkFixture = UiState.Success(createFakeRoundFixture(count = 12))
 
-    "whatever - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
+    "$TAG - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
         val fixtureViewModel = getViewModel()
         fixtureViewModel.currentFixture shouldBe UiState.Loading
     }
@@ -67,6 +67,19 @@ class FixtureViewModelTest : StringSpec({
 
         delay(400L)
         fixtureViewModel.currentFixture shouldBe networkFixture
+    }
+
+    "$TAG - updates data from network - ´isUpdatingFromNetwork´ state gets updated correctly" {
+        val fixtureViewModel = getViewModel(
+            FakeFixtureRepository(hasPersistedRoundFixture = true)
+        )
+        fixtureViewModel.isUpdatingFromNetwork shouldBe false
+
+        delay(200L)
+        fixtureViewModel.isUpdatingFromNetwork shouldBe true
+
+        delay(300L)
+        fixtureViewModel.isUpdatingFromNetwork shouldBe false
     }
 
     "$TAG - currentRoundIndex is ´0´ - ´canShowPrevious´ is false - ´canShowNext´ is true" {
