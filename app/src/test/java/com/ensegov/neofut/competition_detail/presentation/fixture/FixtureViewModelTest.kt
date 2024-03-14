@@ -32,7 +32,7 @@ class FixtureViewModelTest : StringSpec({
     val databaseFixture = UiState.Success(createFakeRoundFixture(count = 8))
     val networkFixture = UiState.Success(createFakeRoundFixture(count = 12))
 
-    "$TAG - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
+    "whatever - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
         val fixtureViewModel = getViewModel()
         fixtureViewModel.currentFixture shouldBe UiState.Loading
     }

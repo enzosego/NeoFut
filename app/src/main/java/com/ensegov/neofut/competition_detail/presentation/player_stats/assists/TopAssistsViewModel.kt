@@ -26,27 +26,22 @@ class TopAssistsViewModel(
     }
 
     private fun getTopAssists() {
-        _playerStats.update { UiState.Loading }
         viewModelScope.launch {
             val newValue = topStatsRepository.getTopAssists(id, season)
             if (newValue.isNotEmpty())
-                _playerStats.update {
-                    UiState.Success(
-                        newValue
-                    )
-                }
+                _playerStats.update { UiState.Success(newValue) }
             updateTopAssists()
         }
     }
 
     private fun updateTopAssists() = viewModelScope.launch {
-        _playerStats.update {
-            _playerStats.value.updateFromNetwork(
-                canUpdate = { topStatsRepository.canUpdateTopAssists(id, season) },
-                request = { topStatsRepository.updateTopAssists(id, season) },
-                tag = TAG
-            )
-        }
+        _playerStats.value.updateFromNetwork(
+            canUpdate = { topStatsRepository.canUpdateTopAssists(id, season) },
+            update = { newValue -> _playerStats.update { newValue } },
+            changeIsUpdatingValue = {  },
+            request = { topStatsRepository.updateTopAssists(id, season) },
+            tag = TAG
+        )
     }
 
     companion object {

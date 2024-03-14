@@ -33,13 +33,13 @@ class StandingsViewModel(
     }
 
     private fun updateStandings() = viewModelScope.launch {
-        standings.update {
-            standings.value.updateFromNetwork(
-                canUpdate = { standingsRepository.canUpdateStandings(id, season) },
-                request = { standingsRepository.updateStandings(id, season) },
-                tag = TAG
-            )
-        }
+        standings.value.updateFromNetwork(
+            canUpdate = { standingsRepository.canUpdateStandings(id, season) },
+            update = { newValue -> standings.update { newValue } },
+            changeIsUpdatingValue = {  },
+            request = { standingsRepository.updateStandings(id, season) },
+            tag = TAG
+        )
     }
 
     companion object {

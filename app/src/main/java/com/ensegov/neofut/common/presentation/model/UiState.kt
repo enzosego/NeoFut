@@ -10,20 +10,27 @@ sealed interface UiState<out T> {
 
 suspend fun <T> UiState<List<T>>.updateFromNetwork(
     canUpdate: suspend () -> Boolean,
+    update: (UiState<List<T>>) -> Unit,
+    changeIsUpdatingValue: (Boolean) -> Unit,
     request: suspend () -> List<T>,
     tag: String
-): UiState<List<T>> =
-    if (canUpdate())
-        try {
-            UiState.Success(request())
-        } catch (e: Exception) {
-            Log.d(tag, "${e.message}")
-            if (this is UiState.Loading)
-                UiState.Error
-            else
-                this
-        }
-    else if (this is UiState.Loading)
-        UiState.Success(emptyList())
+) {
+    if (canUpdate()) {
+        changeIsUpdatingValue(true)
+        update(
+            try {
+                UiState.Success(request())
+            } catch (e: Exception) {
+                Log.d(tag, "${e.message}")
+                if (this is UiState.Loading)
+                    UiState.Error
+                else
+                    this
+            }
+        )
+        changeIsUpdatingValue(false)
+    } else if (this is UiState.Loading)
+        update(UiState.Success(emptyList()))
     else
-        this
+        update(this)
+}

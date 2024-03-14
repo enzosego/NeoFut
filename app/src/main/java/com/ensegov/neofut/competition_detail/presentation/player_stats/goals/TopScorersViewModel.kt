@@ -35,13 +35,13 @@ class TopScorersViewModel(
     }
 
     private fun updateTopScorers() = viewModelScope.launch {
-        _playerStats.update {
-            _playerStats.value.updateFromNetwork(
-                canUpdate = { topStatsRepository.canUpdateTopScorers(id, season) },
-                request = { topStatsRepository.updateTopScorers(id, season) },
-                tag = TAG
-            )
-        }
+        _playerStats.value.updateFromNetwork(
+            canUpdate = { topStatsRepository.canUpdateTopScorers(id, season) },
+            update = { newValue -> _playerStats.update { newValue } },
+            changeIsUpdatingValue = {  },
+            request = { topStatsRepository.updateTopScorers(id, season) },
+            tag = TAG
+        )
     }
 
     companion object {
