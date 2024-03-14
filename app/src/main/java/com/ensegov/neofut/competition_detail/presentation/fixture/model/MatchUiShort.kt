@@ -5,3 +5,22 @@ data class MatchUiShort(
     val homeTeam: TeamInfoShort,
     val awayTeam: TeamInfoShort
 )
+
+fun generateFakeMatch(index: Int, count: Int) =
+    MatchUiShort(
+        data = MatchDataShort(
+            id = index,
+            homeScore = 2,
+            awayScore = 1,
+            status = "",
+            timeElapsed = 48
+        ),
+        homeTeam = TeamInfoShort(
+            name = "Team $index",
+            logoUrl = ""
+        ),
+        awayTeam = TeamInfoShort(
+            name = "Team ${count - index}",
+            logoUrl = ""
+        )
+    )

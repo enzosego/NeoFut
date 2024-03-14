@@ -8,7 +8,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.ensegov.neofut.competition_detail.presentation.fixture.match_day.matchDayLayout
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.generateFakeMatch
+import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable
 fun FixtureSuccessLayout(
@@ -41,5 +45,26 @@ fun FixtureSuccessLayout(
             }
         }
         currentFixture().forEach { matchDayLayout(it) }
+    }
+}
+
+@Preview
+@Composable
+private fun FixtureSuccessLayoutPreview() {
+    val fakeDataset = List(4) {
+        MatchDay(
+            date = "$it/${it+1}/${it+2}",
+            matchList = List(it+1) { index ->
+                generateFakeMatch(index, it)
+            }
+        )
+    }
+    NeoFutTheme {
+        FixtureSuccessLayout(
+            currentFixture = { fakeDataset },
+            canShowPrevious = { true },
+            canShowNext = { true },
+            onClickPrevious = { /*TODO*/ },
+            onClickNext = { /*TODO*/ })
     }
 }

@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.presentation.fixture
+package com.ensegov.neofut.competition_detail.presentation.fixture.match_day
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.generateFakeMatch
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 fun LazyListScope.matchDayLayout(
@@ -40,7 +40,9 @@ private fun MatchDayLayoutPreview() {
             matchDayLayout(
                 MatchDay(
                     date = "Saturday, March 9th",
-                    matchList = listOf()
+                    matchList = List(5) {
+                        generateFakeMatch(index = it, count = 5)
+                    }
                 )
             )
         }

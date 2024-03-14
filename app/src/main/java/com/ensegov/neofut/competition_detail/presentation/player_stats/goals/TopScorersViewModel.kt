@@ -38,7 +38,7 @@ class TopScorersViewModel(
         _playerStats.update {
             _playerStats.value.updateFromNetwork(
                 canUpdate = { topStatsRepository.canUpdateTopScorers(id, season) },
-                request = { topStatsRepository.updateTopAssists(id, season) },
+                request = { topStatsRepository.updateTopScorers(id, season) },
                 tag = TAG
             )
         }
