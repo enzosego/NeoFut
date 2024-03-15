@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
 import com.ensegov.neofut.competition_detail.presentation.fixture.match_day.matchDayLayout
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.generateFakeMatch
@@ -19,11 +20,13 @@ fun FixtureSuccessLayout(
     currentFixture: () -> List<MatchDay>,
     canShowPrevious: () -> Boolean,
     canShowNext: () -> Boolean,
+    isUpdating: () -> Boolean,
     onClickPrevious: () -> Unit,
     onClickNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
+        animatedUpdatingHeader(isUpdating)
         item {
             Row(
                 modifier = modifier
@@ -65,6 +68,7 @@ private fun FixtureSuccessLayoutPreview() {
             canShowPrevious = { true },
             canShowNext = { true },
             onClickPrevious = { /*TODO*/ },
+            isUpdating = { true },
             onClickNext = { /*TODO*/ })
     }
 }

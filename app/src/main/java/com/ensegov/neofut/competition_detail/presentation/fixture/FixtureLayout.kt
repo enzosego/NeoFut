@@ -26,6 +26,7 @@ internal fun FixtureLayout(
             { currentFixture.data },
             { canShowPrevious },
             { canShowNext },
+            { viewModel.isUpdatingFromNetwork },
             viewModel::onClickPrevious,
             viewModel::onClickNext
         )
