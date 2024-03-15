@@ -1,6 +1,7 @@
 package com.ensegov.neofut.competition_detail.presentation.common
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Surface
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -27,7 +30,8 @@ fun LazyListScope.animatedUpdatingHeader(
     stickyHeader {
         AnimatedVisibility(
             visible = isUpdating(),
-            exit = shrinkVertically { -40 } + fadeOut()
+            enter = expandVertically(),
+            exit = shrinkVertically()
         ) {
             Surface {
                 Row(
@@ -37,7 +41,13 @@ fun LazyListScope.animatedUpdatingHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "Updating...")
+                    Text(
+                        text = "Updating",
+                        fontSize = 18.sp
+                    )
+                    CirclesLoadingAnimation(
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
                 }
             }
         }

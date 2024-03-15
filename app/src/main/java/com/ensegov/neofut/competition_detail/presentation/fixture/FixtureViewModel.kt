@@ -11,6 +11,7 @@ import com.ensegov.neofut.common.presentation.model.UiState
 import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
