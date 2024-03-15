@@ -119,24 +119,13 @@ class TopStatsRepositoryImpl(
         }
     }
 
-    override suspend fun canUpdateTopScorers(
+    override suspend fun canUpdateTopStats(
+        type: String,
         id: Int,
-        season: Int
+        season: Int,
     ): Boolean = withContext(ioDispatcher) {
         val timeDiff = database.updateTimeDao.getLastUpdateTime(
-            type = "goals",
-            competitionId = id,
-            season = season
-        )?.getTimeDiffInDays()
-        timeDiff == null ||timeDiff >= 2
-    }
-
-    override suspend fun canUpdateTopAssists(
-        id: Int,
-        season: Int
-    ): Boolean = withContext(ioDispatcher) {
-        val timeDiff = database.updateTimeDao.getLastUpdateTime(
-            type = "assists",
+            type = type,
             competitionId = id,
             season = season
         )?.getTimeDiffInDays()

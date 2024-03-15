@@ -1,17 +1,22 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats.goals
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.R
 import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.NoStatsAvailableText
+import com.ensegov.neofut.competition_detail.presentation.player_stats.common.PlayerStatsRow
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsColumnNames
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsTitle
 import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiData
@@ -52,11 +57,31 @@ fun TopScorersTable(
                     )
                 }
             }
-            items(players()) { topScorer ->
-                PlayerGoalsRow(
-                    topScorer,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            items(players()) { stats ->
+                PlayerStatsRow(
+                    leftWeight = .7f,
+                    playerStats = stats
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(.3f)
+                    ) {
+                        Text(
+                            text = "${stats.totalGoals}",
+                            textAlign = TextAlign.Center,
+                            fontSize = 22.sp,
+                            modifier = Modifier.weight(.15f)
+                        )
+                        Text(
+                            text = "${stats.penaltyGoals}",
+                            textAlign = TextAlign.Center,
+                            fontSize = 22.sp,
+                            modifier = Modifier.weight(.15f)
+                        )
+                    }
+                }
             }
         }
     }

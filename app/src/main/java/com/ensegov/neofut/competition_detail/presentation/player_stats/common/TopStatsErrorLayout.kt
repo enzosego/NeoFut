@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.presentation.player_stats.goals
+package com.ensegov.neofut.competition_detail.presentation.player_stats.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
@@ -10,11 +10,12 @@ import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable
-fun TopScorersErrorLayout(
+fun TopStatsErrorLayout(
+    type: String,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = "There was an error while trying to retrieve the Top Scorers table",
+        text = "There was an error while trying to retrieve the Top $type table",
         textAlign = TextAlign.Center,
         fontSize = 20.sp,
         modifier = modifier.fillMaxWidth()
@@ -25,6 +26,6 @@ fun TopScorersErrorLayout(
 @Composable
 private fun TopScorersErrorLayoutPreview() {
     NeoFutTheme {
-        TopScorersErrorLayout()
+        TopStatsErrorLayout(type = "Goals")
     }
 }

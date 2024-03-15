@@ -12,7 +12,5 @@ interface TopStatsRepository {
 
     suspend fun updateTopAssists(competitionId: Int, season: Int): List<PlayerStatsUiData>
 
-    suspend fun canUpdateTopScorers(id: Int, season: Int): Boolean
-
-    suspend fun canUpdateTopAssists(id: Int, season: Int): Boolean
+    suspend fun canUpdateTopStats(type: String, id: Int, season: Int): Boolean
 }
