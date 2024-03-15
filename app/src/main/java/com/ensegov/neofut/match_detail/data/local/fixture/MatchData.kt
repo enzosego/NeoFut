@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.local.fixture
+package com.ensegov.neofut.match_detail.data.local.fixture
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,6 +18,8 @@ data class MatchData(
     val season: Int,
     @ColumnInfo(name = "round")
     val round: String,
+    @ColumnInfo(name = "referee")
+    val referee: String?,
     @ColumnInfo(name = "date")
     val date: Long,
     @ColumnInfo(name = "home_score")

@@ -1,10 +1,10 @@
-package com.ensegov.neofut.competition_detail.data.remote.fixture
+package com.ensegov.neofut.match_detail.data.remote.fixture
 
 import com.ensegov.neofut.common.data.HttpRoutes
 import com.ensegov.neofut.common.data.KtorClientApi
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.FixtureResponse
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.MatchFixture
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.SeasonRounds
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.FixtureResponse
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.MatchFixture
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.SeasonRounds
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
 

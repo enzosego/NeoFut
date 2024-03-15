@@ -1,6 +1,6 @@
 package com.ensegov.neofut.competition_detail.data.repository.fixture
 
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.flow.Flow
 

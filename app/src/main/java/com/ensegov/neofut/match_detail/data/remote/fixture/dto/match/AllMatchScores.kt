@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match
+package com.ensegov.neofut.match_detail.data.remote.fixture.dto.match
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AllMatchScores(
     @SerialName(value = "halftime")
-    val halfTime: MatchScore,
+    val halfTime: MatchScoreDto,
     @SerialName(value = "fulltime")
-    val fullTime: MatchScore,
+    val fullTime: MatchScoreDto,
     @SerialName(value = "extratime")
-    val extraTime: MatchScore,
-    val penalty: MatchScore
+    val extraTime: MatchScoreDto,
+    val penalty: MatchScoreDto
 )

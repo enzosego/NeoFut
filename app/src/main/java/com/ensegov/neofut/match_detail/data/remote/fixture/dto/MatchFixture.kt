@@ -1,11 +1,11 @@
-package com.ensegov.neofut.competition_detail.data.remote.fixture.dto
+package com.ensegov.neofut.match_detail.data.remote.fixture.dto
 
-import com.ensegov.neofut.competition_detail.data.local.fixture.MatchData
-import com.ensegov.neofut.competition_detail.data.local.fixture.SimpleMatchFixture
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match.AllMatchScores
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match.MatchInfo
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match.MatchScore
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.match.MatchTeams
+import com.ensegov.neofut.match_detail.data.local.fixture.MatchData
+import com.ensegov.neofut.match_detail.data.local.fixture.SimpleMatchFixture
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.AllMatchScores
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchInfo
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchScoreDto
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchTeams
 import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,7 +19,7 @@ data class MatchFixture(
     val info: MatchInfo,
     val teams: MatchTeams?,
     @SerialName(value = "goals")
-    val currentScore: MatchScore?,
+    val currentScore: MatchScoreDto?,
     val score: AllMatchScores?
 )
 
@@ -33,6 +33,7 @@ fun MatchFixture.asDatabaseModel(competitionId: Int, season: Int, round: String)
                 competitionId = competitionId,
                 season = season,
                 round = round,
+                referee = info.referee,
                 date = info.date.toTimeInMillis(),
                 currentScore.home,
                 currentScore.away,

@@ -9,9 +9,9 @@ import com.ensegov.neofut.competition_detail.data.local.team.TeamForm
 import com.ensegov.neofut.competition_detail.data.local.standings.PositionInfo
 import com.ensegov.neofut.competition_detail.data.local.standings.StandingsDao
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
-import com.ensegov.neofut.competition_detail.data.local.fixture.FixtureDao
-import com.ensegov.neofut.competition_detail.data.local.fixture.MatchData
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.FixtureDao
+import com.ensegov.neofut.match_detail.data.local.fixture.MatchData
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.data.local.top_stats.StatsData
 import com.ensegov.neofut.competition_detail.data.local.top_stats.TopStatsDao
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData

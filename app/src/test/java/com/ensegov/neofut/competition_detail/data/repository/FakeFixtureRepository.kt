@@ -1,7 +1,7 @@
 package com.ensegov.neofut.competition_detail.data.repository
 
 import com.ensegov.neofut.competition_detail.createFakeRoundFixture
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.delay

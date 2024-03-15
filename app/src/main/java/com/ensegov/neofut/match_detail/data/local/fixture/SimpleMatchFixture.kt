@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.local.fixture
+package com.ensegov.neofut.match_detail.data.local.fixture
 
 import androidx.room.Embedded
 import androidx.room.Relation

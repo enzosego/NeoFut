@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.remote.fixture.dto
+package com.ensegov.neofut.match_detail.data.remote.fixture.dto
 
 import kotlinx.serialization.Serializable
 

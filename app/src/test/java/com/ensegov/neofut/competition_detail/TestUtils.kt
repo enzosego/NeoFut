@@ -1,6 +1,6 @@
 package com.ensegov.neofut.competition_detail
 
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort

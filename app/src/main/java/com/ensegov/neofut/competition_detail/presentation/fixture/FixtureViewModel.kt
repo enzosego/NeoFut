@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import com.ensegov.neofut.common.presentation.model.UiState
 import com.ensegov.neofut.common.presentation.model.updateFromNetwork
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

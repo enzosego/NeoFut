@@ -2,12 +2,12 @@ package com.ensegov.neofut.competition_detail.data.repository.fixture
 
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
-import com.ensegov.neofut.competition_detail.data.local.fixture.RoundName
-import com.ensegov.neofut.competition_detail.data.local.fixture.SimpleMatchFixture
-import com.ensegov.neofut.competition_detail.data.local.fixture.asShortUiModel
-import com.ensegov.neofut.competition_detail.data.local.fixture.getDate
-import com.ensegov.neofut.competition_detail.data.remote.fixture.FixtureApi
-import com.ensegov.neofut.competition_detail.data.remote.fixture.dto.asDatabaseModel
+import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
+import com.ensegov.neofut.match_detail.data.local.fixture.SimpleMatchFixture
+import com.ensegov.neofut.match_detail.data.local.fixture.asShortUiModel
+import com.ensegov.neofut.match_detail.data.local.fixture.getDate
+import com.ensegov.neofut.match_detail.data.remote.fixture.FixtureApi
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInDays
