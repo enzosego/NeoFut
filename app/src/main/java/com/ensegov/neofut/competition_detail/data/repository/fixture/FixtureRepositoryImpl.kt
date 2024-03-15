@@ -2,6 +2,7 @@ package com.ensegov.neofut.competition_detail.data.repository.fixture
 
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
+import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
 import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.match_detail.data.local.fixture.SimpleMatchFixture
 import com.ensegov.neofut.match_detail.data.local.fixture.asShortUiModel
@@ -9,6 +10,7 @@ import com.ensegov.neofut.match_detail.data.local.fixture.getDate
 import com.ensegov.neofut.match_detail.data.remote.fixture.FixtureApi
 import com.ensegov.neofut.match_detail.data.remote.fixture.dto.asDatabaseModel
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.asDatabaseModel
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInDays
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInHours
@@ -72,13 +74,23 @@ class FixtureRepositoryImpl(
     ): List<MatchDay> = withContext(ioDispatcher) {
 
         val response = fixtureApi.getFixture(id, season, round)
+        val databaseModel = response
             .mapNotNull { it.asDatabaseModel(id, season, round) }
-        val matches = response.map { it.data }
-        val teams = mutableListOf<TeamInfo>()
-        teams.addAll(response.map { it.homeTeam })
-        teams.addAll(response.map { it.awayTeam })
 
-        database.fixtureDao.insertTeamsAndMatches(matches, teams)
+        val matches = databaseModel.map { it.data }
+
+        val scoreList = response.mapNotNull { fixture ->
+            fixture.score?.asDatabaseModel(fixture.info.id)
+        }.flatten()
+        val venueList = response.mapNotNull { fixture ->
+            fixture.info.venue.asDatabaseModel()
+        }
+
+        val teams = mutableListOf<TeamInfo>()
+        teams.addAll(databaseModel.map { it.homeTeam })
+        teams.addAll(databaseModel.map { it.awayTeam })
+
+        database.fixtureDao.insertAllFixtureData(matches, scoreList, teams, venueList)
         database.updateTimeDao.insertTime(
             UpdateTimeData(
                 type = "round_fixture",
@@ -88,7 +100,7 @@ class FixtureRepositoryImpl(
                 time = getTimeMillis(),
             )
         )
-        response.sortToUiModel()
+        databaseModel.sortToUiModel()
     }
 
     override suspend fun getRoundFixture(

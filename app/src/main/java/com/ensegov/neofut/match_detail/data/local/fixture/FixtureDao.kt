@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
+import com.ensegov.neofut.competition_detail.data.local.team.VenueData
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -41,14 +42,32 @@ interface FixtureDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllTeams(teamList: List<TeamInfo>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertScores(scoreList: List<MatchScoreData>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertVenues(venueList: List<VenueData>)
+
     @Transaction
     @Query("SELECT * FROM match_data " +
             "WHERE :id = competition_id AND :season = season AND :round = round")
     fun getMatchFixture(id: Int, season: Int, round: String): List<SimpleMatchFixture>
 
     @Transaction
-    suspend fun insertTeamsAndMatches(matchList: List<MatchData>, teamList: List<TeamInfo>) {
+    @Query("SELECT * FROM match_data " +
+            "WHERE :matchId = id")
+    fun getFullMatchFixture(matchId: Int): FullMatchFixture
+
+    @Transaction
+    suspend fun insertAllFixtureData(
+        matchList: List<MatchData>,
+        scoreList: List<MatchScoreData>,
+        teamList: List<TeamInfo>,
+        venueList: List<VenueData>
+    ) {
         insertAllMatches(matchList)
+        insertScores(scoreList)
         insertAllTeams(teamList)
+        insertVenues(venueList)
     }
 }

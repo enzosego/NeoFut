@@ -8,6 +8,8 @@ import com.ensegov.neofut.competition_detail.data.repository.top_stats.TopStatsR
 import com.ensegov.neofut.competition_detail.data.repository.top_stats.TopStatsRepositoryImpl
 import com.ensegov.neofut.home.data.repository.CompetitionsRepository
 import com.ensegov.neofut.home.data.repository.CompetitionsRepositoryImpl
+import com.ensegov.neofut.match_detail.data.repository.MatchDetailRepository
+import com.ensegov.neofut.match_detail.data.repository.MatchDetailRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
@@ -23,4 +25,5 @@ val domainModule = module {
     factoryOf(::StandingsRepositoryImpl) { bind<StandingsRepository>() }
     factoryOf(::TopStatsRepositoryImpl) { bind<TopStatsRepository>() }
     factoryOf(::TopStatsRepositoryImpl) { bind<TopStatsRepository>() }
+    factoryOf(::MatchDetailRepositoryImpl) { bind<MatchDetailRepository>() }
 }

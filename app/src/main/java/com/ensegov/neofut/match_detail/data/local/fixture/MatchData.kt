@@ -35,7 +35,9 @@ data class MatchData(
     @ColumnInfo(name = "home_team_id")
     val homeTeamId: Int,
     @ColumnInfo(name = "away_team_id")
-    val awayTeamId: Int
+    val awayTeamId: Int,
+    @ColumnInfo(name = "venue_id")
+    val venueId: Int?
 )
 
 fun MatchData.asShortUiModel() =

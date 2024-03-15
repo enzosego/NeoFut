@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AllMatchScoresDto(
+data class AllScoresDto(
     @SerialName(value = "halftime")
     val halfTime: MatchScoreDto,
     @SerialName(value = "fulltime")
@@ -15,8 +15,29 @@ data class AllMatchScoresDto(
     val penalty: MatchScoreDto
 )
 
-/*
-fun AllMatchScores.asDatabaseModel() = listOf(
-    MatchScoreData
+fun AllScoresDto.asDatabaseModel(matchId: Int) = listOf(
+    MatchScoreData(
+        matchId = matchId,
+        scoreType = "half time",
+        home = halfTime.home,
+        away = halfTime.away
+    ),
+    MatchScoreData(
+        matchId = matchId,
+        scoreType = "full time",
+        home = fullTime.home,
+        away = fullTime.away
+    ),
+    MatchScoreData(
+        matchId = matchId,
+        scoreType = "extra time",
+        home = extraTime.home,
+        away = extraTime.away
+    ),
+    MatchScoreData(
+        matchId = matchId,
+        scoreType = "penalty",
+        home = penalty.home,
+        away = penalty.away
+    )
 )
- */

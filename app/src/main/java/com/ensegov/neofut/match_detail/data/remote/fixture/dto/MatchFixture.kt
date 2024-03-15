@@ -2,11 +2,11 @@ package com.ensegov.neofut.match_detail.data.remote.fixture.dto
 
 import com.ensegov.neofut.match_detail.data.local.fixture.MatchData
 import com.ensegov.neofut.match_detail.data.local.fixture.SimpleMatchFixture
-import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.AllMatchScores
 import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchInfo
 import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchScoreDto
 import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.MatchTeams
 import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
+import com.ensegov.neofut.match_detail.data.remote.fixture.dto.match.AllScoresDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
@@ -20,7 +20,7 @@ data class MatchFixture(
     val teams: MatchTeams?,
     @SerialName(value = "goals")
     val currentScore: MatchScoreDto?,
-    val score: AllMatchScores?
+    val score: AllScoresDto?
 )
 
 fun MatchFixture.asDatabaseModel(competitionId: Int, season: Int, round: String) =
@@ -35,13 +35,14 @@ fun MatchFixture.asDatabaseModel(competitionId: Int, season: Int, round: String)
                 round = round,
                 referee = info.referee,
                 date = info.date.toTimeInMillis(),
-                currentScore.home,
-                currentScore.away,
-                info.status.long,
-                info.status.short,
-                info.status.elapsed,
-                teams.home.id,
-                teams.away.id
+                homeScore = currentScore.home,
+                awayScore = currentScore.away,
+                statusLong = info.status.long,
+                statusShort = info.status.short,
+                timeElapsed = info.status.elapsed,
+                homeTeamId = teams.home.id,
+                awayTeamId = teams.away.id,
+                venueId = info.venue.id
             ),
             homeTeam = teams.home.asDatabaseModel(),
             awayTeam = teams.away.asDatabaseModel(),

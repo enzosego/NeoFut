@@ -15,6 +15,8 @@ import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.data.local.top_stats.StatsData
 import com.ensegov.neofut.competition_detail.data.local.top_stats.TopStatsDao
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
+import com.ensegov.neofut.competition_detail.data.local.team.VenueData
+import com.ensegov.neofut.match_detail.data.local.fixture.MatchScoreData
 import com.ensegov.neofut.update_times.data.local.UpdateTimeDao
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 
@@ -27,6 +29,8 @@ import com.ensegov.neofut.update_times.data.local.UpdateTimeData
         TeamInfo::class,
         TeamForm::class,
         MatchData::class,
+        MatchScoreData::class,
+        VenueData::class,
         PlayerData::class,
         StatsData::class,
         UpdateTimeData::class
