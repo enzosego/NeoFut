@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Venue(
+data class VenueDto(
     val id: Int?,
     val name: String?,
     val city: String?,

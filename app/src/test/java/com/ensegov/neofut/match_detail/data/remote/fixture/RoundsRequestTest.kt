@@ -1,4 +1,4 @@
-package com.ensegov.neofut.competition_detail.data.remote.fixture
+package com.ensegov.neofut.match_detail.data.remote.fixture
 
 import com.ensegov.neofut.match_detail.data.remote.fixture.FixtureApi
 import io.kotest.core.spec.style.StringSpec
