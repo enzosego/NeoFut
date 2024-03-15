@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.standings
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,12 +18,14 @@ fun StandingsLayout(
     )
     val standings by viewModel.standings.collectAsStateWithLifecycle()
 
-    when(standings) {
-        is UiState.Loading -> StandingsLoadingLayout()
-        is UiState.Success -> GroupTable(
-            { (standings as UiState.Success).data },
-            { viewModel.isUpdatingFromNetwork }
-        )
-        is UiState.Error -> StandingsErrorLayout()
+    AnimatedContent(targetState = standings, label = "") { state ->
+        when (state) {
+            is UiState.Loading -> StandingsLoadingLayout()
+            is UiState.Success -> GroupTable(
+                { state.data },
+                { viewModel.isUpdatingFromNetwork }
+            )
+            is UiState.Error -> StandingsErrorLayout()
+        }
     }
 }

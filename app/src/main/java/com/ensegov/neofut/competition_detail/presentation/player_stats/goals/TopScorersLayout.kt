@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats.goals
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,14 +17,16 @@ fun TopScorersLayout(
     val viewModel: TopScorersViewModel = koinViewModel(
         parameters = { parametersOf(competitionId, competitionSeason) }
     )
-    val topScorers by viewModel.playerStats.collectAsStateWithLifecycle()
+    val playerStats by viewModel.playerStats.collectAsStateWithLifecycle()
 
-    when (topScorers) {
-        is UiState.Loading -> PlayerStatsLoadingLayout()
-        is UiState.Success -> TopScorersTable(
-            { (topScorers as UiState.Success).data },
-            { viewModel.isUpdatingFromNetwork }
-        )
-        is UiState.Error -> TopScorersErrorLayout()
+    AnimatedContent(targetState = playerStats, label = "") { state ->
+        when (state) {
+            is UiState.Loading -> PlayerStatsLoadingLayout()
+            is UiState.Success -> TopScorersTable(
+                { state.data },
+                { viewModel.isUpdatingFromNetwork }
+            )
+            is UiState.Error -> TopScorersErrorLayout()
+        }
     }
 }

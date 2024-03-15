@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.fixture
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,16 +21,18 @@ internal fun FixtureLayout(
     val canShowPrevious by viewModel.canShowPrevious.collectAsStateWithLifecycle()
     val canShowNext by viewModel.canShowNext.collectAsStateWithLifecycle()
 
-    when (currentFixture) {
-        is UiState.Loading -> FixtureLoadingLayout()
-        is UiState.Success -> FixtureSuccessLayout(
-            { currentFixture.data },
-            { canShowPrevious },
-            { canShowNext },
-            { viewModel.isUpdatingFromNetwork },
-            viewModel::onClickPrevious,
-            viewModel::onClickNext
-        )
-        is UiState.Error -> FixtureErrorLayout()
+    AnimatedContent(targetState = currentFixture, label = "") { state ->
+        when (state) {
+            is UiState.Loading -> FixtureLoadingLayout()
+            is UiState.Success -> FixtureSuccessLayout(
+                { state.data },
+                { canShowPrevious },
+                { canShowNext },
+                { viewModel.isUpdatingFromNetwork },
+                viewModel::onClickPrevious,
+                viewModel::onClickNext
+            )
+            is UiState.Error -> FixtureErrorLayout()
+        }
     }
 }

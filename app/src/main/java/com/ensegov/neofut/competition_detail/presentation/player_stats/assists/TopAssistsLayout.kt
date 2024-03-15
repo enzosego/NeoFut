@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats.assists
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,18 +14,19 @@ fun TopAssistsLayout(
     competitionId: Int,
     competitionSeason: Int
 ) {
-
     val viewModel: TopAssistsViewModel = koinViewModel(
         parameters = { parametersOf(competitionId, competitionSeason) }
     )
     val playerStats by viewModel.playerStats.collectAsStateWithLifecycle()
 
-    when (playerStats) {
-        is UiState.Loading -> PlayerStatsLoadingLayout()
-        is UiState.Success -> TopAssistsTable(
-            { (playerStats as UiState.Success).data },
-            { viewModel.isUpdatingFromNetwork }
-        )
-        is UiState.Error -> TopAssistsErrorLayout()
+    AnimatedContent(targetState = playerStats, label = "") { state ->
+        when (state) {
+            is UiState.Loading -> PlayerStatsLoadingLayout()
+            is UiState.Success -> TopAssistsTable(
+                { state.data },
+                { viewModel.isUpdatingFromNetwork }
+            )
+            is UiState.Error -> TopAssistsErrorLayout()
+        }
     }
 }

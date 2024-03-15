@@ -42,7 +42,7 @@ class TopAssistsViewModel(
 
     private fun updateTopAssists() = viewModelScope.launch {
         _playerStats.value.updateFromNetwork(
-            canUpdate = { true },
+            canUpdate = { topStatsRepository.canUpdateTopAssists(id, season) },
             update = { newValue -> _playerStats.update { newValue } },
             changeIsUpdatingValue = { isUpdatingFromNetwork = it },
             request = { topStatsRepository.updateTopAssists(id, season) },

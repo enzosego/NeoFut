@@ -20,7 +20,7 @@ import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 @Composable
 fun CompetitionsLayout(
-    competitionList: List<Competition>,
+    competitionList: () -> List<Competition>,
     navigate: (Competition) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -39,7 +39,7 @@ fun CompetitionsLayout(
             columns = GridCells.Fixed(count = 2),
             modifier = Modifier.padding(top = 50.dp),
         ) {
-            items(competitionList) { competition ->
+            items(competitionList()) { competition ->
                 CompetitionCard(
                     competition = competition,
                     onClickAction = { navigate(competition) },
@@ -68,7 +68,7 @@ private fun CompetitionsLayoutPreview() {
     }
     NeoFutTheme {
         CompetitionsLayout(
-            competitionList = mockDataset,
+            competitionList = { mockDataset },
             navigate = {}
             )
     }

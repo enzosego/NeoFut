@@ -1,5 +1,6 @@
 package com.ensegov.neofut.home.presentation
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,14 +20,16 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     val competitionUiState by viewModel.competitionList.collectAsState()
 
-    when(competitionUiState) {
-        is UiState.Loading -> CompetitionsLoadingLayout()
-        is UiState.Success -> CompetitionsLayout(
-            competitionList = (competitionUiState as UiState.Success).data,
-            navigate = { competition ->
-                navigator.navigate(CompetitionDetailScreenDestination(competition))
-            }
-        )
-        is UiState.Error -> CompetitionsErrorLayout()
+    AnimatedContent(targetState = competitionUiState, label = "") { state ->
+        when (state) {
+            is UiState.Loading -> CompetitionsLoadingLayout()
+            is UiState.Success -> CompetitionsLayout(
+                competitionList = { state.data },
+                navigate = { competition ->
+                    navigator.navigate(CompetitionDetailScreenDestination(competition))
+                }
+            )
+            is UiState.Error -> CompetitionsErrorLayout()
+        }
     }
 }
