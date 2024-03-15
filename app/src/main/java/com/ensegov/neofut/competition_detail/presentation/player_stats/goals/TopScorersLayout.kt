@@ -21,7 +21,8 @@ fun TopScorersLayout(
     when (topScorers) {
         is UiState.Loading -> PlayerStatsLoadingLayout()
         is UiState.Success -> TopScorersTable(
-            { (topScorers as UiState.Success).data }
+            { (topScorers as UiState.Success).data },
+            { viewModel.isUpdatingFromNetwork }
         )
         is UiState.Error -> TopScorersErrorLayout()
     }

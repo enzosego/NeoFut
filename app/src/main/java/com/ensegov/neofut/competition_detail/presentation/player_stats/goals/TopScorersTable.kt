@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.ensegov.neofut.R
+import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.NoStatsAvailableText
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsColumnNames
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsTitle
@@ -20,6 +21,7 @@ import com.ensegov.neofut.ui.theme.NeoFutTheme
 @Composable
 fun TopScorersTable(
     players: () -> List<PlayerStatsUiData>,
+    isUpdating: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
     when(players().size) {
@@ -27,6 +29,7 @@ fun TopScorersTable(
         else -> LazyColumn(
             modifier = modifier.fillMaxWidth()
         ) {
+            animatedUpdatingHeader(isUpdating)
             item {
                 StatsTitle(text = stringResource(R.string.top_scorers))
             }
@@ -64,6 +67,9 @@ fun TopScorersTable(
 @Composable
 private fun TopScorersTablePreview() {
     NeoFutTheme {
-        TopScorersTable({ getStatsList() })
+        TopScorersTable(
+            { getStatsList() },
+            { true }
+        )
     }
 }

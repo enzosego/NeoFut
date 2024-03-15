@@ -1,6 +1,8 @@
 package com.ensegov.neofut.competition_detail.presentation.common
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -23,7 +25,10 @@ fun LazyListScope.animatedUpdatingHeader(
     modifier: Modifier = Modifier
 ) {
     stickyHeader {
-        AnimatedVisibility(isUpdating()) {
+        AnimatedVisibility(
+            visible = isUpdating(),
+            exit = shrinkVertically { -40 } + fadeOut()
+        ) {
             Surface {
                 Row(
                     modifier = modifier

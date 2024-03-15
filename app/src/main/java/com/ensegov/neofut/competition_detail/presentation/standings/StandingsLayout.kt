@@ -20,7 +20,8 @@ fun StandingsLayout(
     when(standings) {
         is UiState.Loading -> StandingsLoadingLayout()
         is UiState.Success -> GroupTable(
-            { (standings as UiState.Success).data }
+            { (standings as UiState.Success).data },
+            { viewModel.isUpdatingFromNetwork }
         )
         is UiState.Error -> StandingsErrorLayout()
     }

@@ -1,5 +1,8 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats.goals
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.top_stats.TopStatsRepository
@@ -21,6 +24,9 @@ class TopScorersViewModel(
         MutableStateFlow(UiState.Loading)
     val playerStats: StateFlow<UiState<List<PlayerStatsUiData>>> = _playerStats
 
+    var isUpdatingFromNetwork by mutableStateOf(false)
+        private set
+
     init {
         getTopScorers()
     }
@@ -38,7 +44,7 @@ class TopScorersViewModel(
         _playerStats.value.updateFromNetwork(
             canUpdate = { topStatsRepository.canUpdateTopScorers(id, season) },
             update = { newValue -> _playerStats.update { newValue } },
-            changeIsUpdatingValue = {  },
+            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
             request = { topStatsRepository.updateTopScorers(id, season) },
             tag = TAG
         )

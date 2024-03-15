@@ -1,5 +1,8 @@
 package com.ensegov.neofut.competition_detail.presentation.standings
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.standings.StandingsRepository
@@ -19,6 +22,9 @@ class StandingsViewModel(
     val standings: MutableStateFlow<UiState<List<CompetitionGroup>>> =
         MutableStateFlow(UiState.Loading)
 
+    var isUpdatingFromNetwork by mutableStateOf(false)
+        private set
+
     init {
         getStandings()
     }
@@ -36,7 +42,7 @@ class StandingsViewModel(
         standings.value.updateFromNetwork(
             canUpdate = { standingsRepository.canUpdateStandings(id, season) },
             update = { newValue -> standings.update { newValue } },
-            changeIsUpdatingValue = {  },
+            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
             request = { standingsRepository.updateStandings(id, season) },
             tag = TAG
         )

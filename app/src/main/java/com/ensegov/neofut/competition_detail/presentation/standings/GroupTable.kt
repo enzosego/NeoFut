@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.R
+import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
 import com.ensegov.neofut.ui.theme.NeoFutTheme
@@ -23,12 +24,14 @@ import com.ensegov.neofut.ui.theme.NeoFutTheme
 @Composable
 fun GroupTable(
     standings: () -> List<CompetitionGroup>,
+    isUpdating: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
 
     LazyColumn(
         modifier = modifier.fillMaxWidth()
     ) {
+        animatedUpdatingHeader(isUpdating)
         standings().forEach { group ->
             item {
                 Text(
@@ -98,6 +101,9 @@ private fun GroupTablePreview() {
         )
     }
     NeoFutTheme {
-        GroupTable({ mockData })
+        GroupTable(
+            { mockData },
+            { true }
+        )
     }
 }

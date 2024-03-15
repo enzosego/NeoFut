@@ -22,7 +22,8 @@ fun TopAssistsLayout(
     when (playerStats) {
         is UiState.Loading -> PlayerStatsLoadingLayout()
         is UiState.Success -> TopAssistsTable(
-            { (playerStats as UiState.Success).data }
+            { (playerStats as UiState.Success).data },
+            { viewModel.isUpdatingFromNetwork }
         )
         is UiState.Error -> TopAssistsErrorLayout()
     }
