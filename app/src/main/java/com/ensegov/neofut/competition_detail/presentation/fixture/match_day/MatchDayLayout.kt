@@ -1,5 +1,6 @@
 package com.ensegov.neofut.competition_detail.presentation.fixture.match_day
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,7 +17,8 @@ import com.ensegov.neofut.competition_detail.presentation.fixture.model.generate
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 
 fun LazyListScope.matchDayLayout(
-    matchDay: MatchDay
+    matchDay: MatchDay,
+    onClick: (Int) -> Unit
 ) {
     item {
         Text(
@@ -28,7 +30,10 @@ fun LazyListScope.matchDayLayout(
         )
     }
     items(matchDay.matchList) { match ->
-        MatchCard(match)
+        MatchCard(
+            match = match,
+            modifier = Modifier.clickable { onClick(match.data.id) }
+        )
     }
 }
 
@@ -44,7 +49,7 @@ private fun MatchDayLayoutPreview() {
                         generateFakeMatch(index = it, count = 5)
                     }
                 )
-            )
+            ) {}
         }
     }
 }

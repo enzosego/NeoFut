@@ -25,11 +25,15 @@ import com.ensegov.neofut.competition_detail.presentation.standings.StandingsLay
 import com.ensegov.neofut.competition_detail.presentation.tab.DetailTabRow
 import com.ensegov.neofut.home.presentation.model.toTabList
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Destination
 @Composable
-fun CompetitionDetailScreen(competition: Competition) {
+fun CompetitionDetailScreen(
+    competition: Competition,
+    navigator: DestinationsNavigator
+) {
 
     val scope = rememberCoroutineScope()
     val tabs = remember {
@@ -66,7 +70,8 @@ fun CompetitionDetailScreen(competition: Competition) {
                 when (tabs[it]) {
                     is CompetitionDetailTab.Fixture -> FixtureLayout(
                         competitionId = competition.id,
-                        competitionSeason = competition.getLatestSeason()
+                        competitionSeason = competition.getLatestSeason(),
+                        navigator = navigator
                     )
                     is CompetitionDetailTab.Standings -> StandingsLayout(
                         competitionId = competition.id,

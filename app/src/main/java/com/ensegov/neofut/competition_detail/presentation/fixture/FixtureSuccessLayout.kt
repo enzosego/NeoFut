@@ -13,7 +13,10 @@ import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatin
 import com.ensegov.neofut.competition_detail.presentation.fixture.match_day.matchDayLayout
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.generateFakeMatch
+import com.ensegov.neofut.destinations.MatchDetailScreenDestination
 import com.ensegov.neofut.ui.theme.NeoFutTheme
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Composable
 fun FixtureSuccessLayout(
@@ -23,6 +26,7 @@ fun FixtureSuccessLayout(
     isUpdating: () -> Boolean,
     onClickPrevious: () -> Unit,
     onClickNext: () -> Unit,
+    navigator: DestinationsNavigator,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -47,7 +51,11 @@ fun FixtureSuccessLayout(
                 }
             }
         }
-        currentFixture().forEach { matchDayLayout(it) }
+        currentFixture().forEach {
+            matchDayLayout(it) { matchId ->
+                navigator.navigate(MatchDetailScreenDestination(matchId))
+            }
+        }
     }
 }
 
@@ -69,6 +77,8 @@ private fun FixtureSuccessLayoutPreview() {
             canShowNext = { true },
             onClickPrevious = { /*TODO*/ },
             isUpdating = { true },
-            onClickNext = { /*TODO*/ })
+            onClickNext = { /*TODO*/ },
+            navigator = EmptyDestinationsNavigator
+            )
     }
 }
