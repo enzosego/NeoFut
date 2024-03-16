@@ -1,6 +1,7 @@
 package com.ensegov.neofut.competition_detail.presentation.fixture
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,15 +27,18 @@ internal fun FixtureLayout(
     AnimatedContent(targetState = currentFixture, label = "") { state ->
         when (state) {
             is UiState.Loading -> FixtureLoadingLayout()
-            is UiState.Success -> FixtureSuccessLayout(
-                { state.data },
-                { canShowPrevious },
-                { canShowNext },
-                { viewModel.isUpdatingFromNetwork },
-                viewModel::onClickPrevious,
-                viewModel::onClickNext,
-                navigator
-            )
+            is UiState.Success ->
+                AnimatedVisibility(visible = state.data.isNotEmpty()) {
+                    FixtureSuccessLayout(
+                        { state.data },
+                        { canShowPrevious },
+                        { canShowNext },
+                        { viewModel.isUpdatingFromNetwork },
+                        viewModel::onClickPrevious,
+                        viewModel::onClickNext,
+                        navigator
+                    )
+                }
             is UiState.Error -> FixtureErrorLayout()
         }
     }
