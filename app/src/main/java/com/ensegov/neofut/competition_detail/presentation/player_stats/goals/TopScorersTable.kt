@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.R
 import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
-import com.ensegov.neofut.competition_detail.presentation.player_stats.common.NoStatsAvailableText
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.PlayerStatsRow
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsColumnNames
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsTitle
@@ -29,63 +28,59 @@ fun TopScorersTable(
     isUpdating: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
-    when(players().size) {
-        0 -> NoStatsAvailableText(stringRes = R.string.no_goals_list)
-        else -> LazyColumn(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            animatedUpdatingHeader(isUpdating)
-            item {
-                StatsTitle(text = stringResource(R.string.top_scorers))
+    LazyColumn(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        animatedUpdatingHeader(isUpdating)
+        item {
+            StatsTitle(text = stringResource(R.string.top_scorers))
+        }
+        item {
+            StatsColumnNames {
+                Text(
+                    text = stringResource(R.string.player_name),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(.7f)
+                )
+                Text(
+                    text = stringResource(R.string.goals),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(.15f)
+                )
+                Text(
+                    text = stringResource(R.string.penalty_goals),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(.15f)
+                )
             }
-            item {
-                StatsColumnNames {
-                    Text(
-                        text = stringResource(R.string.player_name),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(.7f)
-                    )
-                    Text(
-                        text = stringResource(R.string.goals),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(.15f)
-                    )
-                    Text(
-                        text = stringResource(R.string.penalty_goals),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(.15f)
-                    )
-                }
-            }
-            items(players()) { stats ->
-                PlayerStatsRow(
-                    leftWeight = .7f,
-                    playerStats = stats
+        }
+        items(players()) { stats ->
+            PlayerStatsRow(
+                leftWeight = .7f,
+                playerStats = stats
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(.3f)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(.3f)
-                    ) {
-                        Text(
-                            text = "${stats.totalGoals}",
-                            textAlign = TextAlign.Center,
-                            fontSize = 22.sp,
-                            modifier = Modifier.weight(.15f)
-                        )
-                        Text(
-                            text = "${stats.penaltyGoals}",
-                            textAlign = TextAlign.Center,
-                            fontSize = 22.sp,
-                            modifier = Modifier.weight(.15f)
-                        )
-                    }
+                    Text(
+                        text = "${stats.totalGoals}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 22.sp,
+                        modifier = Modifier.weight(.15f)
+                    )
+                    Text(
+                        text = "${stats.penaltyGoals}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 22.sp,
+                        modifier = Modifier.weight(.15f)
+                    )
                 }
             }
         }
     }
-
 }
 
 @Preview

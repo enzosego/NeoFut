@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.ensegov.neofut.R
 import com.ensegov.neofut.competition_detail.presentation.common.animatedUpdatingHeader
-import com.ensegov.neofut.competition_detail.presentation.player_stats.common.NoStatsAvailableText
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.PlayerStatsRow
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsColumnNames
 import com.ensegov.neofut.competition_detail.presentation.player_stats.common.StatsTitle
@@ -28,42 +27,39 @@ fun TopAssistsTable(
     isUpdating: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
-    when(playerStats().size) {
-        0 -> NoStatsAvailableText(stringRes = R.string.no_assists_list)
-        else -> LazyColumn(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            animatedUpdatingHeader(isUpdating)
-            item {
-                StatsTitle(text = stringResource(R.string.top_assists))
+    LazyColumn(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        animatedUpdatingHeader(isUpdating)
+        item {
+            StatsTitle(text = stringResource(R.string.top_assists))
+        }
+        item {
+            StatsColumnNames {
+                Text(
+                    text = stringResource(R.string.player_name),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(.85f)
+                )
+                Text(
+                    text = stringResource(R.string.assists),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(.15f)
+                )
             }
-            item {
-                StatsColumnNames {
-                    Text(
-                        text = stringResource(R.string.player_name),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(.85f)
-                    )
-                    Text(
-                        text = stringResource(R.string.assists),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(.15f)
-                    )
-                }
-            }
-            items(playerStats()) { stats ->
-                PlayerStatsRow(
-                    leftWeight = .85f, playerStats = stats
-                ) {
-                    Text(
-                        text = "${stats.assists}",
-                        fontSize = 22.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = modifier.fillMaxHeight()
-                            .weight(.15f)
-                            .wrapContentHeight()
-                    )
-                }
+        }
+        items(playerStats()) { stats ->
+            PlayerStatsRow(
+                leftWeight = .85f, playerStats = stats
+            ) {
+                Text(
+                    text = "${stats.assists}",
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxHeight()
+                        .weight(.15f)
+                        .wrapContentHeight()
+                )
             }
         }
     }

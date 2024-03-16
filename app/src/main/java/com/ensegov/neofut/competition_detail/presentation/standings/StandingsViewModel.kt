@@ -20,7 +20,7 @@ class StandingsViewModel(
 ) : ViewModel() {
 
     val standings: MutableStateFlow<UiState<List<CompetitionGroup>>> =
-        MutableStateFlow(UiState.Loading)
+        MutableStateFlow(UiState.Success(emptyList()))
 
     var isUpdatingFromNetwork by mutableStateOf(false)
         private set
@@ -32,8 +32,12 @@ class StandingsViewModel(
     private fun getStandings() {
         viewModelScope.launch {
             val newValue = standingsRepository.getStandings(id, season)
-            if (newValue.isNotEmpty())
-                standings.update { UiState.Success(newValue) }
+            standings.update {
+                if (newValue.isNotEmpty())
+                    UiState.Success(newValue)
+                else
+                    UiState.Loading
+            }
             updateStandings()
         }
     }
@@ -42,13 +46,8 @@ class StandingsViewModel(
         standings.value.updateFromNetwork(
             canUpdate = { standingsRepository.canUpdateStandings(id, season) },
             update = { newValue -> standings.update { newValue } },
-            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
             request = { standingsRepository.updateStandings(id, season) },
-            tag = TAG
+            changeIsUpdatingValue = { isUpdatingFromNetwork = it }
         )
-    }
-
-    companion object {
-        private const val TAG = "StandingsViewModel"
     }
 }

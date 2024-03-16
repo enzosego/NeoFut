@@ -1,6 +1,5 @@
 package com.ensegov.neofut.home.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.home.data.repository.CompetitionsRepository
@@ -15,10 +14,22 @@ class HomeViewModel(
 ) : ViewModel() {
 
     val competitionList: MutableStateFlow<UiState<List<Competition>>> =
-        MutableStateFlow(UiState.Loading)
+        MutableStateFlow(UiState.Success(emptyList()))
 
     init {
-        updateCompetitions()
+        getCompetitions()
+    }
+
+    private fun getCompetitions() = viewModelScope.launch {
+        val newList = competitionsRepository.getAllCompetitions()
+        competitionList.update {
+            if (newList.isNotEmpty())
+                UiState.Success(newList)
+            else {
+                updateCompetitions()
+                UiState.Loading
+            }
+        }
     }
 
     private fun updateCompetitions() {
@@ -26,19 +37,12 @@ class HomeViewModel(
             competitionList.update {
                 try {
                     UiState.Success(
-                        competitionsRepository.getAllCompetitions().ifEmpty {
-                            competitionsRepository.fetchAllCompetitions("argentina")
-                        }
+                        competitionsRepository.fetchAllCompetitions("argentina")
                     )
                 } catch (e: Exception) {
-                    Log.d(TAG, "Error: $e")
-                    UiState.Error
+                    UiState.Error(message = e.message ?: "Could not retrieve competitions")
                 }
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "HomeViewModel"
     }
 }

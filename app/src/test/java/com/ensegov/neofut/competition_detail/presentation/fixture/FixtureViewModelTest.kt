@@ -34,7 +34,7 @@ class FixtureViewModelTest : StringSpec({
 
     "$TAG - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
         val fixtureViewModel = getViewModel()
-        fixtureViewModel.currentFixture shouldBe UiState.Loading
+        fixtureViewModel.currentFixture shouldBe UiState.Success(emptyList())
     }
 
     "$TAG - has persisted data - retrieve round fixture from database" {

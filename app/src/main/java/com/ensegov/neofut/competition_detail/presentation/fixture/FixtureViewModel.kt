@@ -44,7 +44,7 @@ class FixtureViewModel(
             initialValue = emptyList()
         )
 
-    var currentFixture: UiState<List<MatchDay>> by mutableStateOf(UiState.Loading)
+    var currentFixture: UiState<List<MatchDay>> by mutableStateOf(UiState.Success(emptyList()))
 
     var isUpdatingFromNetwork by mutableStateOf(false)
         private set
@@ -87,8 +87,11 @@ class FixtureViewModel(
         viewModelScope.launch {
             val fixture = fixtureRepository
                 .getRoundFixture(id, season, round)
-            if (fixture.isNotEmpty())
-                currentFixture = UiState.Success(fixture)
+            currentFixture =
+                if (fixture.isNotEmpty())
+                    UiState.Success(fixture)
+                else
+                    UiState.Loading
             updateRoundFixture(round)
         }
     }
@@ -98,9 +101,8 @@ class FixtureViewModel(
             currentFixture.updateFromNetwork(
                 canUpdate = { fixtureRepository.canUpdateRoundFixture(id, season, round) },
                 update = { newValue -> currentFixture = newValue },
-                changeIsUpdatingValue = { isUpdatingFromNetwork = it },
                 request = { fixtureRepository.updateRoundFixture(id, season, round) },
-                tag = TAG
+                changeIsUpdatingValue = { isUpdatingFromNetwork = it }
             )
         }
     }

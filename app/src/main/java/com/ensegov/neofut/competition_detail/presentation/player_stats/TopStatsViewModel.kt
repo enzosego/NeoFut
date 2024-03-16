@@ -21,7 +21,7 @@ class TopStatsViewModel(
     private val season: Int
 ) : ViewModel() {
     private val _playerStats: MutableStateFlow<UiState<List<PlayerStatsUiData>>> =
-        MutableStateFlow(UiState.Loading)
+        MutableStateFlow(UiState.Success(emptyList()))
     val playerStats: StateFlow<UiState<List<PlayerStatsUiData>>> = _playerStats
 
     var isUpdatingFromNetwork by mutableStateOf(false)
@@ -34,8 +34,12 @@ class TopStatsViewModel(
     private fun getTopStats() {
         viewModelScope.launch {
             val newValue = getFromDatabase()
-            if (newValue.isNotEmpty())
-                _playerStats.update { UiState.Success(newValue) }
+            _playerStats.update {
+                if (newValue.isNotEmpty())
+                    UiState.Success(newValue)
+                else
+                    UiState.Loading
+            }
             updateTopStats()
         }
     }
@@ -44,9 +48,8 @@ class TopStatsViewModel(
         _playerStats.value.updateFromNetwork(
             canUpdate = { topStatsRepository.canUpdateTopStats(type, id, season) },
             update = { newValue -> _playerStats.update { newValue } },
-            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
             request = { fetchFromNetwork() },
-            tag = TAG
+            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
         )
     }
 
@@ -61,8 +64,4 @@ class TopStatsViewModel(
             topStatsRepository.updateTopScorers(id, season)
         else
             topStatsRepository.updateTopAssists(id, season)
-
-    companion object {
-        const val TAG = "TopStatsViewModel"
-    }
 }

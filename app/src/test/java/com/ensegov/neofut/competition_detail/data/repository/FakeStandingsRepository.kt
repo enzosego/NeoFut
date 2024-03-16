@@ -12,7 +12,7 @@ class FakeStandingsRepository(
 ) : StandingsRepository {
 
     override suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup> {
-        delay(500L)
+        delay(300L)
         if (requestFailure)
             throw Exception()
         else

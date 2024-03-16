@@ -30,7 +30,7 @@ class StandingsViewModelTest : StringSpec({
 
     "$TAG - ViewModel initialization - standings value is ´UiState.Loading´" {
         val standingsViewModel = getViewModel(FakeStandingsRepository())
-        standingsViewModel.standings.value shouldBe UiState.Loading
+        standingsViewModel.standings.value shouldBe UiState.Success(emptyList())
     }
 
     "$TAG - has persisted data - cannot update - retrieves from database" {
@@ -40,7 +40,7 @@ class StandingsViewModelTest : StringSpec({
                 canUpdate = false
             )
         )
-        delay(1000L)
+        delay(500L)
         standingsViewModel.standings.value shouldBe databaseResult
     }
 
@@ -51,7 +51,7 @@ class StandingsViewModelTest : StringSpec({
         delay(100L)
         standingsViewModel.standings.value shouldBe databaseResult
 
-        delay(1000L)
+        delay(400L)
         standingsViewModel.standings.value shouldBe networkResult
     }
 
@@ -62,13 +62,13 @@ class StandingsViewModelTest : StringSpec({
                 requestFailure = true
             )
         )
-        delay(1000L)
+        delay(500L)
         standingsViewModel.standings.value shouldBe databaseResult
     }
 
     "$TAG - no persisted data - makes request from network" {
         val standingsViewModel = getViewModel(FakeStandingsRepository())
-        delay(1000L)
+        delay(500L)
         standingsViewModel.standings.value shouldBe networkResult
     }
 
@@ -76,7 +76,7 @@ class StandingsViewModelTest : StringSpec({
         val standingsViewModel = getViewModel(
             FakeStandingsRepository(requestFailure = true)
         )
-        delay(1000L)
+        delay(500L)
         standingsViewModel.standings.value shouldBe UiState.Error
     }
 })

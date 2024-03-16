@@ -1,6 +1,7 @@
 package com.ensegov.neofut.competition_detail.presentation.player_stats
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,16 +30,18 @@ fun TopStatsLayout(
         when (state) {
             is UiState.Loading -> PlayerStatsLoadingLayout()
             is UiState.Success ->
-                if (type == "assists")
-                    TopAssistsTable(
-                        { state.data },
-                        { viewModel.isUpdatingFromNetwork }
-                    )
-                else
-                    TopScorersTable(
-                        players = { state.data },
-                        isUpdating = { viewModel.isUpdatingFromNetwork }
-                    )
+                AnimatedVisibility(visible = state.data.isNotEmpty()) {
+                    if (type == "assists")
+                        TopAssistsTable(
+                            { state.data },
+                            { viewModel.isUpdatingFromNetwork }
+                        )
+                    else
+                        TopScorersTable(
+                            players = { state.data },
+                            isUpdating = { viewModel.isUpdatingFromNetwork }
+                        )
+                }
             is UiState.Error -> TopStatsErrorLayout(type)
         }
     }
