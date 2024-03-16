@@ -2,6 +2,7 @@ package com.ensegov.neofut.home.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -18,7 +19,7 @@ interface CompetitionDataDao {
     @Upsert
     fun insertAllCompetitions(competitionData: List<CompetitionData>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllSeasons(seasonData: List<SeasonData>)
 
     @Transaction
