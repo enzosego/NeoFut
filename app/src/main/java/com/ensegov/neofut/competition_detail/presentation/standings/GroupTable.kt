@@ -73,7 +73,10 @@ fun GroupTable(
                     )
                 }
             }
-            items(group.teamList) { team ->
+            items(
+                items = group.teamList,
+                key = { it.team }
+            ) { team ->
                 TeamRow(team)
             }
         }

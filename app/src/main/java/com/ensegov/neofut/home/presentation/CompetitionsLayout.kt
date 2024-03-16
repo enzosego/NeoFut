@@ -39,7 +39,10 @@ fun CompetitionsLayout(
             columns = GridCells.Fixed(count = 2),
             modifier = Modifier.padding(top = 50.dp),
         ) {
-            items(competitionList()) { competition ->
+            items(
+                items = competitionList(),
+                key = { it.id }
+            ) { competition ->
                 CompetitionCard(
                     competition = competition,
                     onClickAction = { navigate(competition) },

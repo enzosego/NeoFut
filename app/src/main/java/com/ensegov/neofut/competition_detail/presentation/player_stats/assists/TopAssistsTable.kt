@@ -48,7 +48,10 @@ fun TopAssistsTable(
                 )
             }
         }
-        items(playerStats()) { stats ->
+        items(
+            items = playerStats(),
+            key = { it.player.name }
+        ) { stats ->
             PlayerStatsRow(
                 leftWeight = .85f, playerStats = stats
             ) {

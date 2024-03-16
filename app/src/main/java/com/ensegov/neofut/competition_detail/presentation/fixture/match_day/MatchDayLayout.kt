@@ -29,7 +29,10 @@ fun LazyListScope.matchDayLayout(
                 .padding(horizontal = 8.dp)
         )
     }
-    items(matchDay.matchList) { match ->
+    items(
+        items = matchDay.matchList,
+        key = { it.data.id }
+    ) { match ->
         MatchCard(
             match = match,
             modifier = Modifier.clickable { onClick(match.data.id) }

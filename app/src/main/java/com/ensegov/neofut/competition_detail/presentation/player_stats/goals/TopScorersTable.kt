@@ -54,7 +54,10 @@ fun TopScorersTable(
                 )
             }
         }
-        items(players()) { stats ->
+        items(
+            items = players(),
+            key = { it.player.name }
+        ) { stats ->
             PlayerStatsRow(
                 leftWeight = .7f,
                 playerStats = stats
