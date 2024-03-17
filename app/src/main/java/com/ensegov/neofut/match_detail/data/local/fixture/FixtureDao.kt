@@ -56,7 +56,7 @@ interface FixtureDao {
     @Transaction
     @Query("SELECT * FROM match_data " +
             "WHERE :matchId = id")
-    fun getFullMatchFixture(matchId: Int): FullMatchFixture
+    fun getFullMatchFixture(matchId: Int): Flow<FullMatchFixture?>
 
     @Transaction
     suspend fun insertAllFixtureData(

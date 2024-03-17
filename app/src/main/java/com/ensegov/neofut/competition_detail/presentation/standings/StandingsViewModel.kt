@@ -10,6 +10,7 @@ import com.ensegov.neofut.competition_detail.presentation.standings.model.Compet
 import com.ensegov.neofut.common.presentation.model.UiState
 import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,8 +20,9 @@ class StandingsViewModel(
     private val season: Int
 ) : ViewModel() {
 
-    val standings: MutableStateFlow<UiState<List<CompetitionGroup>>> =
+    private val _standings: MutableStateFlow<UiState<List<CompetitionGroup>>> =
         MutableStateFlow(UiState.Success(emptyList()))
+    val standings = _standings.asStateFlow()
 
     var isUpdatingFromNetwork by mutableStateOf(false)
         private set
@@ -32,7 +34,7 @@ class StandingsViewModel(
     private fun getStandings() {
         viewModelScope.launch {
             val newValue = standingsRepository.getStandings(id, season)
-            standings.update {
+            _standings.update {
                 if (newValue.isNotEmpty())
                     UiState.Success(newValue)
                 else
@@ -43,9 +45,9 @@ class StandingsViewModel(
     }
 
     private fun updateStandings() = viewModelScope.launch {
-        standings.value.updateFromNetwork(
+        _standings.value.updateFromNetwork(
             canUpdate = { standingsRepository.canUpdateStandings(id, season) },
-            update = { newValue -> standings.update { newValue } },
+            update = { newValue -> _standings.update { newValue } },
             request = { standingsRepository.updateStandings(id, season) },
             changeIsUpdatingValue = { isUpdatingFromNetwork = it }
         )

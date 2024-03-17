@@ -4,6 +4,7 @@ import android.util.Log
 import com.ensegov.neofut.common.presentation.model.UiState
 import com.ensegov.neofut.competition_detail.createFakeRoundFixture
 import com.ensegov.neofut.competition_detail.data.repository.FakeFixtureRepository
+import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.scopes.StringSpecScope
 import io.kotest.matchers.shouldBe
@@ -29,12 +30,13 @@ class FixtureViewModelTest : StringSpec({
         Dispatchers.setMain(Dispatchers.Default)
     }
 
+    val emptyFixture = UiState.Success<List<MatchDay>>(emptyList())
     val databaseFixture = UiState.Success(createFakeRoundFixture(count = 8))
     val networkFixture = UiState.Success(createFakeRoundFixture(count = 12))
 
     "$TAG - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
         val fixtureViewModel = getViewModel()
-        fixtureViewModel.currentFixture shouldBe UiState.Success(emptyList())
+        fixtureViewModel.currentFixture.value shouldBe emptyFixture
     }
 
     "$TAG - has persisted data - retrieve round fixture from database" {
@@ -46,7 +48,7 @@ class FixtureViewModelTest : StringSpec({
         )
         delay(500L)
 
-        fixtureViewModel.currentFixture shouldBe databaseFixture
+        fixtureViewModel.currentFixture.value shouldBe databaseFixture
     }
 
     "$TAG - no persisted data - retrieves round fixture from database" {
@@ -55,7 +57,7 @@ class FixtureViewModelTest : StringSpec({
         )
         delay(500L)
 
-        fixtureViewModel.currentFixture shouldBe networkFixture
+        fixtureViewModel.currentFixture.value shouldBe networkFixture
     }
 
     "$TAG - has persisted data - can update - retrieves then updates from network" {
@@ -63,10 +65,10 @@ class FixtureViewModelTest : StringSpec({
             FakeFixtureRepository(hasPersistedRoundFixture = true)
         )
         delay(100L)
-        fixtureViewModel.currentFixture shouldBe databaseFixture
+        fixtureViewModel.currentFixture.value shouldBe databaseFixture
 
         delay(400L)
-        fixtureViewModel.currentFixture shouldBe networkFixture
+        fixtureViewModel.currentFixture.value shouldBe networkFixture
     }
 
     "$TAG - updates data from network - ´isUpdatingFromNetwork´ state gets updated correctly" {

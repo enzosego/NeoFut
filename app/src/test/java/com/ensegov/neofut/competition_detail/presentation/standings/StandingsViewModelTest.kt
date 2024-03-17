@@ -77,7 +77,7 @@ class StandingsViewModelTest : StringSpec({
             FakeStandingsRepository(requestFailure = true)
         )
         delay(500L)
-        standingsViewModel.standings.value shouldBe UiState.Error
+        standingsViewModel.standings.value shouldBe UiState.Error("")
     }
 })
 

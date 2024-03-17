@@ -20,7 +20,7 @@ internal fun FixtureLayout(
     val viewModel: FixtureViewModel = koinViewModel(
         parameters = { parametersOf(competitionId, competitionSeason) }
     )
-    val currentFixture = viewModel.currentFixture
+    val currentFixture by viewModel.currentFixture.collectAsStateWithLifecycle()
     val canShowPrevious by viewModel.canShowPrevious.collectAsStateWithLifecycle()
     val canShowNext by viewModel.canShowNext.collectAsStateWithLifecycle()
 
