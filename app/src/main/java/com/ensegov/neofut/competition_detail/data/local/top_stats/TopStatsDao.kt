@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TopStatsDao {
@@ -13,12 +14,12 @@ interface TopStatsDao {
     @Transaction
     @Query("SELECT * FROM player_stats " +
             "WHERE :competitionId = competition_id AND season = :season AND type = 'goals'")
-    fun getTopScorers(competitionId: Int, season: Int): List<TopStatsData>
+    fun getTopScorers(competitionId: Int, season: Int): Flow<List<TopStatsData>>
 
     @Transaction
     @Query("SELECT * FROM player_stats " +
             "WHERE :competitionId = competition_id AND season = :season AND type = 'assists'")
-    fun getTopAssists(competitionId: Int, season: Int): List<TopStatsData>
+    fun getTopAssists(competitionId: Int, season: Int): Flow<List<TopStatsData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertStatsData(statList: List<StatsData>)

@@ -4,7 +4,6 @@ import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.competition_detail.data.local.top_stats.asUiModel
 import com.ensegov.neofut.competition_detail.data.remote.top_stats.TopStatsApi
 import com.ensegov.neofut.competition_detail.data.remote.top_stats.dto.asDatabaseModel
-import com.ensegov.neofut.competition_detail.data.remote.top_stats.dto.asUiModel
 import com.ensegov.neofut.competition_detail.data.remote.player.asDatabaseModel
 import com.ensegov.neofut.competition_detail.data.remote.top_stats.dto.PlayerStatsDto
 import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiData
@@ -12,6 +11,8 @@ import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInDays
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class TopStatsRepositoryImpl(
@@ -20,53 +21,44 @@ class TopStatsRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : TopStatsRepository {
 
-    override suspend fun getTopScorers(
+    override fun getTopScorers(
         competitionId: Int,
         season: Int
-    ): List<PlayerStatsUiData> =
-        withContext(ioDispatcher) {
-            database.topStatsDao.getTopScorers(competitionId, season)
-                .groupBy { it.goals.totalGoals }
-                .map { it.value }
-                .flatMapIndexed { index, list ->
-                    list.map { scorer ->
-                        scorer.asUiModel(position = index + 1)
+    ): Flow<List<PlayerStatsUiData>> =
+        database.topStatsDao.getTopScorers(competitionId, season)
+            .map { statsList ->
+                statsList.groupBy { it.goals.totalGoals }
+                    .map { it.value }
+                    .flatMapIndexed { index, list ->
+                        list.map { scorer ->
+                            scorer.asUiModel(position = index + 1)
+                        }
                     }
-                }
-                .sortedWith(
-                    compareByDescending<PlayerStatsUiData> { it.totalGoals }
-                        .thenBy { it.penaltyGoals }
-                )
-        }
+                    .sortedWith(
+                        compareByDescending<PlayerStatsUiData> { it.totalGoals }
+                            .thenBy { it.penaltyGoals }
+                    )
+            }
 
     override suspend fun updateTopScorers(
         competitionId: Int,
         season: Int
-    ): List<PlayerStatsUiData> {
-        val response = topStatsApi.getTopScorers(competitionId, season)
-        updateStats(response, type = "goals", competitionId, season)
-
-        return response
-            .groupBy { it.statistics[0].goals.total }
-            .map { it.value }
-            .flatMapIndexed { index, list ->
-                list.map { scorer ->
-                    scorer.asUiModel(position = index + 1)
-                }
-            }
-            .sortedWith(
-                compareByDescending<PlayerStatsUiData> { it.totalGoals }
-                    .thenBy { it.penaltyGoals }
-            )
+    ) {
+        updateStats(
+            statsList = topStatsApi.getTopScorers(competitionId, season),
+            type = "goals",
+            competitionId,
+            season
+        )
     }
 
-    override suspend fun getTopAssists(
+    override fun getTopAssists(
         competitionId: Int,
         season: Int
-    ): List<PlayerStatsUiData> =
-        withContext(ioDispatcher) {
-            database.topStatsDao.getTopAssists(competitionId, season)
-                .groupBy { it.goals.assists }
+    ): Flow<List<PlayerStatsUiData>> =
+        database.topStatsDao.getTopAssists(competitionId, season)
+            .map { statsList ->
+                statsList.groupBy { it.goals.assists }
                 .map { it.value }
                 .flatMapIndexed { index, list ->
                     list.map { player ->
@@ -74,24 +66,18 @@ class TopStatsRepositoryImpl(
                     }
                 }
                 .sortedWith(compareByDescending { it.assists })
-        }
+            }
 
     override suspend fun updateTopAssists(
         competitionId: Int,
         season: Int
-    ): List<PlayerStatsUiData> {
-        val response = topStatsApi.getTopAssists(competitionId, season)
-        updateStats(response, type = "assists", competitionId, season)
-
-        return response
-            .groupBy { it.statistics[0].goals.assists }
-            .map { it.value }
-            .flatMapIndexed { index, list ->
-                list.map { scorer ->
-                    scorer.asUiModel(position = index + 1)
-                }
-            }
-            .sortedWith(compareByDescending { it.assists })
+    ) {
+        updateStats(
+            topStatsApi.getTopAssists(competitionId, season),
+            type = "assists",
+            competitionId,
+            season
+        )
     }
 
     private suspend fun updateStats(

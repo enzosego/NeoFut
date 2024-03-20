@@ -6,11 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.common.presentation.model.UiState
-import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import com.ensegov.neofut.competition_detail.data.repository.top_stats.TopStatsRepository
 import com.ensegov.neofut.competition_detail.presentation.player_stats.model.PlayerStatsUiData
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,40 +23,43 @@ class TopStatsViewModel(
     private val id: Int,
     private val season: Int
 ) : ViewModel() {
-    private val _playerStats: MutableStateFlow<UiState<List<PlayerStatsUiData>>> =
-        MutableStateFlow(UiState.Success(emptyList()))
-    val playerStats: StateFlow<UiState<List<PlayerStatsUiData>>> = _playerStats
 
-    var isUpdatingFromNetwork by mutableStateOf(false)
+    val playerStats: StateFlow<List<PlayerStatsUiData>> = getFromDatabase()
+        .onEach {
+            if (it.isEmpty())
+                _uiState.update { UiState.Loading }
+            updateTopStats()
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = emptyList()
+        )
+
+    private val _uiState = MutableStateFlow<UiState<Boolean>>(UiState.Success(data = false))
+    val uiState = _uiState.asStateFlow()
+
+    var isUpdating by mutableStateOf(false)
         private set
 
-    init {
-        getTopStats()
-    }
-
-    private fun getTopStats() {
-        viewModelScope.launch {
-            val newValue = getFromDatabase()
-            _playerStats.update {
-                if (newValue.isNotEmpty())
-                    UiState.Success(newValue)
-                else
-                    UiState.Loading
+    private fun updateTopStats() = viewModelScope.launch {
+        if (topStatsRepository.canUpdateTopStats(type, id, season)) {
+            isUpdating = true
+            _uiState.update {state ->
+                try {
+                    fetchFromNetwork()
+                    UiState.Success(data = false)
+                } catch (e: Exception) {
+                    if (state is UiState.Loading)
+                        UiState.Error("")
+                    else
+                        state
+                }
             }
-            updateTopStats()
         }
     }
 
-    private fun updateTopStats() = viewModelScope.launch {
-        _playerStats.value.updateFromNetwork(
-            canUpdate = { topStatsRepository.canUpdateTopStats(type, id, season) },
-            update = { newValue -> _playerStats.update { newValue } },
-            request = { fetchFromNetwork() },
-            changeIsUpdatingValue = { isUpdatingFromNetwork = it },
-        )
-    }
-
-    private suspend fun getFromDatabase() =
+    private fun getFromDatabase() =
         if (type == "goals")
             topStatsRepository.getTopScorers(id, season)
         else
