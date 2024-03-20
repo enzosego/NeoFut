@@ -75,7 +75,7 @@ fun GroupTable(
             }
             items(
                 items = group.teamList,
-                key = { it.team }
+                key = { it.id }
             ) { team ->
                 TeamRow(team)
             }

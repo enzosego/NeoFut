@@ -20,7 +20,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867946,
         "referee": "Anthony Taylor, England",
         "timezone": "UTC",
-        "date": "2022-08-05T19:00:00+00:00",
+        "day": "2022-08-05T19:00:00+00:00",
         "timestamp": 1659726000,
         "periods": {
           "first": 1659726000,
@@ -88,7 +88,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867947,
         "referee": "Andy Madley, England",
         "timezone": "UTC",
-        "date": "2022-08-06T11:30:00+00:00",
+        "day": "2022-08-06T11:30:00+00:00",
         "timestamp": 1659785400,
         "periods": {
           "first": 1659785400,
@@ -156,7 +156,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867948,
         "referee": "Peter Bankes, England",
         "timezone": "UTC",
-        "date": "2022-08-06T14:00:00+00:00",
+        "day": "2022-08-06T14:00:00+00:00",
         "timestamp": 1659794400,
         "periods": {
           "first": 1659794400,
@@ -224,7 +224,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867949,
         "referee": "Robert Jones, England",
         "timezone": "UTC",
-        "date": "2022-08-06T14:00:00+00:00",
+        "day": "2022-08-06T14:00:00+00:00",
         "timestamp": 1659794400,
         "periods": {
           "first": 1659794400,
@@ -292,7 +292,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867950,
         "referee": "Jarred Gillett, Australia",
         "timezone": "UTC",
-        "date": "2022-08-07T13:00:00+00:00",
+        "day": "2022-08-07T13:00:00+00:00",
         "timestamp": 1659877200,
         "periods": {
           "first": 1659877200,
@@ -360,7 +360,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867951,
         "referee": "Simon Hooper, England",
         "timezone": "UTC",
-        "date": "2022-08-06T14:00:00+00:00",
+        "day": "2022-08-06T14:00:00+00:00",
         "timestamp": 1659794400,
         "periods": {
           "first": 1659794400,
@@ -428,7 +428,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867952,
         "referee": "Andre Marriner, England",
         "timezone": "UTC",
-        "date": "2022-08-06T14:00:00+00:00",
+        "day": "2022-08-06T14:00:00+00:00",
         "timestamp": 1659794400,
         "periods": {
           "first": 1659794400,
@@ -496,7 +496,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867953,
         "referee": "Craig Pawson, England",
         "timezone": "UTC",
-        "date": "2022-08-06T16:30:00+00:00",
+        "day": "2022-08-06T16:30:00+00:00",
         "timestamp": 1659803400,
         "periods": {
           "first": 1659803400,
@@ -564,7 +564,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867954,
         "referee": "Paul Tierney, England",
         "timezone": "UTC",
-        "date": "2022-08-07T13:00:00+00:00",
+        "day": "2022-08-07T13:00:00+00:00",
         "timestamp": 1659877200,
         "periods": {
           "first": 1659877200,
@@ -632,7 +632,7 @@ internal const val leagueFixtureResponseJson = """
         "id": 867955,
         "referee": "Michael Oliver, England",
         "timezone": "UTC",
-        "date": "2022-08-07T15:30:00+00:00",
+        "day": "2022-08-07T15:30:00+00:00",
         "timestamp": 1659886200,
         "periods": {
           "first": 1659886200,

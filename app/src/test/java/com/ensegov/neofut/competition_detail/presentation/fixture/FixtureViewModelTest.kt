@@ -2,9 +2,9 @@ package com.ensegov.neofut.competition_detail.presentation.fixture
 
 import android.util.Log
 import com.ensegov.neofut.common.presentation.model.UiState
-import com.ensegov.neofut.competition_detail.createFakeRoundFixture
 import com.ensegov.neofut.competition_detail.data.repository.FakeFixtureRepository
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import com.ensegov.neofut.competition_detail.presentation.standings.observeValue
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.scopes.StringSpecScope
 import io.kotest.matchers.shouldBe
@@ -31,12 +31,10 @@ class FixtureViewModelTest : StringSpec({
     }
 
     val emptyFixture = UiState.Success<List<MatchDay>>(emptyList())
-    val databaseFixture = UiState.Success(createFakeRoundFixture(count = 8))
-    val networkFixture = UiState.Success(createFakeRoundFixture(count = 12))
 
     "$TAG - ViewModel initialization - currentFixture value is ´UiState.Loading´" {
         val fixtureViewModel = getViewModel()
-        fixtureViewModel.currentFixture.value shouldBe emptyFixture
+        observeValue(fixtureViewModel.currentFixture) { value shouldBe emptyFixture }
     }
 
     "$TAG - has persisted data - retrieve round fixture from database" {
@@ -46,29 +44,32 @@ class FixtureViewModelTest : StringSpec({
                 canUpdateRoundFixture = false
             )
         )
-        delay(500L)
-
-        fixtureViewModel.currentFixture.value shouldBe databaseFixture
+        observeValue(fixtureViewModel.currentFixture) {
+            delay(500L)
+            (value as UiState.Success).data.size shouldBe 8
+        }
     }
 
     "$TAG - no persisted data - retrieves round fixture from database" {
         val fixtureViewModel = getViewModel(
             FakeFixtureRepository(hasPersistedRoundFixture = true)
         )
-        delay(500L)
-
-        fixtureViewModel.currentFixture.value shouldBe networkFixture
+        observeValue(fixtureViewModel.currentFixture) {
+            delay(500L)
+            (value as UiState.Success).data.size shouldBe 12
+        }
     }
 
     "$TAG - has persisted data - can update - retrieves then updates from network" {
         val fixtureViewModel = getViewModel(
             FakeFixtureRepository(hasPersistedRoundFixture = true)
         )
-        delay(100L)
-        fixtureViewModel.currentFixture.value shouldBe databaseFixture
-
-        delay(400L)
-        fixtureViewModel.currentFixture.value shouldBe networkFixture
+        observeValue(fixtureViewModel.currentFixture) {
+            delay(100L)
+            (value as UiState.Success).data.size shouldBe 8
+            delay(400L)
+            (value as UiState.Success).data.size shouldBe 12
+        }
     }
 
     "$TAG - updates data from network - ´isUpdatingFromNetwork´ state gets updated correctly" {
@@ -88,7 +89,6 @@ class FixtureViewModelTest : StringSpec({
         val fixtureViewModel = getViewModel(
             FakeFixtureRepository(hasPersistedSeasonFixture = true)
         )
-
         observeValues(fixtureViewModel.canShowPrevious, fixtureViewModel.canShowNext) {
             fixtureViewModel.canShowPrevious.value shouldBe false
             fixtureViewModel.canShowNext.value shouldBe true

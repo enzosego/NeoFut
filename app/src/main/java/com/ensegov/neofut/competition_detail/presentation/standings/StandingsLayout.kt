@@ -16,14 +16,15 @@ fun StandingsLayout(
     val viewModel: StandingsViewModel = koinViewModel(
         parameters = { parametersOf(competitionId, competitionSeason) }
     )
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val standings by viewModel.standings.collectAsStateWithLifecycle()
 
-    AnimatedContent(targetState = standings, label = "") { state ->
+    AnimatedContent(targetState = uiState, label = "") { state ->
         when (state) {
             is UiState.Loading -> StandingsLoadingLayout()
             is UiState.Success -> GroupTable(
-                { state.data },
-                { viewModel.isUpdatingFromNetwork }
+                { standings },
+                { viewModel.isUpdating }
             )
             is UiState.Error -> StandingsErrorLayout()
         }

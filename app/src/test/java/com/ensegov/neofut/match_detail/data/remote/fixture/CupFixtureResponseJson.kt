@@ -20,7 +20,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971793,
         "referee": "Sandro Scharer, Switzerland",
         "timezone": "UTC",
-        "date": "2023-02-14T20:00:00+00:00",
+        "day": "2023-02-14T20:00:00+00:00",
         "timestamp": 1676404800,
         "periods": {
           "first": 1676404800,
@@ -88,7 +88,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971794,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-08T20:00:00+00:00",
+        "day": "2023-03-08T20:00:00+00:00",
         "timestamp": 1678305600,
         "periods": {
           "first": null,
@@ -156,7 +156,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971795,
         "referee": "Michael Oliver, England",
         "timezone": "UTC",
-        "date": "2023-02-14T20:00:00+00:00",
+        "day": "2023-02-14T20:00:00+00:00",
         "timestamp": 1676404800,
         "periods": {
           "first": 1676404800,
@@ -224,7 +224,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971796,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-08T20:00:00+00:00",
+        "day": "2023-03-08T20:00:00+00:00",
         "timestamp": 1678305600,
         "periods": {
           "first": null,
@@ -292,7 +292,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971797,
         "referee": "Davide Massa, Italy",
         "timezone": "UTC",
-        "date": "2023-02-15T20:00:00+00:00",
+        "day": "2023-02-15T20:00:00+00:00",
         "timestamp": 1676491200,
         "periods": {
           "first": 1676491200,
@@ -360,7 +360,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971798,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-07T20:00:00+00:00",
+        "day": "2023-03-07T20:00:00+00:00",
         "timestamp": 1678219200,
         "periods": {
           "first": null,
@@ -428,7 +428,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971799,
         "referee": "Jesus Gil Manzano, Spain",
         "timezone": "UTC",
-        "date": "2023-02-15T20:00:00+00:00",
+        "day": "2023-02-15T20:00:00+00:00",
         "timestamp": 1676491200,
         "periods": {
           "first": 1676491200,
@@ -496,7 +496,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971800,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-07T20:00:00+00:00",
+        "day": "2023-03-07T20:00:00+00:00",
         "timestamp": 1678219200,
         "periods": {
           "first": null,
@@ -564,7 +564,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971801,
         "referee": "I. Kovacs",
         "timezone": "UTC",
-        "date": "2023-02-21T20:00:00+00:00",
+        "day": "2023-02-21T20:00:00+00:00",
         "timestamp": 1677009600,
         "periods": {
           "first": null,
@@ -632,7 +632,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971802,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-15T20:00:00+00:00",
+        "day": "2023-03-15T20:00:00+00:00",
         "timestamp": 1678910400,
         "periods": {
           "first": null,
@@ -700,7 +700,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971803,
         "referee": "Artur Soares Dias",
         "timezone": "UTC",
-        "date": "2023-02-21T20:00:00+00:00",
+        "day": "2023-02-21T20:00:00+00:00",
         "timestamp": 1677009600,
         "periods": {
           "first": null,
@@ -768,7 +768,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971804,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-15T20:00:00+00:00",
+        "day": "2023-03-15T20:00:00+00:00",
         "timestamp": 1678910400,
         "periods": {
           "first": null,
@@ -836,7 +836,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971805,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-02-22T20:00:00+00:00",
+        "day": "2023-02-22T20:00:00+00:00",
         "timestamp": 1677096000,
         "periods": {
           "first": null,
@@ -904,7 +904,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971806,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-14T20:00:00+00:00",
+        "day": "2023-03-14T20:00:00+00:00",
         "timestamp": 1678824000,
         "periods": {
           "first": null,
@@ -972,7 +972,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971807,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-02-22T20:00:00+00:00",
+        "day": "2023-02-22T20:00:00+00:00",
         "timestamp": 1677096000,
         "periods": {
           "first": null,
@@ -1040,7 +1040,7 @@ internal const val cupFixtureResponseJson = """
         "id": 971808,
         "referee": null,
         "timezone": "UTC",
-        "date": "2023-03-14T20:00:00+00:00",
+        "day": "2023-03-14T20:00:00+00:00",
         "timestamp": 1678824000,
         "periods": {
           "first": null,

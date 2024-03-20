@@ -1,17 +1,17 @@
 package com.ensegov.neofut.competition_detail.data.repository.standings
 
-import android.util.Log
 import com.ensegov.neofut.NeoFutDatabase
 import com.ensegov.neofut.competition_detail.data.local.standings.asUiModel
 import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
 import com.ensegov.neofut.competition_detail.data.remote.standings.dto.asDatabaseModel
-import com.ensegov.neofut.competition_detail.data.remote.standings.dto.asUiModel
 import com.ensegov.neofut.competition_detail.data.remote.team.asDatabaseModel
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
 import com.ensegov.neofut.update_times.data.local.getTimeDiffInHours
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class StandingsRepositoryImpl(
@@ -20,7 +20,11 @@ class StandingsRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : StandingsRepository {
 
-    override suspend fun updateStandings(id: Int, season: Int): List<CompetitionGroup> {
+    override fun getStandings(id: Int, season: Int): Flow<List<CompetitionGroup>> =
+        database.standingsDao.getStandings(id, season)
+            .map { it.asUiModel() }
+
+    override suspend fun updateStandings(id: Int, season: Int) {
         val response = standingsApi.getCurrentStandings(id, season)
 
         val positions = response.flatMap { list ->
@@ -54,18 +58,7 @@ class StandingsRepositoryImpl(
                 )
             )
         }
-        return response.map { list ->
-            CompetitionGroup(
-                groupName = list[0].group,
-                teamList = list.map { it.asUiModel() }
-            )
-        }
     }
-
-    override suspend fun getStandings(id: Int, season: Int): List<CompetitionGroup> =
-        withContext(ioDispatcher) {
-            database.standingsDao.getStandings(id, season).asUiModel()
-        }
 
     override suspend fun canUpdateStandings(
         id: Int,
@@ -76,7 +69,6 @@ class StandingsRepositoryImpl(
             competitionId = id,
             season = season
         )?.getTimeDiffInHours()
-        Log.d("StandingsRepository", "$timeDiff")
         timeDiff == null || timeDiff >= 24
     }
 }

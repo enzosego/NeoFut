@@ -1,15 +1,15 @@
 package com.ensegov.neofut.competition_detail
 
-import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDataShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchUiShort
 import com.ensegov.neofut.competition_detail.presentation.fixture.model.TeamInfoShort
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.presentation.standings.model.PositionUiData
+import java.time.LocalDateTime
 
-internal fun createFakeGroups(groupCount: Int) =
-    List(groupCount) {
+internal fun createFakeGroups(count: Int) =
+    List(count) {
         CompetitionGroup(
             groupName = "Group $it",
             teamList = List(it) { index ->
@@ -30,7 +30,7 @@ internal fun createFakeGroups(groupCount: Int) =
 internal fun createFakeRoundFixture(count: Int) =
     List(count) {
         MatchDay(
-            date = "$it",
+            date = LocalDateTime.now(),
             matchList = List(count) { index ->
                 MatchUiShort(
                     data = MatchDataShort(

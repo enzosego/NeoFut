@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import com.ensegov.neofut.competition_detail.presentation.standings.model.CompetitionGroup
 import com.ensegov.neofut.competition_detail.data.local.team.TeamForm
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StandingsDao {
@@ -16,7 +17,7 @@ interface StandingsDao {
     @Query("SELECT * FROM position " +
             "WHERE :id = position.competition_id AND :season = position.season " +
             "ORDER BY position.`group` ASC, position.position ASC")
-    fun getStandings(id: Int, season: Int): List<TeamPositionInfo>
+    fun getStandings(id: Int, season: Int): Flow<List<TeamPositionInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPositions(positions: List<PositionInfo>)
