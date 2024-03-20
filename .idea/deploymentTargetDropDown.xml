@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="FixtureLoadingLayoutPreview">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -18,7 +15,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-15T01:55:44.320529494Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-19T23:31:18.630045818Z" />
         </State>
       </entry>
     </value>
