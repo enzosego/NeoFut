@@ -17,6 +17,7 @@ import com.ensegov.neofut.destinations.MatchDetailScreenDestination
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import java.time.LocalDateTime
 
 @Composable
 fun FixtureSuccessLayout(
@@ -64,7 +65,7 @@ fun FixtureSuccessLayout(
 private fun FixtureSuccessLayoutPreview() {
     val fakeDataset = List(4) {
         MatchDay(
-            date = "$it/${it+1}/${it+2}",
+            date = LocalDateTime.now().plusDays(it.toLong()),
             matchList = List(it+1) { index ->
                 generateFakeMatch(index, it)
             }
@@ -75,9 +76,9 @@ private fun FixtureSuccessLayoutPreview() {
             currentFixture = { fakeDataset },
             canShowPrevious = { true },
             canShowNext = { true },
-            onClickPrevious = { /*TODO*/ },
+            onClickPrevious = {  },
             isUpdating = { true },
-            onClickNext = { /*TODO*/ },
+            onClickNext = {  },
             navigator = EmptyDestinationsNavigator
             )
     }

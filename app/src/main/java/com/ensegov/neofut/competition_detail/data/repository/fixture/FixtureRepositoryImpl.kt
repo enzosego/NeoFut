@@ -157,7 +157,7 @@ private fun List<SimpleMatchFixture>.sortToUiModel(): List<MatchDay> =
         .map { (_, list) ->
             val date = list[0].data.getDate()
             MatchDay(
-                date = "${date.dayOfWeek} ${date.month} ${date.dayOfMonth}",
+                date = date,
                 matchList = list.sortedWith(compareBy { it.data.date })
                     .map { it.asShortUiModel() }
             )

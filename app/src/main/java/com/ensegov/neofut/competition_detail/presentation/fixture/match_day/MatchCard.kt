@@ -2,12 +2,11 @@ package com.ensegov.neofut.competition_detail.presentation.fixture.match_day
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,14 +27,17 @@ fun MatchCard(
             .padding(vertical = 12.dp, horizontal = 8.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             MatchTeamLayout(match.homeTeam)
-            Text(text = "${match.data.homeScore}")
-            VerticalDivider(thickness = 2.dp)
-            Text(text = "${match.data.awayScore}")
+            MatchStatusLayout(
+                home = match.data.homeScore,
+                away = match.data.awayScore,
+                status = match.data.status,
+                startTime = "${match.time.hour}:${match.time.minute}",
+            )
             MatchTeamLayout(match.awayTeam)
         }
     }
@@ -45,6 +47,6 @@ fun MatchCard(
 @Composable
 fun MatchCardPreview() {
     MatchCard(
-        generateFakeMatch(index = 0, count = 2)
+        generateFakeMatch(index = 0, count = 2, status = "")
     )
 }

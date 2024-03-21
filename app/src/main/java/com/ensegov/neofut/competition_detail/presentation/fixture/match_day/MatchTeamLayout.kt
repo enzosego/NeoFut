@@ -22,7 +22,7 @@ fun MatchTeamLayout(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.width(120.dp),
+        modifier = modifier.width(120.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
