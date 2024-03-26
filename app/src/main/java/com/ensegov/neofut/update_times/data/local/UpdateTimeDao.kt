@@ -1,13 +1,15 @@
 package com.ensegov.neofut.update_times.data.local
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 
 @Dao
 interface UpdateTimeDao {
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTime(timeData: UpdateTimeData)
 
     @Query("SELECT * FROM update_time " +

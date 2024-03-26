@@ -35,7 +35,6 @@ class FakeFixtureRepository(
     )
 
     override suspend fun updateSeasonRounds(id: Int, season: Int) {
-        updateCurrentRound(128, 2024)
         seasonRounds.update { createFakeSeasonFixture() }
     }
 
@@ -59,8 +58,6 @@ class FakeFixtureRepository(
 
     override suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean =
         !hasPersistedSeasonFixture
-
-    override suspend fun canUpdateCurrentRound(id: Int, season: Int): Boolean = true
 
     override suspend fun canUpdateRoundFixture(id: Int, season: Int, round: String): Boolean =
         canUpdateRoundFixture

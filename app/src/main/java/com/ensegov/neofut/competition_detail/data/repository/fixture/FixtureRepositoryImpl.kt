@@ -27,14 +27,6 @@ class FixtureRepositoryImpl(
 ) : FixtureRepository {
 
     override suspend fun updateSeasonRounds(id: Int, season: Int) = withContext(ioDispatcher) {
-        val lastUpdate = database.updateTimeDao.getLastUpdateTime(
-            type = "season_fixture",
-            competitionId = id,
-            season = season
-        )
-        if (lastUpdate != null && lastUpdate.getTimeDiffInDays() <= 15)
-            return@withContext
-
         val newValue = fixtureApi.getRounds(id, season)
             .mapIndexed { index, name ->
                 RoundName(
@@ -59,8 +51,6 @@ class FixtureRepositoryImpl(
         database.fixtureDao.getSeasonRounds(id, season)
 
     override suspend fun updateCurrentRound(id: Int, season: Int) {
-        if (!canUpdateCurrentRound(id, season))
-            return
         database.fixtureDao.updateCurrentRound(
             roundName = fixtureApi.getCurrentRound(id, season),
             id = id,
@@ -117,19 +107,7 @@ class FixtureRepositoryImpl(
         season: Int
     ): Boolean = withContext(ioDispatcher) {
         val timeDiff = database.updateTimeDao.getLastUpdateTime(
-            type = "round_fixture",
-            competitionId = id,
-            season = season
-        )?.getTimeDiffInDays()
-        timeDiff == null || timeDiff >= 24
-    }
-
-    override suspend fun canUpdateCurrentRound(
-        id: Int,
-        season: Int
-    ): Boolean = withContext(ioDispatcher) {
-        val timeDiff = database.updateTimeDao.getLastUpdateTime(
-            type = "current_round",
+            type = "season_fixture",
             competitionId = id,
             season = season
         )?.getTimeDiffInDays()

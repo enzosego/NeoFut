@@ -97,13 +97,16 @@ class FixtureViewModel(
 
     private fun updateSeasonFixture() {
         viewModelScope.launch {
-            if (fixtureRepository.canUpdateSeasonRounds(id, season))
+            if (fixtureRepository.canUpdateSeasonRounds(id, season)) {
+                isUpdating = true
                 try {
                     fixtureRepository
                         .updateSeasonRounds(id, season)
                 } catch (e: Exception) {
                     Log.d(TAG, "${e.message}")
                 }
+                isUpdating = false
+            }
         }
     }
 
