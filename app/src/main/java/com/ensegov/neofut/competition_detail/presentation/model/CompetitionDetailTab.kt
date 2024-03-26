@@ -17,28 +17,28 @@ sealed class CompetitionDetailTab(
     val unselectedIcon: ImageVector,
     val title: String
 ) {
-    class Fixture(
-        hasCoverage: Boolean = true,
-        selectedIcon: ImageVector = Icons.Filled.DateRange,
-        unselectedIcon: ImageVector = Icons.Outlined.DateRange,
-        title: String = "Fixture"
-    ) : CompetitionDetailTab(hasCoverage, selectedIcon, unselectedIcon, title)
-    class Standings(
-        hasCoverage: Boolean,
-        selectedIcon: ImageVector = Icons.Filled.TableChart,
-        unselectedIcon: ImageVector = Icons.Outlined.TableChart,
-        title: String = "Standings"
-    ) : CompetitionDetailTab(hasCoverage, selectedIcon, unselectedIcon, title)
-    class Goals(
-        hasCoverage: Boolean,
-        selectedIcon: ImageVector = Icons.Filled.SportsSoccer,
-        unselectedIcon: ImageVector = Icons.Outlined.SportsSoccer,
-        title: String = "Goals"
-    ) : CompetitionDetailTab(hasCoverage, selectedIcon, unselectedIcon, title)
-    class Assists(
-        hasCoverage: Boolean,
-        selectedIcon: ImageVector = Icons.Filled.WheelchairPickup,
-        unselectedIcon: ImageVector = Icons.Outlined.WheelchairPickup,
-        title: String = "Assists"
-    ) : CompetitionDetailTab(hasCoverage, selectedIcon, unselectedIcon, title)
+    class Fixture(hasCoverage: Boolean = true) : CompetitionDetailTab(
+        hasCoverage = hasCoverage,
+        selectedIcon = Icons.Filled.DateRange,
+        unselectedIcon = Icons.Outlined.DateRange,
+        title = "Fixture"
+    )
+    class Standings(hasCoverage: Boolean) : CompetitionDetailTab(
+        hasCoverage = hasCoverage,
+        selectedIcon = Icons.Filled.TableChart,
+        unselectedIcon = Icons.Outlined.TableChart,
+        title = "Standings"
+    )
+    class Goals(hasCoverage: Boolean) : CompetitionDetailTab(
+        hasCoverage = hasCoverage,
+        selectedIcon = Icons.Filled.SportsSoccer,
+        unselectedIcon = Icons.Outlined.SportsSoccer,
+        title = "Goals"
+    )
+    class Assists(hasCoverage: Boolean) : CompetitionDetailTab(
+        hasCoverage = hasCoverage,
+        selectedIcon = Icons.Filled.WheelchairPickup,
+        unselectedIcon = Icons.Outlined.WheelchairPickup,
+        title = "Assists"
+    )
 }
