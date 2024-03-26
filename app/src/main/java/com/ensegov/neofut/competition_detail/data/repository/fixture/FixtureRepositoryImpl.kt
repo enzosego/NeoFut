@@ -17,6 +17,7 @@ import com.ensegov.neofut.update_times.data.local.getTimeDiffInHours
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class FixtureRepositoryImpl(
@@ -71,7 +72,7 @@ class FixtureRepositoryImpl(
         id: Int,
         season: Int,
         round: String
-    ): List<MatchDay> = withContext(ioDispatcher) {
+    ) = withContext(ioDispatcher) {
 
         val response = fixtureApi.getFixture(id, season, round)
         val databaseModel = response
@@ -100,16 +101,15 @@ class FixtureRepositoryImpl(
                 time = getTimeMillis(),
             )
         )
-        databaseModel.sortToUiModel()
     }
 
     override suspend fun getRoundFixture(
         id: Int,
         season: Int,
         round: String
-    ): List<MatchDay> = withContext(ioDispatcher) {
-        database.fixtureDao.getMatchFixture(id, season, round)
-            .sortToUiModel()
+    ): Flow<List<MatchDay>> = withContext(ioDispatcher) {
+        database.fixtureDao.getRoundFixture(id, season, round)
+            .map { it.sortToUiModel() }
     }
 
     override suspend fun canUpdateSeasonRounds(

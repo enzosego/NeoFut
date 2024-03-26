@@ -36,6 +36,16 @@ interface FixtureDao {
         setCurrentRound(roundName, id, season)
     }
 
+    @Transaction
+    @Query("SELECT * FROM match_data " +
+            "WHERE :id = competition_id AND :season = season AND :round = round")
+    fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<SimpleMatchFixture>>
+
+    @Transaction
+    @Query("SELECT * FROM match_data " +
+            "WHERE :matchId = id")
+    fun getFullMatchFixture(matchId: Int): Flow<FullMatchFixture?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllMatches(matchList: List<MatchData>)
 
@@ -47,16 +57,6 @@ interface FixtureDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVenues(venueList: List<VenueData>)
-
-    @Transaction
-    @Query("SELECT * FROM match_data " +
-            "WHERE :id = competition_id AND :season = season AND :round = round")
-    fun getMatchFixture(id: Int, season: Int, round: String): List<SimpleMatchFixture>
-
-    @Transaction
-    @Query("SELECT * FROM match_data " +
-            "WHERE :matchId = id")
-    fun getFullMatchFixture(matchId: Int): Flow<FullMatchFixture?>
 
     @Transaction
     suspend fun insertAllFixtureData(

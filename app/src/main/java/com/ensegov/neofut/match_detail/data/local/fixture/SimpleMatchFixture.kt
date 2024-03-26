@@ -23,6 +23,7 @@ data class SimpleMatchFixture(
 fun SimpleMatchFixture.asShortUiModel() =
     MatchUiShort(
         data = data.asShortUiModel(),
+        time = data.getDate(),
         homeTeam = homeTeam.asShortUiModel(),
         awayTeam = awayTeam.asShortUiModel()
     )

@@ -20,20 +20,22 @@ internal fun FixtureLayout(
     val viewModel: FixtureViewModel = koinViewModel(
         parameters = { parametersOf(competitionId, competitionSeason) }
     )
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentFixture by viewModel.currentFixture.collectAsStateWithLifecycle()
     val canShowPrevious by viewModel.canShowPrevious.collectAsStateWithLifecycle()
     val canShowNext by viewModel.canShowNext.collectAsStateWithLifecycle()
 
-    AnimatedContent(targetState = currentFixture, label = "") { state ->
+    AnimatedContent(targetState = uiState, label = "") { state ->
         when (state) {
             is UiState.Loading -> FixtureLoadingLayout()
             is UiState.Success ->
-                AnimatedVisibility(visible = state.data.isNotEmpty()) {
+                AnimatedVisibility(visible = currentFixture.isNotEmpty()) {
                     FixtureSuccessLayout(
-                        { state.data },
+                        { currentFixture },
                         { canShowPrevious },
                         { canShowNext },
-                        { viewModel.isUpdatingFromNetwork },
+                        { viewModel.isUpdating },
                         viewModel::onClickPrevious,
                         viewModel::onClickNext,
                         navigator

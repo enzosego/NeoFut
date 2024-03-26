@@ -12,9 +12,9 @@ interface FixtureRepository {
 
     suspend fun updateCurrentRound(id: Int, season: Int)
 
-    suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchDay>
+    suspend fun updateRoundFixture(id: Int, season: Int, round: String)
 
-    suspend fun getRoundFixture(id: Int, season: Int, round: String): List<MatchDay>
+    suspend fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchDay>>
 
     suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean
 

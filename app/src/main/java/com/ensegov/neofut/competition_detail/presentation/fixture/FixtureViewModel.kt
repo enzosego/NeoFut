@@ -8,14 +8,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.competition_detail.data.repository.fixture.FixtureRepository
 import com.ensegov.neofut.common.presentation.model.UiState
-import com.ensegov.neofut.common.presentation.model.updateFromNetwork
 import com.ensegov.neofut.match_detail.data.local.fixture.RoundName
-import com.ensegov.neofut.competition_detail.presentation.fixture.model.MatchDay
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -34,10 +36,8 @@ class FixtureViewModel(
             val currentRound = list.find { round -> round.current }
             if (list.isEmpty() || currentRound == null)
                 return@onEach
-            else {
-                getRoundFixture(currentRound.name)
+            else
                 currentRoundIndex.update { list.indexOf(currentRound) }
-            }
         }
         .stateIn(
             scope = viewModelScope,
@@ -45,16 +45,37 @@ class FixtureViewModel(
             initialValue = emptyList()
         )
 
-    private val _currentFixture =
-        MutableStateFlow<UiState<List<MatchDay>>>(UiState.Success(emptyList()))
-    val currentFixture = _currentFixture.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState<Boolean>>(UiState.Success(data = false))
+    val uiState = _uiState.asStateFlow()
 
-    var isUpdatingFromNetwork by mutableStateOf(false)
+    var isUpdating by mutableStateOf(false)
         private set
 
-    private val currentRoundIndex: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val currentRoundIndex: MutableStateFlow<Int?> = MutableStateFlow(value = null)
 
-    val canShowPrevious: StateFlow<Boolean> = currentRoundIndex.map { it > 0 }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val currentFixture = roundList.combine(currentRoundIndex) { list, index ->
+        if (list.isEmpty() || index == null)
+            return@combine emptyFlow()
+        val roundName = list[index].name
+        val fixture = fixtureRepository.getRoundFixture(id, season, roundName)
+        _uiState.update {
+            if (fixture.first().isEmpty())
+                UiState.Loading
+            else
+                UiState.Success(data = false)
+        }
+        updateRoundFixture(roundName)
+        fixture
+    }
+        .flattenMerge()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            initialValue = emptyList()
+        )
+
+    val canShowPrevious: StateFlow<Boolean> = currentRoundIndex.map { it != null && it > 0 }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -62,7 +83,7 @@ class FixtureViewModel(
         )
 
     val canShowNext: StateFlow<Boolean> = currentRoundIndex.combine(roundList) { index, list ->
-        index < list.lastIndex
+        index != null && index < list.lastIndex
     }
         .stateIn(
             scope = viewModelScope,
@@ -86,44 +107,27 @@ class FixtureViewModel(
         }
     }
 
-    private fun getRoundFixture(round: String) {
-        viewModelScope.launch {
-            val fixture = fixtureRepository
-                .getRoundFixture(id, season, round)
-            _currentFixture.update {
-                if (fixture.isNotEmpty())
-                    UiState.Success(fixture)
-                else
-                    UiState.Loading
+    private fun updateRoundFixture(round: String) = viewModelScope.launch {
+        if (fixtureRepository.canUpdateRoundFixture(id, season, round)) {
+            isUpdating = true
+            _uiState.update { state ->
+                try {
+                    fixtureRepository.updateRoundFixture(id, season, round)
+                    UiState.Success(data = false)
+                } catch (e: Exception) {
+                    if (state is UiState.Loading)
+                        UiState.Error(e.message ?: "")
+                    else
+                        state
+                }
             }
-            updateRoundFixture(round)
+            isUpdating = false
         }
     }
 
-    private fun updateRoundFixture(round: String) {
-        viewModelScope.launch {
-            _currentFixture.value.updateFromNetwork(
-                canUpdate = { fixtureRepository.canUpdateRoundFixture(id, season, round) },
-                update = { newValue -> _currentFixture.update { newValue } },
-                request = { fixtureRepository.updateRoundFixture(id, season, round) },
-                changeIsUpdatingValue = { isUpdatingFromNetwork = it }
-            )
-        }
-    }
+    fun onClickPrevious() = currentRoundIndex.update { currentRoundIndex.value?.minus(1) }
 
-    fun onClickPrevious() {
-        val newIndex = currentRoundIndex.value.minus(1)
-        _currentFixture.update { UiState.Loading }
-        getRoundFixture(roundList.value[newIndex].name)
-        currentRoundIndex.update { newIndex }
-    }
-
-    fun onClickNext() {
-        _currentFixture.update { UiState.Loading }
-        val newIndex = currentRoundIndex.value.plus(1)
-        getRoundFixture(roundList.value[newIndex].name)
-        currentRoundIndex.update { newIndex }
-    }
+    fun onClickNext() = currentRoundIndex.update { currentRoundIndex.value?.plus(1) }
 
     companion object {
         private const val TIMEOUT_MILLIS = 5000L
