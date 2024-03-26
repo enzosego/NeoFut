@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.ensegov.neofut.competition_detail.data.local.team.TeamInfo
 import com.ensegov.neofut.competition_detail.data.local.team.VenueData
+import com.ensegov.neofut.match_detail.presentation.model.MatchCoverage
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -70,4 +71,8 @@ interface FixtureDao {
         insertAllTeams(teamList)
         insertVenues(venueList)
     }
+
+    @Query("SELECT events, lineups from season " +
+            "WHERE :competitionId = competition_id AND :season = year")
+    fun getMatchDetailCoverage(competitionId: Int, season: Int): MatchCoverage
 }

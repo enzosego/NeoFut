@@ -1,4 +1,6 @@
-package com.ensegov.neofut.competition_detail.presentation.tab
+@file:OptIn(ExperimentalFoundationApi::class)
+
+package com.ensegov.neofut.common.presentation.layout.tab
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -12,35 +14,32 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ensegov.neofut.competition_detail.presentation.model.CompetitionDetailTab
+import com.ensegov.neofut.match_detail.presentation.tab.MatchDetailTab
 import com.ensegov.neofut.ui.theme.NeoFutTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailTabRow(
-    tabs: () -> List<CompetitionDetailTab>,
+    tabs: () -> List<DetailTab>,
     scope: () -> CoroutineScope,
     pagerState: () -> PagerState,
-    selectedTabIndex: () -> State<Int>,
+    selectedTabIndex: () -> Int,
     modifier: Modifier = Modifier
 ) {
     TabRow(
-        selectedTabIndex = selectedTabIndex().value,
+        selectedTabIndex = selectedTabIndex(),
         modifier = modifier.fillMaxWidth()
     ) {
         tabs().forEachIndexed { index, tab ->
             Tab(
-                selected = selectedTabIndex().value == index,
+                selected = selectedTabIndex() == index,
                 selectedContentColor = MaterialTheme.colorScheme.primary,
                 unselectedContentColor = MaterialTheme.colorScheme.outline,
                 onClick = {
@@ -54,7 +53,7 @@ fun DetailTabRow(
                 ) {
                     Text(text = tab.title)
                     Icon(
-                        imageVector = if (index == selectedTabIndex().value)
+                        imageVector = if (index == selectedTabIndex())
                             tab.selectedIcon
                         else
                             tab.unselectedIcon,
@@ -67,12 +66,10 @@ fun DetailTabRow(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
-private fun DetailTabRowPreview() {
+private fun CompetitionDetailTabRowPreview() {
     val pagerState = rememberPagerState(pageCount = { 1 })
-    val index = remember { mutableIntStateOf(1) }
     val tabs = listOf(
         CompetitionDetailTab.Fixture(),
         CompetitionDetailTab.Standings(hasCoverage = true),
@@ -84,6 +81,24 @@ private fun DetailTabRowPreview() {
             tabs = { tabs },
             scope = { CoroutineScope(Dispatchers.Main) },
             pagerState = { pagerState },
-            selectedTabIndex = { index })
+            selectedTabIndex = { 1 })
+    }
+}
+
+@Preview
+@Composable
+private fun MatchDetailTabRowPreview() {
+    val pagerState = rememberPagerState(pageCount = { 1 })
+    val tabs = listOf(
+        MatchDetailTab.Info(hasCoverage = true),
+        MatchDetailTab.Lineups(hasCoverage = true),
+        MatchDetailTab.Stats(hasCoverage = true)
+    )
+    NeoFutTheme {
+        DetailTabRow(
+            tabs = { tabs },
+            scope = { CoroutineScope(Dispatchers.Main) },
+            pagerState = { pagerState },
+            selectedTabIndex = { 2 })
     }
 }

@@ -22,7 +22,7 @@ import com.ensegov.neofut.competition_detail.presentation.model.CompetitionDetai
 import com.ensegov.neofut.competition_detail.presentation.player_stats.TopStatsLayout
 import com.ensegov.neofut.home.presentation.model.getLatestSeason
 import com.ensegov.neofut.competition_detail.presentation.standings.StandingsLayout
-import com.ensegov.neofut.competition_detail.presentation.tab.DetailTabRow
+import com.ensegov.neofut.common.presentation.layout.tab.DetailTabRow
 import com.ensegov.neofut.home.presentation.model.toTabList
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -58,7 +58,7 @@ fun CompetitionDetailScreen(
                 tabs = { tabs },
                 scope = { scope },
                 pagerState = { pagerState },
-                selectedTabIndex = { selectedTabIndex }
+                selectedTabIndex = { selectedTabIndex.value }
             )
             HorizontalPager(
                 state = pagerState,

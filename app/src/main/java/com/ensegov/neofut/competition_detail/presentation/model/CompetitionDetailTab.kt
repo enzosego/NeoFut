@@ -10,13 +10,14 @@ import androidx.compose.material.icons.outlined.SportsSoccer
 import androidx.compose.material.icons.outlined.TableChart
 import androidx.compose.material.icons.outlined.WheelchairPickup
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.ensegov.neofut.common.presentation.layout.tab.DetailTab
 
 sealed class CompetitionDetailTab(
-    val hasCoverage: Boolean,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val title: String
-) {
+    hasCoverage: Boolean,
+    selectedIcon: ImageVector,
+    unselectedIcon: ImageVector,
+    title: String
+) : DetailTab(hasCoverage, selectedIcon, unselectedIcon, title) {
     class Fixture(hasCoverage: Boolean = true) : CompetitionDetailTab(
         hasCoverage = hasCoverage,
         selectedIcon = Icons.Filled.DateRange,
