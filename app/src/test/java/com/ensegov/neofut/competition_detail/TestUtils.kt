@@ -40,6 +40,7 @@ internal fun createFakeRoundFixture(count: Int) =
                         status = "",
                         timeElapsed = 45
                     ),
+                    time = LocalDateTime.now(),
                     homeTeam = TeamInfoShort(
                         name = "${(index + 1)}",
                         logoUrl = ""

@@ -11,6 +11,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
 const val TAG = "TopStatsViewModelTest"
@@ -18,9 +21,11 @@ const val TAG = "TopStatsViewModelTest"
 @OptIn(ExperimentalCoroutinesApi::class)
 class TopStatsViewModelTest : StringSpec({
 
-    beforeTest {
-        Dispatchers.setMain(Dispatchers.Default)
-    }
+    coroutineTestScope = true
+
+    beforeTest { Dispatchers.setMain(StandardTestDispatcher(TestCoroutineScheduler())) }
+
+    afterTest { Dispatchers.resetMain() }
 
     "$TAG viewModel initialization - correct State values" {
         val topStatsViewModel = getViewModel(type = "goals")

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 
 class FakeFixtureRepository(
     private val hasPersistedSeasonFixture: Boolean = false,
-    private val hasPersistedRoundFixture: Boolean = false,
+    hasPersistedRoundFixture: Boolean = false,
     private val canUpdateRoundFixture: Boolean = true,
     private var currentRoundIndex: Int = 0
 ) : FixtureRepository {
@@ -23,6 +23,17 @@ class FakeFixtureRepository(
             emptyList()
     )
 
+    private val roundFixture = MutableStateFlow(
+        if (hasPersistedRoundFixture)
+            createFakeRoundFixture(count = 7)
+        else
+            emptyList()
+    )
+
+    private val alternateRoundFixture = MutableStateFlow(
+        createFakeRoundFixture(count = 9)
+    )
+
     override suspend fun updateSeasonRounds(id: Int, season: Int) {
         updateCurrentRound(128, 2024)
         seasonRounds.update { createFakeSeasonFixture() }
@@ -32,19 +43,19 @@ class FakeFixtureRepository(
         seasonRounds
 
     override suspend fun updateCurrentRound(id: Int, season: Int) {
-        currentRoundIndex = 13
+        currentRoundIndex
     }
 
-    override suspend fun updateRoundFixture(id: Int, season: Int, round: String): List<MatchDay> {
+    override suspend fun updateRoundFixture(id: Int, season: Int, round: String) {
         delay(300L)
-        return createFakeRoundFixture(12)
+        roundFixture.update { createFakeRoundFixture(count = 12) }
     }
 
-    override suspend fun getRoundFixture(id: Int, season: Int, round: String): List<MatchDay> =
-        if (hasPersistedRoundFixture)
-            createFakeRoundFixture(8)
+    override suspend fun getRoundFixture(id: Int, season: Int, round: String): Flow<List<MatchDay>> =
+        if (round.contains("$currentRoundIndex"))
+            roundFixture
         else
-            emptyList()
+            alternateRoundFixture
 
     override suspend fun canUpdateSeasonRounds(id: Int, season: Int): Boolean =
         !hasPersistedSeasonFixture
