@@ -12,6 +12,8 @@ object HttpRoutes {
 
     const val FIXTURE_REQUEST = "$BASE_URL/fixtures"
 
+    const val MATCH_EVENTS_REQUEST = "$FIXTURE_REQUEST/events?fixture="
+
     const val STANDINGS_REQUEST = "$BASE_URL/standings"
 
     const val TEAM_REQUEST = "$BASE_URL/teams"
