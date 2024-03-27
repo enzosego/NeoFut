@@ -26,6 +26,7 @@ fun CoverageDto.asDatabaseModel() =
         assists = assists,
         injuries = injuries,
         events = fixtureCoverageDto.events,
+        statistics = fixtureCoverageDto.statisticsFixtures,
         lineups = fixtureCoverageDto.lineups
     )
 

@@ -72,7 +72,7 @@ interface FixtureDao {
         insertVenues(venueList)
     }
 
-    @Query("SELECT events, lineups from season " +
+    @Query("SELECT events, lineups, statistics from season " +
             "WHERE :competitionId = competition_id AND :season = year")
     fun getMatchDetailCoverage(competitionId: Int, season: Int): MatchCoverage
 }

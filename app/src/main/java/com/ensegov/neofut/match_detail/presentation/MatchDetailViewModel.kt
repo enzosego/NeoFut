@@ -32,8 +32,9 @@ class MatchDetailViewModel(
         )
         listOf(
             MatchDetailTab.Info(hasCoverage = coverage.events),
-            MatchDetailTab.Lineups(hasCoverage = coverage.lineups)
-        )
+            MatchDetailTab.Lineups(hasCoverage = coverage.lineups),
+            MatchDetailTab.Stats(hasCoverage = coverage.statistics)
+        ).filter { it.hasCoverage }
     }
         .stateIn(
             scope = viewModelScope,

@@ -10,7 +10,6 @@ import com.ensegov.neofut.competition_detail.data.remote.standings.StandingsApi
 import com.ensegov.neofut.match_detail.data.remote.events.MatchEventsApi
 import io.ktor.client.engine.android.*
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -23,7 +22,7 @@ val dataModule = module {
     single { StandingsApi(get(), logging = true) }
     single { FixtureApi(get(), logging = true) }
     single { TopStatsApi(get(), logging = true) }
-    singleOf(::MatchEventsApi)
+    single { MatchEventsApi(get(), logging = true) }
 }
 
 private fun createDatabase(context: Context): NeoFutDatabase =

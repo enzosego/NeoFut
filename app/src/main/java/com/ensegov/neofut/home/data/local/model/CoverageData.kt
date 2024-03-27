@@ -9,6 +9,7 @@ data class CoverageData(
     val assists: Boolean,
     val events: Boolean,
     val lineups: Boolean,
+    val statistics: Boolean,
     val injuries: Boolean
 )
 

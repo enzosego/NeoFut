@@ -1,5 +1,6 @@
 package com.ensegov.neofut.match_detail.presentation.events
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ensegov.neofut.common.presentation.model.UiState
@@ -37,12 +38,14 @@ class EventsViewModel(
                 eventsRepository.updateEvents(matchId)
                 UiState.Success(data = false)
             } catch (e: Exception) {
+                Log.d(TAG, e.message ?: "")
                 UiState.Error(e.message ?: "")
             }
         }
     }
 
     companion object {
+        const val TAG = "EventsViewModel"
         const val TIMEOUT_MILLIS = 5000L
     }
 }

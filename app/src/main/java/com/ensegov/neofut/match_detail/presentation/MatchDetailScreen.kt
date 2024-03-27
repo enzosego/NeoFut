@@ -19,6 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ensegov.neofut.common.presentation.layout.tab.DetailTabRow
+import com.ensegov.neofut.match_detail.presentation.events.EventsLayout
 import com.ensegov.neofut.match_detail.presentation.tab.MatchDetailTab
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
@@ -61,7 +62,7 @@ fun MatchDetailScreen(
                     .weight(1f)
             ) {
                 when (tabs[it]) {
-                    is MatchDetailTab.Info -> Text(text = "${matchDetail?.homeTeam?.name} - ${matchDetail?.awayTeam?.name}")
+                    is MatchDetailTab.Info -> EventsLayout(matchId)
                     is MatchDetailTab.Lineups -> Text(text = "Lineups")
                     is MatchDetailTab.Stats -> Text(text = "Match stats")
                 }
