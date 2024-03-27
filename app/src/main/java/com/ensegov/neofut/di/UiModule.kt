@@ -5,6 +5,7 @@ import com.ensegov.neofut.competition_detail.presentation.player_stats.TopStatsV
 import com.ensegov.neofut.competition_detail.presentation.standings.StandingsViewModel
 import com.ensegov.neofut.home.presentation.HomeViewModel
 import com.ensegov.neofut.match_detail.presentation.MatchDetailViewModel
+import com.ensegov.neofut.match_detail.presentation.events.EventsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -24,4 +25,5 @@ val uiModule = module {
     }
 
     viewModelOf(::MatchDetailViewModel)
+    viewModelOf(::EventsViewModel)
 }

@@ -16,6 +16,8 @@ import com.ensegov.neofut.competition_detail.data.local.top_stats.StatsData
 import com.ensegov.neofut.competition_detail.data.local.top_stats.TopStatsDao
 import com.ensegov.neofut.competition_detail.data.local.player.PlayerData
 import com.ensegov.neofut.competition_detail.data.local.team.VenueData
+import com.ensegov.neofut.match_detail.data.local.events.EventsDao
+import com.ensegov.neofut.match_detail.data.local.events.model.MatchEventData
 import com.ensegov.neofut.match_detail.data.local.fixture.MatchScoreData
 import com.ensegov.neofut.update_times.data.local.UpdateTimeDao
 import com.ensegov.neofut.update_times.data.local.UpdateTimeData
@@ -33,7 +35,8 @@ import com.ensegov.neofut.update_times.data.local.UpdateTimeData
         VenueData::class,
         PlayerData::class,
         StatsData::class,
-        UpdateTimeData::class
+        UpdateTimeData::class,
+        MatchEventData::class
     ],
     version = 1,
     exportSchema = false
@@ -45,4 +48,5 @@ abstract class NeoFutDatabase : RoomDatabase() {
     abstract val fixtureDao: FixtureDao
     abstract val topStatsDao: TopStatsDao
     abstract val updateTimeDao: UpdateTimeDao
+    abstract val eventsDao: EventsDao
 }
