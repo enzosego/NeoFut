@@ -1,7 +1,7 @@
 package com.ensegov.neofut.match_detail.data.remote.repository.events
 
-import com.ensegov.neofut.match_detail.data.local.events.model.MatchEventData
 import com.ensegov.neofut.match_detail.data.repository.events.EventsRepository
+import com.ensegov.neofut.match_detail.presentation.events.model.EventMoment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class FakeEventsRepository(
             emptyList()
     )
 
-    override fun getEvents(id: Int): Flow<List<MatchEventData>> = events
+    override suspend fun getEvents(id: Int): Flow<List<EventMoment>> = events
 
     override suspend fun updateEvents(id: Int) {
         delay(300L)
@@ -30,14 +30,9 @@ class FakeEventsRepository(
 
     private fun getFakeEventList(count: Int) =
         List(count) {
-            MatchEventData(
-                matchId = 0,
-                teamId = (1..2).random(),
-                player = "player${(1..22).random()}",
-                playerTwo = null,
-                elapsedTime = (1..90).random(),
-                type = "",
-                detail = "",
+            EventMoment(
+                time = 45,
+                events = emptyList()
             )
         }
 }

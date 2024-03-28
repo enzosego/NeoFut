@@ -2,6 +2,9 @@ package com.ensegov.neofut.match_detail.data.local.events.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import com.ensegov.neofut.match_detail.presentation.events.model.EventData
+import com.ensegov.neofut.match_detail.presentation.events.model.EventType
+import com.ensegov.neofut.match_detail.presentation.events.model.Locality
 
 @Entity(
     tableName = "match_event",
@@ -23,3 +26,16 @@ data class MatchEventData(
     @ColumnInfo(name = "detail")
     val detail: String,
 )
+
+fun MatchEventData.asUiModel(teamIds: TeamIds) =
+    EventData(
+        locality = if (teamId == teamIds.home) Locality.HOME else Locality.AWAY,
+        player = player,
+        playerTwo = playerTwo,
+        type = when (type) {
+            "Goal" -> EventType.Goal(detail)
+            "Card" -> EventType.Card(detail)
+            "Sub" -> EventType.Sub(detail)
+            else -> EventType.Var(detail)
+        }
+    )

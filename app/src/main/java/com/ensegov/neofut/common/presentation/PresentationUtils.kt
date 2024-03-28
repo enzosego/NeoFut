@@ -1,5 +1,6 @@
 package com.ensegov.neofut.common.presentation
 
+import androidx.lifecycle.ViewModel
 import java.time.temporal.TemporalAccessor
 
 fun TemporalAccessor.asUiModel() =
@@ -34,3 +35,5 @@ object StatusValues {
         "SUSP"
     )
 }
+
+fun ViewModel.tag() = this::class.simpleName
