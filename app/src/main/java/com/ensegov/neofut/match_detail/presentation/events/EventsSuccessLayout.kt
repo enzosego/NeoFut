@@ -59,21 +59,20 @@ fun EventsSuccessLayout(
 @Preview
 @Composable
 private fun EventsSuccessLayoutPreview() {
-    val fakeDatasource = List(size = 11) {
+    val fakeDatasource = (1..11).map {
         EventMoment(
             time = (1..90).random(),
-            events = List(size = it) {
+            events = List(size = (1..7).random()) {
                 EventData(
                     locality = Locality.entries.random(),
                     type = listOf(
-                        EventType.Goal(""),
-                        EventType.Card(""),
+                        EventType.Goal(listOf("Normal Goal", "Own Goal").random()),
+                        EventType.Card(listOf("Yellow Card", "Red Card").random()),
                         EventType.Sub(""),
-                        EventType.Var(""),
-                    )
-                        .random(),
+                        EventType.Var(listOf("Goal Cancelled", "Penalty Confirmed").random()),
+                    ).random(),
                     player = "Player#${(1..22).random()}",
-                    playerTwo = null
+                    playerTwo = "Player#${(23..46).random()}"
                 )
             }
         )

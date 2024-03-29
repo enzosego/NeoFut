@@ -35,7 +35,7 @@ fun MatchEventData.asUiModel(teamIds: TeamIds) =
         type = when (type) {
             "Goal" -> EventType.Goal(detail)
             "Card" -> EventType.Card(detail)
-            "Sub" -> EventType.Sub(detail)
+            "subst" -> EventType.Sub(detail)
             else -> EventType.Var(detail)
         }
     )

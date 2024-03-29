@@ -1,6 +1,6 @@
 package com.ensegov.neofut.match_detail.presentation.events.model
 
-sealed class EventType(detail: String) {
+sealed class EventType(val detail: String) {
     class Goal(detail: String) : EventType(detail)
     class Card(detail: String) : EventType(detail)
     class Sub(detail: String) : EventType(detail)
